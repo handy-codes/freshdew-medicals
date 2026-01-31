@@ -1,0 +1,404 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  DOCTOR
+  NURSE
+  STAFF
+  PATIENT
+  CAREGIVER
+}
+
+enum AppointmentStatus {
+  SCHEDULED
+  CONFIRMED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+enum VisitType {
+  IN_PERSON
+  TELEHEALTH
+  URGENT_CARE
+}
+
+model User {
+  id                 String         @id @default(cuid())
+  clerkUserId        String         @unique
+  email              String         @unique
+  role               Role           @default(PATIENT)
+  
+  // Profile information
+  profile            Profile?
+  
+  // Medical specific
+  patientProfile     PatientProfile?
+  medicalRecords     MedicalRecord[]
+  appointments       Appointment[]
+  prescriptions      Prescription[]
+  
+  // Doctor relation
+  doctorProfile      Doctor?
+  
+  // Billing relation
+  billings           Billing[]
+  
+  // Timestamps
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  
+  // Security
+  lastLoginAt        DateTime?
+  isActive           Boolean        @default(true)
+  
+  // Relations
+  notifications      Notification[]
+  messages           Message[]      @relation("SentMessages")
+  receivedMessages   Message[]      @relation("ReceivedMessages")
+  telehealthSessions TelehealthSession[]
+  auditLogs          AuditLog[]
+}
+
+model Profile {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  firstName     String
+  lastName      String
+  dateOfBirth   DateTime
+  gender        String?
+  phone         String?
+  address       String?
+  city          String
+  province      String   // Ontario, Quebec, etc.
+  postalCode    String
+  country       String   @default("Canada")
+  
+  // Emergency contact
+  emergencyName    String?
+  emergencyPhone   String?
+  emergencyRelationship String?
+  
+  // Preferences
+  preferredLanguage String @default("en")
+  notificationsEnabled Boolean @default(true)
+  newsletterSubscribed Boolean @default(false)
+  
+  // Timestamps
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model PatientProfile {
+  id                String   @id @default(cuid())
+  userId            String   @unique
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Health information
+  bloodType         String?
+  allergies         String[]
+  medications       String[]
+  conditions        String[]
+  height            Float?   // in cm
+  weight            Float?   // in kg
+  
+  // Insurance
+  insuranceProvider String?
+  insuranceNumber   String?
+  insuranceExpiry   DateTime?
+  
+  // Family doctor
+  familyDoctorId    String?
+  familyDoctor      Doctor?  @relation("FamilyDoctor", fields: [familyDoctorId], references: [id])
+  
+  // Wearable integration
+  wearableDeviceId  String?
+  lastSyncAt        DateTime?
+}
+
+model Doctor {
+  id                 String   @id @default(cuid())
+  userId             String   @unique
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Professional info
+  licenseNumber      String   @unique
+  specialty          String
+  qualifications     String[]
+  yearsOfExperience  Int
+  biography          String?
+  
+  // Availability
+  workingHours       Json     // JSON structure for weekly schedule
+  isAcceptingPatients Boolean @default(true)
+  maxPatientsPerDay   Int     @default(20)
+  
+  // Contact
+  officePhone        String?
+  officeEmail        String?
+  officeLocation     String?
+  
+  // Relations
+  appointments       Appointment[]
+  telehealthSessions TelehealthSession[]
+  patients           PatientProfile[] @relation("FamilyDoctor")
+  medicalRecords     MedicalRecord[]
+  prescriptions      Prescription[]
+  
+  // Ratings
+  rating             Float?   @default(5.0)
+  totalReviews       Int      @default(0)
+  
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model Appointment {
+  id                String           @id @default(cuid())
+  patientId         String
+  patient           User             @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  doctorId          String
+  doctor            Doctor           @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  
+  dateTime          DateTime
+  duration          Int              @default(30) // minutes
+  status            AppointmentStatus @default(SCHEDULED)
+  type              VisitType
+  reason            String?
+  symptoms          String[]
+  
+  // Location
+  locationId        String?
+  location          Location?        @relation(fields: [locationId], references: [id])
+  roomNumber        String?
+  
+  // Virtual visit
+  telehealthLink    String?
+  meetingPassword   String?
+  
+  // Forms
+  intakeFormCompleted Boolean @default(false)
+  consentFormCompleted Boolean @default(false)
+  
+  // Timestamps
+  scheduledAt       DateTime @default(now())
+  confirmedAt       DateTime?
+  startedAt         DateTime?
+  endedAt           DateTime?
+  cancelledAt       DateTime?
+  cancellationReason String?
+  
+  // Relations
+  medicalRecord     MedicalRecord?
+  billing           Billing?
+  prescriptions     Prescription[]
+  telehealthSession TelehealthSession?
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model MedicalRecord {
+  id                String   @id @default(cuid())
+  patientId         String
+  patient           User     @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  doctorId          String
+  doctor            Doctor   @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  appointmentId     String?  @unique
+  appointment       Appointment? @relation(fields: [appointmentId], references: [id])
+  
+  diagnosis         String?
+  notes             String?
+  procedures        String[]
+  prescriptions     String[]
+  followUpDate      DateTime?
+  
+  // Vital signs
+  bloodPressure     String?
+  heartRate         Int?
+  temperature       Float?
+  oxygenSaturation  Float?
+  respiratoryRate   Int?
+  
+  // Files
+  attachments       Json?    // Array of file URLs
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model TelehealthSession {
+  id                String   @id @default(cuid())
+  appointmentId     String   @unique
+  appointment       Appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  
+  // Participants
+  patientId         String
+  patient           User     @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  doctorId          String
+  doctor            Doctor   @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  
+  // Session details
+  startTime         DateTime
+  endTime           DateTime?
+  duration          Int?     // minutes
+  recordingUrl      String?
+  transcript        String?
+  
+  // Technical details
+  platform          String   @default("WebRTC")
+  quality           String?
+  issuesReported    Boolean  @default(false)
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model Location {
+  id                String   @id @default(cuid())
+  name              String
+  address           String
+  city              String
+  province          String
+  postalCode        String
+  country           String   @default("Canada")
+  
+  // Coordinates
+  latitude          Float
+  longitude         Float
+  
+  // Contact
+  phone             String
+  email             String
+  hours             Json     // JSON structure for opening hours
+  
+  // Facilities
+  facilities        String[] // ["Pharmacy", "Lab", "Imaging", "Emergency"]
+  isActive          Boolean  @default(true)
+  
+  // Relations
+  appointments      Appointment[]
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model Billing {
+  id                String   @id @default(cuid())
+  appointmentId     String   @unique
+  appointment       Appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  patientId         String
+  patient           User     @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  
+  amount            Decimal
+  status            String   @default("PENDING") // PENDING, PAID, INSURANCE_PENDING, DENIED
+  insuranceCoverage Decimal?
+  patientPortion    Decimal?
+  paidAmount        Decimal? @default(0)
+  
+  // Insurance
+  insuranceClaimId  String?
+  claimSubmittedAt DateTime?
+  claimStatus       String?
+  
+  // Payment
+  paymentMethod     String?
+  transactionId     String?
+  paidAt            DateTime?
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model Notification {
+  id                String   @id @default(cuid())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  type              String   // APPOINTMENT, MEDICAL, SYSTEM, SECURITY
+  title             String
+  message           String
+  data              Json?    // Additional data
+  isRead            Boolean  @default(false)
+  priority          String   @default("LOW") // LOW, MEDIUM, HIGH, URGENT
+  
+  createdAt         DateTime @default(now())
+  expiresAt         DateTime?
+}
+
+model Message {
+  id                String   @id @default(cuid())
+  senderId          String
+  sender            User     @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  recipientId       String
+  recipient         User     @relation("ReceivedMessages", fields: [recipientId], references: [id], onDelete: Cascade)
+  
+  content           String
+  isEncrypted       Boolean  @default(true)
+  isRead            Boolean  @default(false)
+  attachments       String[]
+  
+  // Thread
+  threadId          String?
+  parentMessageId   String?
+  parentMessage     Message? @relation("Replies", fields: [parentMessageId], references: [id])
+  replies           Message[] @relation("Replies")
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model Prescription {
+  id                String   @id @default(cuid())
+  patientId         String
+  patient           User     @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  doctorId          String
+  doctor            Doctor   @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  appointmentId     String?
+  appointment       Appointment? @relation(fields: [appointmentId], references: [id])
+  
+  medication        String
+  dosage            String
+  frequency         String
+  duration          String
+  instructions      String?
+  refills           Int      @default(0)
+  prescribedAt      DateTime @default(now())
+  expiresAt         DateTime
+  
+  // Pharmacy
+  pharmacyId        String?
+  pharmacyName      String?
+  isFilled          Boolean  @default(false)
+  filledAt          DateTime?
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model AuditLog {
+  id                String   @id @default(cuid())
+  userId            String?
+  user              User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  
+  action            String
+  entityType        String
+  entityId          String
+  changes           Json?    // JSON diff of changes
+  ipAddress         String?
+  userAgent         String?
+  
+  createdAt         DateTime @default(now())
+}
+

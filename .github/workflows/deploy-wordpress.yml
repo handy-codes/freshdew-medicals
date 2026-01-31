@@ -1,0 +1,72 @@
+name: Deploy WordPress to Hostinger
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - 'wordpress-theme/**'
+      - 'wordpress-plugins/**'
+      - '.github/workflows/deploy-wordpress.yml'
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  deploy:
+    name: Deploy to Hostinger
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Setup FTP Deploy
+        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+        with:
+          server: ${{ secrets.HOSTINGER_FTP_SERVER }}
+          username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
+          password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+          server-dir: /public_html/
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/README.md
+            **/.env*
+            **/package*.json
+            **/tsconfig.json
+            **/next.config.*
+            **/prisma/**
+            **/components/**
+            **/app/**
+            **/lib/**
+            **/public/**
+            **/*.md
+            !wordpress-theme/**
+            !wordpress-plugins/**
+      
+      - name: Deploy Theme
+        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+        with:
+          server: ${{ secrets.HOSTINGER_FTP_SERVER }}
+          username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
+          password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+          server-dir: /public_html/wp-content/themes/
+          local-dir: ./wordpress-theme/freshdew-medical/
+      
+      - name: Deploy Plugins
+        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+        with:
+          server: ${{ secrets.HOSTINGER_FTP_SERVER }}
+          username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
+          password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+          server-dir: /public_html/wp-content/plugins/
+          local-dir: ./wordpress-plugins/
+      
+      - name: Deployment Success
+        run: |
+          echo "✅ WordPress theme and plugins deployed successfully!"
+          echo "Theme: wordpress-theme/freshdew-medical/"
+          echo "Plugins: wordpress-plugins/"
+          echo "Check your WordPress site to verify the deployment."
+
