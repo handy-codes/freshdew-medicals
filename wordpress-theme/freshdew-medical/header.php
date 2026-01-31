@@ -13,8 +13,28 @@
     <div class="container">
         <div class="header-content">
             <a href="<?php echo esc_url(home_url('/')); ?>" class="site-logo">
-                <?php bloginfo('name'); ?>
+                <?php 
+                if (has_custom_logo()) {
+                    the_custom_logo();
+                } else {
+                    $logo = get_theme_mod('freshdew_logo');
+                    if ($logo) {
+                        echo '<img src="' . esc_url($logo) . '" alt="' . esc_attr(get_bloginfo('name')) . '" class="logo-image">';
+                    } else {
+                        echo '<span class="logo-text">' . esc_html(get_bloginfo('name')) . '</span>';
+                    }
+                }
+                ?>
             </a>
+            
+            <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+                <span class="hamburger-icon">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </span>
+                <span class="close-icon" style="display: none;">×</span>
+            </button>
             
             <nav class="main-navigation" role="navigation" aria-label="<?php esc_attr_e('Primary Menu', 'freshdew-medical'); ?>">
                 <?php

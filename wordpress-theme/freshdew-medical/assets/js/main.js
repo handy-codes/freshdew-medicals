@@ -5,9 +5,40 @@
     'use strict';
     
     $(document).ready(function() {
-        // Mobile menu toggle
+        // Mobile menu toggle with hamburger/close icon
         $('.mobile-menu-toggle').on('click', function() {
-            $('.main-navigation').toggleClass('active');
+            var $toggle = $(this);
+            var $nav = $('.main-navigation');
+            var $hamburger = $toggle.find('.hamburger-icon');
+            var $close = $toggle.find('.close-icon');
+            var isActive = $nav.hasClass('active');
+            
+            $nav.toggleClass('active');
+            $toggle.attr('aria-expanded', !isActive);
+            
+            if ($nav.hasClass('active')) {
+                $hamburger.hide();
+                $close.show();
+                $('body').addClass('menu-open');
+            } else {
+                $hamburger.show();
+                $close.hide();
+                $('body').removeClass('menu-open');
+            }
+        });
+        
+        // Close menu when clicking outside
+        $(document).on('click', function(e) {
+            if (!$(e.target).closest('.header-content').length && $('.main-navigation').hasClass('active')) {
+                $('.mobile-menu-toggle').trigger('click');
+            }
+        });
+        
+        // Close menu on window resize if desktop
+        $(window).on('resize', function() {
+            if ($(window).width() > 768 && $('.main-navigation').hasClass('active')) {
+                $('.mobile-menu-toggle').trigger('click');
+            }
         });
         
         // Smooth scroll for anchor links

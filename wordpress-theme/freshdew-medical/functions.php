@@ -16,6 +16,12 @@ function freshdew_theme_setup() {
     // Add theme support
     add_theme_support('title-tag');
     add_theme_support('post-thumbnails');
+    add_theme_support('custom-logo', array(
+        'height'      => 50,
+        'width'       => 200,
+        'flex-height' => true,
+        'flex-width'  => true,
+    ));
     add_theme_support('html5', array(
         'search-form',
         'comment-form',
@@ -34,6 +40,25 @@ function freshdew_theme_setup() {
     $GLOBALS['content_width'] = 1200;
 }
 add_action('after_setup_theme', 'freshdew_theme_setup');
+
+/**
+ * Customizer Settings
+ */
+function freshdew_customize_register($wp_customize) {
+    // Logo Upload
+    $wp_customize->add_setting('freshdew_logo', array(
+        'default' => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ));
+    
+    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'freshdew_logo', array(
+        'label' => __('Site Logo', 'freshdew-medical'),
+        'section' => 'title_tagline',
+        'settings' => 'freshdew_logo',
+        'priority' => 8,
+    )));
+}
+add_action('customize_register', 'freshdew_customize_register');
 
 /**
  * Enqueue Scripts and Styles
@@ -126,4 +151,50 @@ function freshdew_excerpt_more($more) {
     return '...';
 }
 add_filter('excerpt_more', 'freshdew_excerpt_more');
+
+/**
+ * AI Chat API Endpoint
+ */
+function freshdew_ai_chat_endpoint() {
+    register_rest_route('freshdew/v1', '/ai-chat', array(
+        'methods' => 'POST',
+        'callback' => 'freshdew_ai_chat_handler',
+        'permission_callback' => '__return_true',
+    ));
+}
+add_action('rest_api_init', 'freshdew_ai_chat_endpoint');
+
+function freshdew_ai_chat_handler($request) {
+    $message = $request->get_param('message');
+    
+    if (empty($message)) {
+        return new WP_Error('missing_message', 'Message is required', array('status' => 400));
+    }
+    
+    $contact_info = freshdew_get_contact_info();
+    
+    // Rule-based responses (fallback if no AI API)
+    $responses = array(
+        'book appointment' => 'To book an appointment, please visit our appointments page or call us at ' . $contact_info['phone_formatted'] . '.',
+        'find doctor' => 'You can find our doctors by visiting the family practice page or contacting our office at ' . $contact_info['phone_formatted'] . '.',
+        'symptoms' => 'If you are experiencing symptoms, please book an appointment with one of our doctors. For emergencies, call 911.',
+        'hours' => 'Our hours are: Monday-Friday 8AM-8PM, Saturday 9AM-5PM, Sunday 10AM-4PM.',
+        'emergency' => 'For life-threatening emergencies, please call 911 immediately.',
+        'location' => 'We are located at ' . $contact_info['address'] . ', ' . $contact_info['city'] . ', ' . $contact_info['province'] . '.',
+        'phone' => 'You can reach us at ' . $contact_info['phone_formatted'] . '.',
+        'email' => 'You can email us at ' . $contact_info['email'] . '.',
+    );
+    
+    $lowerMessage = strtolower($message);
+    $response = 'I can help you with booking appointments, finding doctors, and general health information. How can I assist you today?';
+    
+    foreach ($responses as $key => $value) {
+        if (strpos($lowerMessage, $key) !== false) {
+            $response = $value;
+            break;
+        }
+    }
+    
+    return rest_ensure_response(array('response' => $response));
+}
 

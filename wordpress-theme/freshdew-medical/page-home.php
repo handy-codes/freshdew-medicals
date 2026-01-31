@@ -136,6 +136,56 @@ $contact_info = freshdew_get_contact_info();
     </div>
 </section>
 
+<!-- Location & Map Section -->
+<section style="padding: 4rem 0; background: #f9fafb;">
+    <div class="container">
+        <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 1rem;">Visit Us</h2>
+        <p style="text-align: center; color: #6b7280; margin-bottom: 3rem; font-size: 1.125rem;">
+            Conveniently located in Belleville, Ontario
+        </p>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem; align-items: start;">
+            <div>
+                <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem; color: #1f2937;">Location Details</h3>
+                <div class="contact-info" style="line-height: 2;">
+                    <address style="font-style: normal; color: #4b5563;">
+                        <strong style="color: #1f2937; display: block; margin-bottom: 0.5rem;">Address:</strong>
+                        <?php echo esc_html($contact_info['address']); ?><br>
+                        <?php echo esc_html($contact_info['city']); ?>, <?php echo esc_html($contact_info['province']); ?> <?php echo esc_html($contact_info['postal_code']); ?><br>
+                        Canada<br><br>
+                        
+                        <strong style="color: #1f2937; display: block; margin: 1rem 0 0.5rem;">Phone:</strong>
+                        <a href="tel:+1<?php echo esc_attr($contact_info['phone']); ?>" style="color: #2563eb; text-decoration: none;">
+                            <?php echo esc_html($contact_info['phone_formatted']); ?>
+                        </a><br><br>
+                        
+                        <strong style="color: #1f2937; display: block; margin: 1rem 0 0.5rem;">Email:</strong>
+                        <a href="mailto:<?php echo esc_attr($contact_info['email']); ?>" style="color: #2563eb; text-decoration: none;">
+                            <?php echo esc_html($contact_info['email']); ?>
+                        </a>
+                    </address>
+                    
+                    <div style="margin-top: 2rem;">
+                        <a href="<?php echo esc_url(home_url('/contact')); ?>" class="btn">Get Directions</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="map-container" style="height: 400px; border-radius: 0.5rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                <iframe 
+                    src="https://www.openstreetmap.org/export/embed.html?bbox=<?php echo esc_attr($contact_info['longitude'] - 0.01); ?>%2C<?php echo esc_attr($contact_info['latitude'] - 0.01); ?>%2C<?php echo esc_attr($contact_info['longitude'] + 0.01); ?>%2C<?php echo esc_attr($contact_info['latitude'] + 0.01); ?>&layer=mapnik&marker=<?php echo esc_attr($contact_info['latitude']); ?>,<?php echo esc_attr($contact_info['longitude']); ?>"
+                    width="100%" 
+                    height="400" 
+                    style="border: 0;"
+                    allowfullscreen
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+    </div>
+</section>
+
 <style>
 @keyframes pulse {
     0%, 100% { opacity: 1; }
