@@ -18,43 +18,23 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       
-      - name: Setup FTP Deploy
+      - name: Deploy Theme to WordPress
         uses: SamKirkland/FTP-Deploy-Action@4.3.0
         with:
           server: ${{ secrets.HOSTINGER_FTP_SERVER }}
           username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
           password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
-          server-dir: /public_html/
+          server-dir: /public_html/wp-content/themes/freshdew-medical/
+          local-dir: ./wordpress-theme/freshdew-medical/
           exclude: |
             **/.git*
             **/.git*/**
-            **/node_modules/**
             **/README.md
-            **/.env*
-            **/package*.json
-            **/tsconfig.json
-            **/next.config.*
-            **/prisma/**
-            **/components/**
-            **/app/**
-            **/lib/**
-            **/public/**
             **/*.md
-            !wordpress-theme/**
-            !wordpress-plugins/**
       
-      - name: Deploy Theme
-        uses: SamKirkland/FTP-Deploy-Action@4.3.0
-        with:
-          server: ${{ secrets.HOSTINGER_FTP_SERVER }}
-          username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
-          password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
-          server-dir: /public_html/wp-content/themes/
-          local-dir: ./wordpress-theme/freshdew-medical/
-      
-      - name: Deploy Plugins
+      - name: Deploy Plugins to WordPress
         uses: SamKirkland/FTP-Deploy-Action@4.3.0
         with:
           server: ${{ secrets.HOSTINGER_FTP_SERVER }}
@@ -62,11 +42,23 @@ jobs:
           password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
           server-dir: /public_html/wp-content/plugins/
           local-dir: ./wordpress-plugins/
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/README.md
+            **/*.md
       
       - name: Deployment Success
         run: |
           echo "✅ WordPress theme and plugins deployed successfully!"
-          echo "Theme: wordpress-theme/freshdew-medical/"
-          echo "Plugins: wordpress-plugins/"
-          echo "Check your WordPress site to verify the deployment."
-
+          echo "Theme deployed to: /public_html/wp-content/themes/freshdew-medical/"
+          echo "Plugins deployed to: /public_html/wp-content/plugins/"
+          echo ""
+          echo "📋 Next steps:"
+          echo "1. Log in to WordPress Admin: https://freshdewmedicalclinic.com/wp-admin"
+          echo "2. Go to Appearance > Themes"
+          echo "3. Activate 'FreshDew Medical Clinic' theme"
+          echo "4. Go to Plugins > Installed Plugins"
+          echo "5. Activate all plugins"
+          echo ""
+          echo "🌐 Your site: https://freshdewmedicalclinic.com"
