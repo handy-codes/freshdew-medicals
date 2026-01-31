@@ -1,15 +1,15 @@
-name: Deploy WordPress to Hostinger (SFTP)
+name: Deploy WordPress to Hostinger (SFTP) - DISABLED
+
+# This workflow is disabled - using FTP workflow instead
+# You only have FTP credentials set up, not SSH keys
+# To enable SFTP, you would need to add these GitHub Secrets:
+#   - HOSTINGER_SSH_PRIVATE_KEY
+#   - HOSTINGER_SSH_HOST
+#   - HOSTINGER_SSH_USER
+#   - HOSTINGER_SSH_PORT (optional)
 
 on:
-  push:
-    branches:
-      - main
-      - master
-    paths:
-      - 'wordpress-theme/**'
-      - 'wordpress-plugins/**'
-      - '.github/workflows/deploy-wordpress-sftp.yml'
-  workflow_dispatch: # Allows manual triggering
+  workflow_dispatch: # Only manual trigger - disabled for auto-deploy
 
 jobs:
   deploy:
