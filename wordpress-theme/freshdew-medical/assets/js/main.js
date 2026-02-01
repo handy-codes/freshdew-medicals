@@ -6,7 +6,10 @@
     
     $(document).ready(function() {
         // Mobile menu toggle with hamburger/close icon
-        $('.mobile-menu-toggle').on('click', function() {
+        $('.mobile-menu-toggle').on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
             var $toggle = $(this);
             var $nav = $('.main-navigation');
             var $hamburger = $toggle.find('.hamburger-icon');
@@ -27,9 +30,18 @@
             }
         });
         
+        // Close menu when clicking on menu links
+        $('.main-navigation a').on('click', function() {
+            if ($(window).width() <= 768) {
+                $('.mobile-menu-toggle').trigger('click');
+            }
+        });
+        
         // Close menu when clicking outside
         $(document).on('click', function(e) {
-            if (!$(e.target).closest('.header-content').length && $('.main-navigation').hasClass('active')) {
+            if (!$(e.target).closest('.header-content').length && 
+                !$(e.target).closest('.main-navigation').length && 
+                $('.main-navigation').hasClass('active')) {
                 $('.mobile-menu-toggle').trigger('click');
             }
         });
@@ -37,6 +49,13 @@
         // Close menu on window resize if desktop
         $(window).on('resize', function() {
             if ($(window).width() > 768 && $('.main-navigation').hasClass('active')) {
+                $('.mobile-menu-toggle').trigger('click');
+            }
+        });
+        
+        // Close menu on ESC key
+        $(document).on('keydown', function(e) {
+            if (e.key === 'Escape' && $('.main-navigation').hasClass('active')) {
                 $('.mobile-menu-toggle').trigger('click');
             }
         });

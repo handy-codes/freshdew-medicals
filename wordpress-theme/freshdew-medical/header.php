@@ -21,7 +21,13 @@
                     if ($logo) {
                         echo '<img src="' . esc_url($logo) . '" alt="' . esc_attr(get_bloginfo('name')) . '" class="logo-image">';
                     } else {
-                        echo '<span class="logo-text">' . esc_html(get_bloginfo('name')) . '</span>';
+                        // Default SVG logo
+                        $logo_path = get_template_directory() . '/assets/images/logo.svg';
+                        if (file_exists($logo_path)) {
+                            echo file_get_contents($logo_path);
+                        } else {
+                            echo '<span class="logo-text">' . esc_html(get_bloginfo('name')) . '</span>';
+                        }
                     }
                 }
                 ?>
@@ -60,6 +66,7 @@ function freshdew_default_menu() {
     echo '<li><a href="' . esc_url(home_url('/about')) . '">About</a></li>';
     echo '<li><a href="' . esc_url(home_url('/walk-in-clinic')) . '">Walk-in Clinic</a></li>';
     echo '<li><a href="' . esc_url(home_url('/family-practice')) . '">Family Practice</a></li>';
+    echo '<li><a href="' . esc_url(home_url('/telehealth')) . '">Telehealth</a></li>';
     echo '<li><a href="' . esc_url(home_url('/contact')) . '">Contact</a></li>';
     echo '</ul>';
 }

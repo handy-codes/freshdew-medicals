@@ -171,17 +171,33 @@ $contact_info = freshdew_get_contact_info();
                 </div>
             </div>
             
-            <div class="map-container" style="height: 400px; border-radius: 0.5rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <div class="map-container" style="height: 400px; border-radius: 0.5rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 100%; max-width: 100%;">
                 <iframe 
                     src="https://www.openstreetmap.org/export/embed.html?bbox=<?php echo esc_attr($contact_info['longitude'] - 0.01); ?>%2C<?php echo esc_attr($contact_info['latitude'] - 0.01); ?>%2C<?php echo esc_attr($contact_info['longitude'] + 0.01); ?>%2C<?php echo esc_attr($contact_info['latitude'] + 0.01); ?>&layer=mapnik&marker=<?php echo esc_attr($contact_info['latitude']); ?>,<?php echo esc_attr($contact_info['longitude']); ?>"
                     width="100%" 
                     height="400" 
-                    style="border: 0;"
+                    style="border: 0; display: block; pointer-events: auto;"
                     allowfullscreen
                     loading="lazy"
                     referrerpolicy="no-referrer-when-downgrade">
                 </iframe>
             </div>
+            
+            <style>
+            @media (max-width: 768px) {
+                .map-container {
+                    width: 100% !important;
+                    max-width: 100% !important;
+                    margin: 1rem 0 !important;
+                    height: 300px !important;
+                }
+                .map-container iframe {
+                    width: 100% !important;
+                    height: 300px !important;
+                    touch-action: pan-x pan-y;
+                }
+            }
+            </style>
         </div>
     </div>
 </section>

@@ -173,7 +173,18 @@ function freshdew_ai_chat_handler($request) {
     
     $contact_info = freshdew_get_contact_info();
     
-    // Rule-based responses (fallback if no AI API)
+    // Check if Groq API key is configured
+    $groq_api_key = get_option('freshdew_groq_api_key', '');
+    
+    if (!empty($groq_api_key)) {
+        // Use Groq API
+        $response = freshdew_call_groq_api($message, $groq_api_key, $contact_info);
+        if ($response) {
+            return rest_ensure_response(array('response' => $response));
+        }
+    }
+    
+    // Fallback to rule-based responses
     $responses = array(
         'book appointment' => 'To book an appointment, please visit our appointments page or call us at ' . $contact_info['phone_formatted'] . '.',
         'find doctor' => 'You can find our doctors by visiting the family practice page or contacting our office at ' . $contact_info['phone_formatted'] . '.',
@@ -196,5 +207,109 @@ function freshdew_ai_chat_handler($request) {
     }
     
     return rest_ensure_response(array('response' => $response));
+}
+
+/**
+ * Call Groq API
+ */
+function freshdew_call_groq_api($message, $api_key, $contact_info) {
+    $system_prompt = "You are a helpful AI assistant for FreshDew Medical Clinic in Belleville, Ontario, Canada. You help patients with:
+- Booking appointments
+- Finding doctors and services
+- General health information
+- Hospital hours and contact information
+- Emergency guidance (always direct to 911 for emergencies)
+
+Contact Information:
+- Address: {$contact_info['address']}, {$contact_info['city']}, {$contact_info['province']}
+- Phone: {$contact_info['phone_formatted']}
+- Email: {$contact_info['email']}
+- Hours: Monday-Friday 8AM-8PM, Saturday 9AM-5PM, Sunday 10AM-4PM
+
+Be concise, friendly, and professional. Always remind users that for medical emergencies, they should call 911.";
+
+    $url = 'https://api.groq.com/openai/v1/chat/completions';
+    
+    $body = array(
+        'model' => 'llama-3.1-8b-instant',
+        'messages' => array(
+            array('role' => 'system', 'content' => $system_prompt),
+            array('role' => 'user', 'content' => $message)
+        ),
+        'temperature' => 0.7,
+        'max_tokens' => 200,
+        'top_p' => 0.9,
+    );
+    
+    $args = array(
+        'method' => 'POST',
+        'headers' => array(
+            'Authorization' => 'Bearer ' . $api_key,
+            'Content-Type' => 'application/json',
+        ),
+        'body' => json_encode($body),
+        'timeout' => 30,
+    );
+    
+    $response = wp_remote_post($url, $args);
+    
+    if (is_wp_error($response)) {
+        return false;
+    }
+    
+    $body = wp_remote_retrieve_body($response);
+    $data = json_decode($body, true);
+    
+    if (isset($data['choices'][0]['message']['content'])) {
+        return trim($data['choices'][0]['message']['content']);
+    }
+    
+    return false;
+}
+
+/**
+ * Add Groq API Key Settings
+ */
+function freshdew_add_settings_page() {
+    add_options_page(
+        'FreshDew AI Settings',
+        'FreshDew AI',
+        'manage_options',
+        'freshdew-ai-settings',
+        'freshdew_ai_settings_page'
+    );
+}
+add_action('admin_menu', 'freshdew_add_settings_page');
+
+function freshdew_ai_settings_page() {
+    if (isset($_POST['submit'])) {
+        check_admin_referer('freshdew_ai_settings');
+        update_option('freshdew_groq_api_key', sanitize_text_field($_POST['groq_api_key']));
+        echo '<div class="notice notice-success"><p>Settings saved!</p></div>';
+    }
+    
+    $api_key = get_option('freshdew_groq_api_key', '');
+    ?>
+    <div class="wrap">
+        <h1>FreshDew AI Chat Settings</h1>
+        <form method="post" action="">
+            <?php wp_nonce_field('freshdew_ai_settings'); ?>
+            <table class="form-table">
+                <tr>
+                    <th scope="row">
+                        <label for="groq_api_key">Groq API Key</label>
+                    </th>
+                    <td>
+                        <input type="password" id="groq_api_key" name="groq_api_key" value="<?php echo esc_attr($api_key); ?>" class="regular-text" />
+                        <p class="description">
+                            Get your API key from <a href="https://console.groq.com/keys" target="_blank">Groq Console</a>
+                        </p>
+                    </td>
+                </tr>
+            </table>
+            <?php submit_button(); ?>
+        </form>
+    </div>
+    <?php
 }
 

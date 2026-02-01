@@ -1,0 +1,43 @@
+<svg width="200" height="50" viewBox="0 0 200 50" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#2563eb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e40af;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="leafGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Medical Cross Icon -->
+  <g transform="translate(5, 10)">
+    <rect x="8" y="0" width="4" height="20" fill="url(#logoGradient)" rx="2"/>
+    <rect x="0" y="8" width="20" height="4" fill="url(#logoGradient)" rx="2"/>
+  </g>
+  
+  <!-- Fresh Leaf Icon -->
+  <g transform="translate(30, 8)">
+    <path d="M 12 2 Q 8 2 6 6 Q 4 10 6 14 Q 8 18 12 18 Q 16 18 18 14 Q 20 10 18 6 Q 16 2 12 2 Z" 
+          fill="url(#leafGradient)" 
+          stroke="#10b981" 
+          stroke-width="0.5"/>
+    <path d="M 12 2 L 12 18" 
+          stroke="#10b981" 
+          stroke-width="1" 
+          stroke-linecap="round"/>
+    <!-- Water droplets -->
+    <circle cx="9" cy="5" r="1.5" fill="#67e8f9" opacity="0.8"/>
+    <circle cx="15" cy="7" r="1" fill="#67e8f9" opacity="0.8"/>
+    <circle cx="10" cy="12" r="1.2" fill="#67e8f9" opacity="0.8"/>
+  </g>
+  
+  <!-- Text -->
+  <text x="55" y="20" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="url(#logoGradient)">
+    FreshDew
+  </text>
+  <text x="55" y="35" font-family="Arial, sans-serif" font-size="11" font-weight="500" fill="#6b7280">
+    Medical Clinic
+  </text>
+</svg>
+
