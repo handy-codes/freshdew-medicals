@@ -4,28 +4,31 @@
  * 
  * @package FreshDewMedical
  */
+$contact_info = freshdew_get_contact_info();
 ?>
 
 <div id="ai-chat-widget" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
     <!-- Chat Button -->
-    <button id="ai-chat-toggle" style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; color: white; font-size: 24px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: transform 0.3s; display: flex; align-items: center; justify-content: center;">
+    <button id="ai-chat-toggle" style="width: auto; min-width: 120px; height: 50px; border-radius: 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; color: white; font-size: 16px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: transform 0.3s; display: flex; align-items: center; justify-content: center; padding: 0 20px; gap: 8px;">
         <span id="chat-icon">💬</span>
+        <span id="chat-text">Ask Dew</span>
         <span id="close-icon" style="display: none;">×</span>
     </button>
     
     <!-- Chat Window -->
-    <div id="ai-chat-window" style="display: none; position: absolute; bottom: 80px; right: 0; width: 350px; max-width: calc(100vw - 40px); height: 500px; background: white; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.2); flex-direction: column; overflow: hidden;">
-        <!-- Chat Header -->
-        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1rem; display: flex; justify-content: space-between; align-items: center;">
+    <div id="ai-chat-window" style="display: none; position: fixed; bottom: 80px; right: 20px; width: 350px; max-width: calc(100vw - 40px); height: 500px; max-height: calc(100vh - 100px); background: white; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.2); flex-direction: column; overflow: hidden; z-index: 10000;">
+        <!-- Chat Header (Sticky) -->
+        <div id="chat-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; position: sticky; top: 0; z-index: 1;">
             <div>
                 <h3 style="margin: 0; font-size: 1.125rem; font-weight: 600;">AI Assistant</h3>
                 <p style="margin: 0.25rem 0 0; font-size: 0.875rem; opacity: 0.9;">FreshDew Medical Clinic</p>
             </div>
+            <button id="chat-close-btn" style="background: rgba(255,255,255,0.2); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 20px; font-weight: bold; display: flex; align-items: center; justify-content: center; transition: background 0.3s;">×</button>
         </div>
         
-        <!-- Messages Container -->
-        <div id="chat-messages" style="flex: 1; overflow-y: auto; padding: 1rem; background: #f9fafb;">
-            <div class="message assistant" style="background: white; padding: 0.75rem 1rem; border-radius: 12px; margin-bottom: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+        <!-- Messages Container (Scrollable) -->
+        <div id="chat-messages" style="flex: 1; overflow-y: auto; padding: 1rem; background: #f9fafb; min-height: 0;">
+            <div class="message assistant" style="background: white; padding: 0.75rem 1rem; border-radius: 12px; margin-bottom: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); max-width: 85%;">
                 <p style="margin: 0; color: #1f2937; line-height: 1.6;">Hello! I'm FreshDew Medical Clinic AI Assistant. How can I help you today? You can ask about symptoms, book appointments, find doctors, or get health information.</p>
             </div>
         </div>
@@ -39,8 +42,8 @@
             </div>
         </div>
         
-        <!-- Input Area -->
-        <div style="padding: 1rem; background: white; border-top: 1px solid #e5e7eb;">
+        <!-- Input Area (Sticky) -->
+        <div style="padding: 1rem; background: white; border-top: 1px solid #e5e7eb; position: sticky; bottom: 0;">
             <div style="display: flex; gap: 0.5rem;">
                 <input type="text" id="chat-input" placeholder="Type your message..." style="flex: 1; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 8px; font-size: 0.875rem; outline: none;" />
                 <button id="chat-send" style="padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Send</button>
@@ -52,6 +55,9 @@
             </div>
         </div>
     </div>
+    
+    <!-- Overlay for mobile -->
+    <div id="chat-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9998;"></div>
 </div>
 
 <style>
@@ -61,11 +67,14 @@
 }
 
 #ai-chat-toggle:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
+}
+
+#chat-close-btn:hover {
+    background: rgba(255,255,255,0.3) !important;
 }
 
 .message {
-    max-width: 80%;
     word-wrap: break-word;
 }
 
@@ -73,12 +82,20 @@
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     margin-left: auto;
+    margin-right: 0;
     text-align: right;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    max-width: 85%;
+    border: 2px solid rgba(255,255,255,0.3);
 }
 
 .message.assistant {
     background: white;
     color: #1f2937;
+    max-width: 85%;
 }
 
 .quick-action:hover {
@@ -91,10 +108,29 @@
         right: 15px;
     }
     
+    #ai-chat-toggle {
+        width: auto;
+        min-width: 100px;
+        height: 44px;
+        font-size: 14px;
+        padding: 0 16px;
+    }
+    
+    #chat-text {
+        font-size: 14px;
+    }
+    
     #ai-chat-window {
+        bottom: 70px;
+        right: 15px;
+        left: 15px;
         width: calc(100vw - 30px);
-        height: calc(100vh - 100px);
-        bottom: 85px;
+        height: calc(100vh - 90px);
+        max-height: calc(100vh - 90px);
+    }
+    
+    #chat-messages {
+        max-height: calc(100vh - 250px);
     }
 }
 </style>
@@ -104,7 +140,11 @@
     const chatToggle = document.getElementById('ai-chat-toggle');
     const chatWindow = document.getElementById('ai-chat-window');
     const chatIcon = document.getElementById('chat-icon');
+    const chatText = document.getElementById('chat-text');
     const closeIcon = document.getElementById('close-icon');
+    const chatCloseBtn = document.getElementById('chat-close-btn');
+    const chatHeader = document.getElementById('chat-header');
+    const chatOverlay = document.getElementById('chat-overlay');
     const chatInput = document.getElementById('chat-input');
     const chatSend = document.getElementById('chat-send');
     const chatMessages = document.getElementById('chat-messages');
@@ -113,15 +153,63 @@
     
     let isOpen = false;
     
+    function closeChat() {
+        isOpen = false;
+        chatWindow.style.display = 'none';
+        chatOverlay.style.display = 'none';
+        chatIcon.style.display = 'inline';
+        chatText.style.display = 'inline';
+        closeIcon.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+    
+    function openChat() {
+        isOpen = true;
+        chatWindow.style.display = 'flex';
+        if (window.innerWidth <= 768) {
+            chatOverlay.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+        chatIcon.style.display = 'none';
+        chatText.style.display = 'none';
+        closeIcon.style.display = 'inline';
+        chatInput.focus();
+    }
+    
     // Toggle chat window
-    chatToggle.addEventListener('click', function() {
-        isOpen = !isOpen;
-        chatWindow.style.display = isOpen ? 'flex' : 'none';
-        chatIcon.style.display = isOpen ? 'none' : 'inline';
-        closeIcon.style.display = isOpen ? 'inline' : 'none';
-        
+    chatToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
         if (isOpen) {
-            chatInput.focus();
+            closeChat();
+        } else {
+            openChat();
+        }
+    });
+    
+    // Close button
+    chatCloseBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        closeChat();
+    });
+    
+    // Close on header click
+    chatHeader.addEventListener('click', function(e) {
+        if (e.target === chatHeader || e.target.closest('h3') || e.target.closest('p')) {
+            closeChat();
+        }
+    });
+    
+    // Close on overlay click
+    chatOverlay.addEventListener('click', function() {
+        closeChat();
+    });
+    
+    // Close on outside click (desktop)
+    document.addEventListener('click', function(e) {
+        if (isOpen && window.innerWidth > 768) {
+            if (!chatWindow.contains(e.target) && !chatToggle.contains(e.target)) {
+                closeChat();
+            }
         }
     });
     
@@ -195,8 +283,3 @@
     }
 })();
 </script>
-
-<?php
-$contact_info = freshdew_get_contact_info();
-?>
-

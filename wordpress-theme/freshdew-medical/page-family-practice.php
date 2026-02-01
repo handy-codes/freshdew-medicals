@@ -9,10 +9,10 @@ get_header();
 $contact_info = freshdew_get_contact_info();
 ?>
 
-<section style="padding: 4rem 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+<section style="padding: 4rem 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
     <div class="container">
-        <h1 style="font-size: 3rem; margin-bottom: 1rem; text-align: center;">Family Practice</h1>
-        <p style="font-size: 1.25rem; text-align: center; opacity: 0.9; max-width: 800px; margin: 0 auto;">
+        <h1 style="font-size: 3rem; margin-bottom: 1rem; text-align: center; color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.2);">Family Practice</h1>
+        <p style="font-size: 1.25rem; text-align: center; opacity: 0.95; max-width: 800px; margin: 0 auto; color: white; text-shadow: 0 1px 5px rgba(0,0,0,0.2);">
             Comprehensive family healthcare with dedicated family doctors.
         </p>
     </div>
@@ -68,4 +68,6 @@ $contact_info = freshdew_get_contact_info();
 
 <?php
 get_footer();
+
+
 

@@ -72,16 +72,16 @@ body {
 
 .site-logo img,
 .site-logo svg {
-    height: 50px;
+    height: 60px;
     width: auto;
-    max-width: 200px;
+    max-width: 240px;
     object-fit: contain;
     display: block;
 }
 
 .site-logo svg {
-    width: 200px;
-    height: 50px;
+    width: 240px;
+    height: 60px;
 }
 
 .logo-image {
@@ -170,31 +170,47 @@ body {
 
 .main-navigation a {
     text-decoration: none;
-    color: #333;
+    color: #6b7280;
     font-weight: 600;
     font-size: 1rem;
-    transition: color 0.3s;
-    padding: 0.5rem 0;
+    transition: all 0.3s;
+    padding: 0.5rem 1rem;
     position: relative;
+    border-radius: 6px;
 }
 
 .main-navigation a::after {
     content: '';
     position: absolute;
     bottom: 0;
-    left: 0;
+    left: 50%;
+    transform: translateX(-50%);
     width: 0;
-    height: 2px;
-    background: #2563eb;
+    height: 3px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     transition: width 0.3s ease;
+    border-radius: 2px;
 }
 
 .main-navigation a:hover {
     color: #2563eb;
+    background: #f3f4f6;
 }
 
 .main-navigation a:hover::after {
-    width: 100%;
+    width: 60%;
+}
+
+.main-navigation .current-menu-item > a,
+.main-navigation .current_page_item > a {
+    color: #2563eb;
+    background: #eff6ff;
+    font-weight: 700;
+}
+
+.main-navigation .current-menu-item > a::after,
+.main-navigation .current_page_item > a::after {
+    width: 60%;
 }
 
 /* Hero Section */
@@ -401,9 +417,11 @@ body {
     
     .main-navigation a {
         display: block;
-        padding: 1rem 0;
+        padding: 1rem;
         font-size: 1.1rem;
         color: #1f2937;
+        border-radius: 6px;
+        margin: 0.25rem 0;
     }
     
     .main-navigation a::after {
@@ -413,7 +431,13 @@ body {
     .main-navigation a:hover {
         color: #2563eb;
         background: #f3f4f6;
-        padding-left: 0.5rem;
+    }
+    
+    .main-navigation .current-menu-item > a,
+    .main-navigation .current_page_item > a {
+        color: #2563eb;
+        background: #eff6ff;
+        font-weight: 700;
     }
     
     body.menu-open {
@@ -439,8 +463,10 @@ body {
         padding: 1rem 0;
     }
     
-    .logo-image {
-        height: 40px;
+    .logo-image,
+    .site-logo svg {
+        height: 50px;
+        width: auto;
     }
     
     .logo-text {

@@ -140,3 +140,5 @@ After adding the API key via any method above:
 
 **Choose the method that's easiest for you!** Method 1 (Database) is recommended. 🔑
 
+
+

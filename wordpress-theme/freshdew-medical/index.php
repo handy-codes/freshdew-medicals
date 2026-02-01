@@ -28,7 +28,17 @@ get_header();
             endwhile;
         else :
             ?>
-            <p><?php esc_html_e('No content found.', 'freshdew-medical'); ?></p>
+            <section style="padding: 4rem 0; text-align: center;">
+                <h1 style="font-size: 2.5rem; margin-bottom: 1rem; color: #1f2937;">Welcome to FreshDew Medical Clinic</h1>
+                <p style="font-size: 1.25rem; color: #6b7280; margin-bottom: 2rem;">
+                    Your trusted healthcare partner in Belleville, Ontario
+                </p>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <a href="<?php echo esc_url(home_url('/about')); ?>" class="btn">Learn About Us</a>
+                    <a href="<?php echo esc_url(home_url('/appointments/book')); ?>" class="btn">Book Appointment</a>
+                    <a href="<?php echo esc_url(home_url('/contact')); ?>" class="btn btn-outline" style="background: transparent; border: 2px solid #2563eb; color: #2563eb;">Contact Us</a>
+                </div>
+            </section>
             <?php
         endif;
         ?>
