@@ -94,8 +94,8 @@ $contact_info = freshdew_get_contact_info();
                 Connect with our healthcare professionals via secure video or voice call
             </p>
             
-            <div class="telehealth-buttons" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin-bottom: 3rem;">
-                <div style="background: white; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center;">
+            <div class="telehealth-buttons" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin-bottom: 3rem; align-items: center;">
+                <div style="background: white; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 280px;">
                     <div style="font-size: 3rem; margin-bottom: 1rem;">📹</div>
                     <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #1f2937;">Video Consultation</h3>
                     <p style="color: #6b7280; margin-bottom: 1.5rem; line-height: 1.6;">
@@ -106,7 +106,7 @@ $contact_info = freshdew_get_contact_info();
                     </button>
                 </div>
                 
-                <div style="background: white; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center;">
+                <div style="background: white; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 280px;">
                     <div style="font-size: 3rem; margin-bottom: 1rem;">📞</div>
                     <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #1f2937;">Voice Call</h3>
                     <p style="color: #6b7280; margin-bottom: 1.5rem; line-height: 1.6;">
@@ -122,6 +122,10 @@ $contact_info = freshdew_get_contact_info();
             @media (max-width: 768px) {
                 .telehealth-buttons {
                     grid-template-columns: 1fr !important;
+                }
+                
+                .telehealth-buttons > div {
+                    min-height: auto !important;
                 }
             }
             </style>

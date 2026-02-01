@@ -50,12 +50,36 @@ body {
     width: 100%;
 }
 
-/* Hide WordPress Admin Bar on Frontend */
-#wpadminbar {
+/* Hide WordPress Admin Bar on Frontend - Force Hide */
+#wpadminbar,
+html #wpadminbar {
     display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    position: absolute !important;
+    top: -9999px !important;
 }
 
-.admin-bar .site-header {
+/* Remove admin bar spacing */
+.admin-bar .site-header,
+body.admin-bar .site-header,
+html.admin-bar .site-header {
+    top: 0 !important;
+    margin-top: 0 !important;
+}
+
+.admin-bar body,
+body.admin-bar,
+html.admin-bar body {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+
+/* Ensure header is always at top */
+body .site-header,
+html body .site-header {
     top: 0 !important;
 }
 

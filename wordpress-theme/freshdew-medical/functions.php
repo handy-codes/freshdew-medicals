@@ -80,24 +80,55 @@ function freshdew_enqueue_assets() {
 add_action('wp_enqueue_scripts', 'freshdew_enqueue_assets');
 
 /**
- * Hide WordPress Admin Bar on Frontend
+ * Hide WordPress Admin Bar on Frontend (All Users)
  */
 function freshdew_hide_admin_bar() {
-    if (!current_user_can('administrator')) {
+    if (!is_admin()) {
         show_admin_bar(false);
     }
 }
-add_action('init', 'freshdew_hide_admin_bar');
+add_action('init', 'freshdew_hide_admin_bar', 9);
 
 /**
- * Remove Admin Bar CSS for non-admins
+ * Remove Admin Bar CSS
  */
 function freshdew_remove_admin_bar_css() {
-    if (!current_user_can('administrator')) {
+    if (!is_admin()) {
         remove_action('wp_head', '_admin_bar_bump_cb');
     }
 }
 add_action('wp_head', 'freshdew_remove_admin_bar_css', 1);
+
+/**
+ * Remove Admin Bar HTML
+ */
+function freshdew_remove_admin_bar_html() {
+    if (!is_admin()) {
+        remove_action('wp_footer', 'wp_admin_bar_render', 1000);
+    }
+}
+add_action('wp_footer', 'freshdew_remove_admin_bar_html', 1);
+
+/**
+ * Force remove admin bar class from body
+ */
+function freshdew_remove_admin_bar_body_class($classes) {
+    if (!is_admin()) {
+        $classes = array_diff($classes, array('admin-bar'));
+    }
+    return $classes;
+}
+add_filter('body_class', 'freshdew_remove_admin_bar_body_class', 20);
+
+/**
+ * Ensure chat button is on all pages (backup method)
+ */
+function freshdew_ensure_chat_button() {
+    if (!is_admin()) {
+        get_template_part('ai-chat-button');
+    }
+}
+add_action('wp_footer', 'freshdew_ensure_chat_button', 999);
 
 /**
  * Register Widget Areas
