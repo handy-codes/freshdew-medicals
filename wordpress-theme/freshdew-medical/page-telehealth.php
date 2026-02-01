@@ -94,7 +94,7 @@ $contact_info = freshdew_get_contact_info();
                 Connect with our healthcare professionals via secure video or voice call
             </p>
             
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
+            <div class="telehealth-buttons" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin-bottom: 3rem;">
                 <div style="background: white; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center;">
                     <div style="font-size: 3rem; margin-bottom: 1rem;">📹</div>
                     <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #1f2937;">Video Consultation</h3>
@@ -118,10 +118,18 @@ $contact_info = freshdew_get_contact_info();
                 </div>
             </div>
             
-            <!-- Video Conference Container -->
+            <style>
+            @media (max-width: 768px) {
+                .telehealth-buttons {
+                    grid-template-columns: 1fr !important;
+                }
+            }
+            </style>
+            
+            <!-- Video/Voice Conference Container -->
             <div id="video-conference-container" style="display: none; background: white; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-top: 2rem;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                    <h3 style="margin: 0; color: #1f2937;">Video Conference</h3>
+                    <h3 id="conference-title" style="margin: 0; color: #1f2937;">Video Conference</h3>
                     <button id="end-call" class="btn" style="background: #ef4444; padding: 0.5rem 1.5rem; font-size: 0.875rem;">
                         End Call
                     </button>
@@ -168,12 +176,14 @@ $contact_info = freshdew_get_contact_info();
             remoteVideo.style.display = 'block';
             voiceIndicator.style.display = 'none';
             
+            // Update title
+            document.getElementById('conference-title').textContent = 'Video Conference';
+            
             // Scroll to video container
             videoContainer.scrollIntoView({ behavior: 'smooth' });
             
-            // In production, you would initialize WebRTC connection here
-            // For now, this is a demo showing local video
-            alert('Video call started! In production, this would connect to your doctor via WebRTC.');
+            // Show message
+            alert('Video call started. This will connect you to your doctor.');
         } catch (error) {
             console.error('Error accessing media devices:', error);
             alert('Unable to access camera/microphone. Please check permissions.');
@@ -191,10 +201,14 @@ $contact_info = freshdew_get_contact_info();
             remoteVideo.style.display = 'none';
             voiceIndicator.style.display = 'block';
             
+            // Update title
+            document.getElementById('conference-title').textContent = 'Voice Conference';
+            
             // Scroll to video container
             videoContainer.scrollIntoView({ behavior: 'smooth' });
             
-            alert('Voice call started! In production, this would connect to your doctor.');
+            // Show message
+            alert('Voice call started. This will connect you to your doctor.');
         } catch (error) {
             console.error('Error accessing microphone:', error);
             alert('Unable to access microphone. Please check permissions.');

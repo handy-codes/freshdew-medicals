@@ -80,6 +80,26 @@ function freshdew_enqueue_assets() {
 add_action('wp_enqueue_scripts', 'freshdew_enqueue_assets');
 
 /**
+ * Hide WordPress Admin Bar on Frontend
+ */
+function freshdew_hide_admin_bar() {
+    if (!current_user_can('administrator')) {
+        show_admin_bar(false);
+    }
+}
+add_action('init', 'freshdew_hide_admin_bar');
+
+/**
+ * Remove Admin Bar CSS for non-admins
+ */
+function freshdew_remove_admin_bar_css() {
+    if (!current_user_can('administrator')) {
+        remove_action('wp_head', '_admin_bar_bump_cb');
+    }
+}
+add_action('wp_head', 'freshdew_remove_admin_bar_css', 1);
+
+/**
  * Register Widget Areas
  */
 function freshdew_widgets_init() {

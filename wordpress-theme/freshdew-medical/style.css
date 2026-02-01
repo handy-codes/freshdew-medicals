@@ -50,6 +50,15 @@ body {
     width: 100%;
 }
 
+/* Hide WordPress Admin Bar on Frontend */
+#wpadminbar {
+    display: none !important;
+}
+
+.admin-bar .site-header {
+    top: 0 !important;
+}
+
 .header-content {
     display: flex;
     justify-content: space-between;
@@ -72,16 +81,16 @@ body {
 
 .site-logo img,
 .site-logo svg {
-    height: 60px;
+    height: 70px;
     width: auto;
-    max-width: 240px;
+    max-width: 280px;
     object-fit: contain;
     display: block;
 }
 
 .site-logo svg {
-    width: 240px;
-    height: 60px;
+    width: 280px;
+    height: 70px;
 }
 
 .logo-image {
