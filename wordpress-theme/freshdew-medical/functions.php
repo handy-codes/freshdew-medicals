@@ -64,12 +64,18 @@ add_action('customize_register', 'freshdew_customize_register');
  * Enqueue Scripts and Styles
  */
 function freshdew_enqueue_assets() {
+    // Get file modification time for cache-busting
+    $theme_version = wp_get_theme()->get('Version');
+    $style_version = file_exists(get_template_directory() . '/style.css') ? filemtime(get_template_directory() . '/style.css') : $theme_version;
+    $main_css_version = file_exists(get_template_directory() . '/assets/css/main.css') ? filemtime(get_template_directory() . '/assets/css/main.css') : $theme_version;
+    $main_js_version = file_exists(get_template_directory() . '/assets/js/main.js') ? filemtime(get_template_directory() . '/assets/js/main.js') : $theme_version;
+    
     // Styles
-    wp_enqueue_style('freshdew-style', get_stylesheet_uri(), array(), '1.0.0');
-    wp_enqueue_style('freshdew-main', get_template_directory_uri() . '/assets/css/main.css', array(), '1.0.0');
+    wp_enqueue_style('freshdew-style', get_stylesheet_uri(), array(), $style_version);
+    wp_enqueue_style('freshdew-main', get_template_directory_uri() . '/assets/css/main.css', array(), $main_css_version);
     
     // Scripts
-    wp_enqueue_script('freshdew-main', get_template_directory_uri() . '/assets/js/main.js', array('jquery'), '1.0.0', true);
+    wp_enqueue_script('freshdew-main', get_template_directory_uri() . '/assets/js/main.js', array('jquery'), $main_js_version, true);
     
     // Localize script for AJAX
     wp_localize_script('freshdew-main', 'freshdewAjax', array(
