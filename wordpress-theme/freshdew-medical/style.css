@@ -87,7 +87,8 @@ html body .site-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.5rem 0 !important;
+    /* Slightly more vertical breathing room (but not the old oversized header) */
+    padding: 0.65rem 0 !important;
     position: relative;
 }
 
@@ -115,13 +116,14 @@ html body .site-header {
 
 .site-logo .brand-logo,
 .site-logo img {
-    height: 56px;
-    width: 56px;
+    /* Match your uploaded logo better: fully round with no oversized ring */
+    height: 44px;
+    width: 44px;
     border-radius: 9999px;
     object-fit: contain;
-    background: #fff;
-    padding: 6px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    background: transparent;
+    padding: 0;
+    box-shadow: none;
     flex: 0 0 auto;
 }
 
@@ -132,14 +134,15 @@ html body .site-header {
 }
 
 .site-logo .brand-name {
-    font-size: 1.35rem;
+    /* Bigger to match new logo */
+    font-size: 1.6rem;
     font-weight: 800;
     color: #2563eb;
     letter-spacing: -0.4px;
 }
 
 .site-logo .brand-tagline {
-    font-size: 0.95rem;
+    font-size: 1.05rem;
     font-weight: 700;
     color: #111827;
 }

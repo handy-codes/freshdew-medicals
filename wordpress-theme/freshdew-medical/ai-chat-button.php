@@ -7,7 +7,7 @@
 $contact_info = freshdew_get_contact_info();
 ?>
 
-<div id="ai-chat-widget" style="position: fixed; bottom: 24px; right: 24px; z-index: 99999; pointer-events: auto;">
+<div id="ai-chat-widget" style="position: fixed; bottom: 24px; right: 24px; z-index: 99999; pointer-events: auto; transform: translateZ(0);">
     <!-- Chat Button -->
     <button id="ai-chat-toggle" style="width: auto !important; min-width: 120px !important; height: 50px !important; border-radius: 25px !important; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; border: none !important; color: white !important; font-size: 16px !important; font-weight: 600 !important; cursor: pointer !important; box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important; transition: transform 0.3s !important; display: flex !important; align-items: center !important; justify-content: center !important; padding: 0 20px !important; gap: 8px !important; position: relative !important; z-index: 100000 !important; pointer-events: auto !important;">
         <span id="chat-icon">💬</span>
@@ -110,13 +110,17 @@ $contact_info = freshdew_get_contact_info();
 
 @media (max-width: 768px) {
     #ai-chat-widget {
-        /* keep it above mobile browser UI */
-        bottom: calc(84px + env(safe-area-inset-bottom)) !important;
-        right: 16px !important;
-        left: auto !important;
+        /* Always visible on mobile (not hidden/off-screen) */
         position: fixed !important;
+        bottom: calc(76px + env(safe-area-inset-bottom)) !important;
+        right: 14px !important;
+        left: auto !important;
         z-index: 99999 !important;
         pointer-events: auto !important;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        max-width: calc(100vw - 28px) !important;
     }
     
     #ai-chat-toggle {
@@ -129,6 +133,7 @@ $contact_info = freshdew_get_contact_info();
         z-index: 100000 !important;
         pointer-events: auto !important;
         cursor: pointer !important;
+        max-width: calc(100vw - 28px) !important;
     }
     
     #chat-text {
