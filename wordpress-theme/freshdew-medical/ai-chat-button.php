@@ -7,6 +7,8 @@
 $contact_info = freshdew_get_contact_info();
 ?>
 
+<!-- Wrapper to isolate from parent transforms -->
+<div id="ai-chat-widget-root" style="position: fixed; top: 0; left: 0; width: 0; height: 0; z-index: 99999; pointer-events: none; isolation: isolate;">
 <div id="ai-chat-widget" style="position: fixed; bottom: 24px; right: 24px; z-index: 99999; pointer-events: auto; transform: translateZ(0);">
     <!-- Chat Button -->
     <button id="ai-chat-toggle" style="width: auto !important; min-width: 120px !important; height: 50px !important; border-radius: 25px !important; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; border: none !important; color: white !important; font-size: 16px !important; font-weight: 600 !important; cursor: pointer !important; box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important; transition: transform 0.3s !important; display: flex !important; align-items: center !important; justify-content: center !important; padding: 0 20px !important; gap: 8px !important; position: relative !important; z-index: 100000 !important; pointer-events: auto !important;">
@@ -59,6 +61,7 @@ $contact_info = freshdew_get_contact_info();
     <!-- Overlay for mobile -->
     <div id="chat-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9998;"></div>
 </div>
+</div><!-- Close ai-chat-widget-root -->
 
 <style>
 @keyframes typing {
