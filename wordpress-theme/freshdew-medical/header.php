@@ -13,24 +13,29 @@
     <div class="container">
         <div class="header-content">
             <a href="<?php echo esc_url(home_url('/')); ?>" class="site-logo">
-                <?php 
-                if (has_custom_logo()) {
-                    the_custom_logo();
+                <?php
+                // Prefer WordPress Custom Logo (Appearance → Customize → Site Identity → Logo)
+                $custom_logo_id = get_theme_mod('custom_logo');
+                if ($custom_logo_id) {
+                    $logo_src = wp_get_attachment_image_url($custom_logo_id, 'full');
+                    if ($logo_src) {
+                        echo '<img src="' . esc_url($logo_src) . '" alt="' . esc_attr(get_bloginfo('name')) . '" class="brand-logo" loading="eager" decoding="async">';
+                    }
                 } else {
+                    // Optional fallback logo URL from Customizer (legacy setting)
                     $logo = get_theme_mod('freshdew_logo');
                     if ($logo) {
-                        echo '<img src="' . esc_url($logo) . '" alt="' . esc_attr(get_bloginfo('name')) . '" class="logo-image">';
+                        echo '<img src="' . esc_url($logo) . '" alt="' . esc_attr(get_bloginfo('name')) . '" class="brand-logo" loading="eager" decoding="async">';
                     } else {
-                        // Default SVG logo
-                        $logo_path = get_template_directory() . '/assets/images/logo.svg';
-                        if (file_exists($logo_path)) {
-                            echo file_get_contents($logo_path);
-                        } else {
-                            echo '<span class="logo-text">' . esc_html(get_bloginfo('name')) . '</span>';
-                        }
+                        // No fallback SVG: use a simple dot mark
+                        echo '<span class="brand-logo" aria-hidden="true" style="display:inline-flex;align-items:center;justify-content:center;background:#e0f2fe;color:#2563eb;font-weight:900;">FD</span>';
                     }
                 }
                 ?>
+                <span class="brand-text">
+                    <span class="brand-name">FreshDew</span>
+                    <span class="brand-tagline">Medical Clinic</span>
+                </span>
             </a>
             
             <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">

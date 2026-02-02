@@ -87,7 +87,7 @@ html body .site-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.75rem 0 !important;
+    padding: 0.5rem 0 !important;
     position: relative;
 }
 
@@ -109,18 +109,39 @@ html body .site-header {
     transform: scale(1.05);
 }
 
-.site-logo img,
-.site-logo svg {
-    height: 80px;
-    width: auto;
-    max-width: 320px;
-    object-fit: contain;
-    display: block;
+.site-logo {
+    gap: 0.75rem;
 }
 
-.site-logo svg {
-    width: 320px;
-    height: 80px;
+.site-logo .brand-logo,
+.site-logo img {
+    height: 56px;
+    width: 56px;
+    border-radius: 9999px;
+    object-fit: contain;
+    background: #fff;
+    padding: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    flex: 0 0 auto;
+}
+
+.site-logo .brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.05;
+}
+
+.site-logo .brand-name {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #2563eb;
+    letter-spacing: -0.4px;
+}
+
+.site-logo .brand-tagline {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #111827;
 }
 
 .logo-image {
@@ -221,6 +242,14 @@ html body .site-header {
 /* Stronger selector in case other CSS overrides */
 .site-header .main-navigation .nav-menu > li > a {
     font-size: 1.125rem !important;
+}
+
+/* Active state (works with WP classes + JS + aria-current) */
+.site-header .main-navigation a[aria-current="page"] {
+    color: #2563eb !important;
+    background: #eff6ff !important;
+    font-weight: 700 !important;
+    border-bottom: 3px solid #2563eb !important;
 }
 
 .main-navigation a::after {

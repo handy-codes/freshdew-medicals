@@ -7,7 +7,7 @@
 $contact_info = freshdew_get_contact_info();
 ?>
 
-<div id="ai-chat-widget" style="position: fixed; bottom: 20px; right: 20px; z-index: 99999; pointer-events: auto;">
+<div id="ai-chat-widget" style="position: fixed; bottom: 24px; right: 24px; z-index: 99999; pointer-events: auto;">
     <!-- Chat Button -->
     <button id="ai-chat-toggle" style="width: auto !important; min-width: 120px !important; height: 50px !important; border-radius: 25px !important; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; border: none !important; color: white !important; font-size: 16px !important; font-weight: 600 !important; cursor: pointer !important; box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important; transition: transform 0.3s !important; display: flex !important; align-items: center !important; justify-content: center !important; padding: 0 20px !important; gap: 8px !important; position: relative !important; z-index: 100000 !important; pointer-events: auto !important;">
         <span id="chat-icon">💬</span>
@@ -16,7 +16,7 @@ $contact_info = freshdew_get_contact_info();
     </button>
     
     <!-- Chat Window -->
-    <div id="ai-chat-window" style="display: none; position: fixed; bottom: 80px; right: 20px; width: 350px; max-width: calc(100vw - 40px); height: 500px; max-height: calc(100vh - 100px); background: white; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.2); flex-direction: column; overflow: hidden; z-index: 10000;">
+    <div id="ai-chat-window" style="display: none; position: fixed; bottom: 96px; right: 24px; width: 360px; max-width: calc(100vw - 32px); height: 520px; max-height: calc(100vh - 140px); background: white; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.2); flex-direction: column; overflow: hidden; z-index: 100000;">
         <!-- Chat Header (Sticky) -->
         <div id="chat-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; position: sticky; top: 0; z-index: 1;">
             <div>
@@ -44,9 +44,9 @@ $contact_info = freshdew_get_contact_info();
         
         <!-- Input Area (Sticky) -->
         <div style="padding: 1rem; background: white; border-top: 1px solid #e5e7eb; position: sticky; bottom: 0;">
-            <div style="display: flex; gap: 0.5rem;">
-                <input type="text" id="chat-input" placeholder="Type your message..." style="flex: 1; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 8px; font-size: 0.875rem; outline: none;" />
-                <button id="chat-send" style="padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Send</button>
+            <div style="display: flex; gap: 0.5rem; align-items: stretch;">
+                <input type="text" id="chat-input" placeholder="Type your message..." style="flex: 1; min-width: 0; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 8px; font-size: 0.875rem; outline: none;" />
+                <button id="chat-send" style="flex: 0 0 auto; padding: 0.75rem 1.1rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Send</button>
             </div>
             <div style="margin-top: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem;">
                 <button class="quick-action" style="padding: 0.5rem 1rem; background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 20px; font-size: 0.75rem; cursor: pointer; color: #4b5563;">Book appointment</button>
@@ -102,10 +102,17 @@ $contact_info = freshdew_get_contact_info();
     background: #e5e7eb !important;
 }
 
+.ai-chat-sandbox,
+#ai-chat-widget,
+#ai-chat-widget * {
+    box-sizing: border-box;
+}
+
 @media (max-width: 768px) {
     #ai-chat-widget {
-        bottom: 15px !important;
-        right: 15px !important;
+        /* keep it above mobile browser UI */
+        bottom: calc(84px + env(safe-area-inset-bottom)) !important;
+        right: 16px !important;
         left: auto !important;
         position: fixed !important;
         z-index: 99999 !important;
@@ -129,12 +136,12 @@ $contact_info = freshdew_get_contact_info();
     }
     
     #ai-chat-window {
-        bottom: 70px !important;
-        right: 15px !important;
-        left: 15px !important;
-        width: calc(100vw - 30px) !important;
-        height: calc(100vh - 90px) !important;
-        max-height: calc(100vh - 90px) !important;
+        bottom: calc(140px + env(safe-area-inset-bottom)) !important;
+        right: 12px !important;
+        left: 12px !important;
+        width: calc(100vw - 24px) !important;
+        height: min(520px, calc(100vh - 240px)) !important;
+        max-height: min(520px, calc(100vh - 240px)) !important;
         position: fixed !important;
         z-index: 100000 !important;
     }

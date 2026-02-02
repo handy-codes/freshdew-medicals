@@ -19,6 +19,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Write deploy version (cache bust)
+        run: |
+          echo "${GITHUB_SHA}" > wordpress-theme/freshdew-medical/assets/deploy-version.txt
+          echo "deploy-version: ${GITHUB_SHA}"
       
       - name: Deploy Theme to WordPress
         uses: SamKirkland/FTP-Deploy-Action@4.3.0

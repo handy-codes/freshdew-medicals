@@ -64,15 +64,22 @@ add_action('customize_register', 'freshdew_customize_register');
  * Enqueue Scripts and Styles
  */
 function freshdew_enqueue_assets() {
-    // Force cache busting with current timestamp
-    $timestamp = time();
+    // Cache-busting version (written on deploy by GitHub Actions)
+    $deploy_version_file = get_template_directory() . '/assets/deploy-version.txt';
+    $deploy_version = '';
+    if (file_exists($deploy_version_file)) {
+        $deploy_version = trim((string) @file_get_contents($deploy_version_file));
+    }
+    if ($deploy_version === '') {
+        $deploy_version = wp_get_theme()->get('Version');
+    }
     
     // Styles
-    wp_enqueue_style('freshdew-style', get_stylesheet_uri(), array(), $timestamp);
-    wp_enqueue_style('freshdew-main', get_template_directory_uri() . '/assets/css/main.css', array(), $timestamp);
+    wp_enqueue_style('freshdew-style', get_stylesheet_uri(), array(), $deploy_version);
+    wp_enqueue_style('freshdew-main', get_template_directory_uri() . '/assets/css/main.css', array(), $deploy_version);
     
     // Scripts
-    wp_enqueue_script('freshdew-main', get_template_directory_uri() . '/assets/js/main.js', array('jquery'), $timestamp, true);
+    wp_enqueue_script('freshdew-main', get_template_directory_uri() . '/assets/js/main.js', array('jquery'), $deploy_version, true);
     
     // Localize script for AJAX
     wp_localize_script('freshdew-main', 'freshdewAjax', array(
@@ -81,6 +88,51 @@ function freshdew_enqueue_assets() {
     ));
 }
 add_action('wp_enqueue_scripts', 'freshdew_enqueue_assets');
+
+/**
+ * Auto-purge LiteSpeed cache when a new deploy is detected.
+ * This removes the need to manually purge after every commit/deploy.
+ */
+function freshdew_maybe_purge_cache_on_deploy() {
+    // Avoid running during AJAX/REST/cron to reduce noise.
+    if (wp_doing_ajax() || (defined('REST_REQUEST') && REST_REQUEST) || (defined('DOING_CRON') && DOING_CRON)) {
+        return;
+    }
+
+    $deploy_version_file = get_template_directory() . '/assets/deploy-version.txt';
+    if (!file_exists($deploy_version_file)) {
+        return;
+    }
+
+    $deploy_version = trim((string) @file_get_contents($deploy_version_file));
+    if ($deploy_version === '') {
+        return;
+    }
+
+    $last_version = (string) get_option('freshdew_deploy_version', '');
+    if (hash_equals($last_version, $deploy_version)) {
+        return; // already purged for this deploy
+    }
+
+    update_option('freshdew_deploy_version', $deploy_version, false);
+
+    // LiteSpeed Cache purge hooks (safe to call even if LSCache isn't active)
+    do_action('litespeed_purge_all');
+    do_action('litespeed_purge_all_cssjs');
+    do_action('litespeed_purge_all_object');
+}
+add_action('init', 'freshdew_maybe_purge_cache_on_deploy', 20);
+
+/**
+ * Add aria-current="page" to active menu link (for reliable active styling).
+ */
+function freshdew_nav_menu_link_attributes($atts, $item) {
+    if (!empty($item->current) || !empty($item->current_item_ancestor) || !empty($item->current_item_parent)) {
+        $atts['aria-current'] = 'page';
+    }
+    return $atts;
+}
+add_filter('nav_menu_link_attributes', 'freshdew_nav_menu_link_attributes', 10, 2);
 
 /**
  * Hide WordPress Admin Bar on Frontend (All Users)

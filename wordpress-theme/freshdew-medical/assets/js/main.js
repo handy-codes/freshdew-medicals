@@ -7,13 +7,20 @@
     $(document).ready(function() {
         // Mark current page in navigation
         function markCurrentPage() {
-            const currentPath = window.location.pathname;
+            const normalize = (p) => {
+                if (!p) return '/';
+                // ensure trailing slash consistency (strip unless root)
+                const stripped = p.replace(/\/+$/, '');
+                return stripped === '' ? '/' : stripped;
+            };
+
+            const currentPath = normalize(window.location.pathname);
             const navLinks = document.querySelectorAll('.main-navigation a');
             
             navLinks.forEach(link => {
                 try {
                     const linkUrl = new URL(link.href);
-                    const linkPath = linkUrl.pathname;
+                    const linkPath = normalize(linkUrl.pathname);
                     const linkParent = link.closest('li');
                     
                     // Remove existing active class
@@ -23,13 +30,15 @@
                     }
                     
                     // Check if this link matches current page
-                    if (linkPath === currentPath || 
-                        (currentPath === '/' && linkPath === '/') ||
-                        (currentPath !== '/' && linkPath.includes(currentPath))) {
+                    const isMatch = (linkPath === currentPath) || (currentPath === '/' && linkPath === '/');
+                    if (isMatch) {
                         link.classList.add('current', 'active');
+                        link.setAttribute('aria-current', 'page');
                         if (linkParent) {
                             linkParent.classList.add('current-menu-item', 'current_page_item');
                         }
+                    } else {
+                        link.removeAttribute('aria-current');
                     }
                 } catch (e) {
                     // Skip invalid URLs
