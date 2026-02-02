@@ -55,9 +55,7 @@ $contact_info = freshdew_get_contact_info();
 </footer>
 
 <?php 
-// Include AI Chat Button
-get_template_part('ai-chat-button');
-wp_footer(); 
+wp_footer();
 ?>
 </body>
 </html>

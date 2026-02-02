@@ -176,13 +176,19 @@ function freshdew_remove_admin_bar_body_class($classes) {
 add_filter('body_class', 'freshdew_remove_admin_bar_body_class', 20);
 
 /**
- * Ensure chat button is on all pages (backup method)
+ * Render AI chat widget on all pages (robust).
  */
-// IMPORTANT:
-// The chat widget is already included via `footer.php` (all templates call `get_footer()`).
-// Injecting it again via `wp_footer` causes duplicate IDs/scripts and breaks click handling.
-// If you ever add templates that don't call `get_footer()`, re-introduce a guarded version
-// that only renders when the widget isn't already present.
+function freshdew_render_ai_chat_widget() {
+    static $rendered = false;
+    if ($rendered) {
+        return;
+    }
+    $rendered = true;
+
+    // Render in wp_footer so it still appears even if a page builder overrides footer templates.
+    get_template_part('ai-chat-button');
+}
+add_action('wp_footer', 'freshdew_render_ai_chat_widget', 20);
 
 /**
  * Register Widget Areas
