@@ -7,9 +7,9 @@
 $contact_info = freshdew_get_contact_info();
 ?>
 
-<!-- Wrapper to isolate from parent transforms -->
-<div id="ai-chat-widget-root" style="position: fixed; top: 0; left: 0; width: 0; height: 0; z-index: 99999; pointer-events: none; isolation: isolate;">
-<div id="ai-chat-widget" style="position: fixed; bottom: 24px; right: 24px; z-index: 99999; pointer-events: auto; transform: translateZ(0);">
+<!-- Wrapper to isolate from parent transforms - MUST be direct child of body -->
+<div id="ai-chat-widget-root" style="position: fixed; top: 0; left: 0; width: 0; height: 0; z-index: 2147483647; pointer-events: none; isolation: isolate;">
+<div id="ai-chat-widget" style="position: fixed !important; bottom: 24px !important; right: 24px !important; z-index: 2147483647 !important; pointer-events: auto !important; transform: translateZ(0) !important; will-change: transform !important;">
     <!-- Chat Button -->
     <button id="ai-chat-toggle" style="width: auto !important; min-width: 120px !important; height: 50px !important; border-radius: 25px !important; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; border: none !important; color: white !important; font-size: 16px !important; font-weight: 600 !important; cursor: pointer !important; box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important; transition: transform 0.3s !important; display: flex !important; align-items: center !important; justify-content: center !important; padding: 0 20px !important; gap: 8px !important; position: relative !important; z-index: 100000 !important; pointer-events: auto !important;">
         <span id="chat-icon">💬</span>
@@ -112,19 +112,22 @@ $contact_info = freshdew_get_contact_info();
 }
 
 @media (max-width: 768px) {
-    /* Ensure chat widget is ALWAYS visible, even when menu is open */
-    #ai-chat-widget {
+    /* Force widget to be at body level, not inside menu - use maximum z-index */
+    body #ai-chat-widget-root,
+    body #ai-chat-widget {
         position: fixed !important;
+        top: auto !important;
+        left: auto !important;
         bottom: 20px !important;
         right: 16px !important;
-        left: auto !important;
-        z-index: 100001 !important; /* Higher than menu overlay (999) and menu (1000) */
+        z-index: 2147483647 !important; /* Maximum z-index value */
         pointer-events: auto !important;
         display: block !important;
         visibility: visible !important;
         opacity: 1 !important;
+        transform: translateZ(0) !important;
+        will-change: transform !important;
         max-width: calc(100vw - 32px) !important;
-        transform: translateZ(0) !important; /* Force hardware acceleration */
     }
     
     /* Ensure chat button is always clickable */
@@ -135,7 +138,7 @@ $contact_info = freshdew_get_contact_info();
         font-size: 14px !important;
         padding: 0 16px !important;
         position: relative !important;
-        z-index: 100002 !important;
+        z-index: 2147483647 !important;
         pointer-events: auto !important;
         cursor: pointer !important;
         max-width: calc(100vw - 32px) !important;
@@ -153,20 +156,22 @@ $contact_info = freshdew_get_contact_info();
         height: min(520px, calc(100vh - 120px)) !important;
         max-height: min(520px, calc(100vh - 120px)) !important;
         position: fixed !important;
-        z-index: 100002 !important; /* Higher than menu */
+        z-index: 2147483647 !important; /* Maximum z-index */
     }
     
     #chat-messages {
         max-height: calc(100vh - 200px) !important;
     }
     
-    /* Override any menu-open styles that might hide the chat button */
+    /* Ensure widget is visible even when menu is open */
+    body.menu-open #ai-chat-widget-root,
     body.menu-open #ai-chat-widget,
     body.menu-open #ai-chat-toggle {
         display: block !important;
         visibility: visible !important;
         opacity: 1 !important;
-        z-index: 100001 !important;
+        z-index: 2147483647 !important;
+        position: fixed !important;
     }
 }
 </style>

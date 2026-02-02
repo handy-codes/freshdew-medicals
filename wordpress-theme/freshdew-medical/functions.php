@@ -177,6 +177,7 @@ add_filter('body_class', 'freshdew_remove_admin_bar_body_class', 20);
 
 /**
  * Render AI chat widget on all pages (robust).
+ * Ensures widget is moved to body root to avoid parent transform issues.
  */
 function freshdew_render_ai_chat_widget() {
     static $rendered = false;
@@ -185,10 +186,37 @@ function freshdew_render_ai_chat_widget() {
     }
     $rendered = true;
 
-    // Render in wp_footer so it still appears even if a page builder overrides footer templates.
+    // Render widget template
     get_template_part('ai-chat-button');
+    
+    // JavaScript to ensure widget is at body root (fixes mobile menu containment issue)
+    ?>
+    <script>
+    (function() {
+        function ensureChatWidgetAtBodyRoot() {
+            const widgetRoot = document.getElementById('ai-chat-widget-root');
+            if (!widgetRoot) return;
+            
+            // If widget is not a direct child of body, move it there
+            if (widgetRoot.parentNode !== document.body) {
+                document.body.appendChild(widgetRoot);
+            }
+        }
+        
+        // Run immediately if DOM is ready, otherwise wait
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', ensureChatWidgetAtBodyRoot);
+        } else {
+            ensureChatWidgetAtBodyRoot();
+        }
+        
+        // Also run after a short delay to catch any late DOM manipulation
+        setTimeout(ensureChatWidgetAtBodyRoot, 100);
+    })();
+    </script>
+    <?php
 }
-add_action('wp_footer', 'freshdew_render_ai_chat_widget', 20);
+add_action('wp_footer', 'freshdew_render_ai_chat_widget', 999); // High priority to render last
 
 /**
  * Register Widget Areas
