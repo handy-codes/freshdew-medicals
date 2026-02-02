@@ -218,6 +218,11 @@ html body .site-header {
     border-radius: 6px;
 }
 
+/* Stronger selector in case other CSS overrides */
+.site-header .main-navigation .nav-menu > li > a {
+    font-size: 1.125rem !important;
+}
+
 .main-navigation a::after {
     content: '';
     position: absolute;
@@ -502,13 +507,19 @@ html body .site-header {
     }
     
     .header-content {
-        padding: 1rem 0;
+        padding: 0.75rem 0 !important;
     }
     
     .logo-image,
     .site-logo svg {
-        height: 50px;
+        height: 60px !important;
         width: auto;
+    }
+
+    /* Force navbar readability on mobile */
+    .site-header .main-navigation a {
+        font-size: 1.125rem !important;
+        font-weight: 600 !important;
     }
     
     .logo-text {
