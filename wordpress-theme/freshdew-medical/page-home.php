@@ -24,7 +24,7 @@ $contact_info = freshdew_get_contact_info();
                 <span style="color: rgba(255,255,255,0.9); font-size: 0.875rem; font-weight: 500;">Accepting New Patients</span>
             </div>
             
-            <h1 class="hero-title">
+            <h1 class="hero-title" style="color: white;">
                 Advanced Healthcare
                 <span style="display: block; background: linear-gradient(to right, #67e8f9, #93c5fd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
                     For All Canadians

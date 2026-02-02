@@ -87,7 +87,7 @@ html body .site-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 0;
+    padding: 0.75rem 0;
     position: relative;
 }
 
@@ -99,22 +99,28 @@ html body .site-header {
     transition: transform 0.3s ease;
 }
 
+.site-logo::before,
+.site-logo::after {
+    content: none !important;
+    display: none !important;
+}
+
 .site-logo:hover {
     transform: scale(1.05);
 }
 
 .site-logo img,
 .site-logo svg {
-    height: 70px;
+    height: 80px;
     width: auto;
-    max-width: 280px;
+    max-width: 320px;
     object-fit: contain;
     display: block;
 }
 
 .site-logo svg {
-    width: 280px;
-    height: 70px;
+    width: 320px;
+    height: 80px;
 }
 
 .logo-image {
@@ -205,7 +211,7 @@ html body .site-header {
     text-decoration: none;
     color: #6b7280;
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 1.125rem;
     transition: all 0.3s;
     padding: 0.5rem 1rem;
     position: relative;
@@ -239,6 +245,7 @@ html body .site-header {
     color: #2563eb;
     background: #eff6ff;
     font-weight: 700;
+    border-bottom: 3px solid #2563eb;
 }
 
 .main-navigation .current-menu-item > a::after,

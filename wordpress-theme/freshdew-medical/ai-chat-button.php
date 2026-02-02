@@ -137,21 +137,29 @@ $contact_info = freshdew_get_contact_info();
 
 <script>
 (function() {
-    const chatToggle = document.getElementById('ai-chat-toggle');
-    const chatWindow = document.getElementById('ai-chat-window');
-    const chatIcon = document.getElementById('chat-icon');
-    const chatText = document.getElementById('chat-text');
-    const closeIcon = document.getElementById('close-icon');
-    const chatCloseBtn = document.getElementById('chat-close-btn');
-    const chatHeader = document.getElementById('chat-header');
-    const chatOverlay = document.getElementById('chat-overlay');
-    const chatInput = document.getElementById('chat-input');
-    const chatSend = document.getElementById('chat-send');
-    const chatMessages = document.getElementById('chat-messages');
-    const typingIndicator = document.getElementById('typing-indicator');
-    const quickActions = document.querySelectorAll('.quick-action');
-    
-    let isOpen = false;
+    // Wait for DOM to be ready
+    function initChat() {
+        const chatToggle = document.getElementById('ai-chat-toggle');
+        const chatWindow = document.getElementById('ai-chat-window');
+        const chatIcon = document.getElementById('chat-icon');
+        const chatText = document.getElementById('chat-text');
+        const closeIcon = document.getElementById('close-icon');
+        const chatCloseBtn = document.getElementById('chat-close-btn');
+        const chatHeader = document.getElementById('chat-header');
+        const chatOverlay = document.getElementById('chat-overlay');
+        const chatInput = document.getElementById('chat-input');
+        const chatSend = document.getElementById('chat-send');
+        const chatMessages = document.getElementById('chat-messages');
+        const typingIndicator = document.getElementById('typing-indicator');
+        const quickActions = document.querySelectorAll('.quick-action');
+        
+        // Check if all elements exist
+        if (!chatToggle || !chatWindow) {
+            console.error('Chat elements not found');
+            return;
+        }
+        
+        let isOpen = false;
     
     function closeChat() {
         isOpen = false;
@@ -276,10 +284,18 @@ $contact_info = freshdew_get_contact_info();
         });
     });
     
-    function escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    }
+    
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initChat);
+    } else {
+        initChat();
     }
 })();
 </script>

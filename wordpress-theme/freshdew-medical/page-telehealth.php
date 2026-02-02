@@ -94,25 +94,29 @@ $contact_info = freshdew_get_contact_info();
                 Connect with our healthcare professionals via secure video or voice call
             </p>
             
-            <div class="telehealth-buttons" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin-bottom: 3rem; align-items: center;">
-                <div style="background: white; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 280px;">
-                    <div style="font-size: 3rem; margin-bottom: 1rem;">📹</div>
-                    <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #1f2937;">Video Consultation</h3>
-                    <p style="color: #6b7280; margin-bottom: 1.5rem; line-height: 1.6;">
-                        Face-to-face consultation with your doctor via secure video call
-                    </p>
-                    <button id="start-video-call" class="btn" style="width: 100%;">
+            <div class="telehealth-buttons" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin-bottom: 3rem; align-items: stretch;">
+                <div style="background: white; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center; display: flex; flex-direction: column; justify-content: space-between; align-items: center; height: 100%; min-height: 320px;">
+                    <div>
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📹</div>
+                        <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #1f2937;">Video Consultation</h3>
+                        <p style="color: #6b7280; margin-bottom: 1.5rem; line-height: 1.6;">
+                            Face-to-face consultation with your doctor via secure video call
+                        </p>
+                    </div>
+                    <button id="start-video-call" class="btn" style="width: 100%; margin-top: auto;">
                         Start Video Call
                     </button>
                 </div>
                 
-                <div style="background: white; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 280px;">
-                    <div style="font-size: 3rem; margin-bottom: 1rem;">📞</div>
-                    <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #1f2937;">Voice Call</h3>
-                    <p style="color: #6b7280; margin-bottom: 1.5rem; line-height: 1.6;">
-                        Speak with your doctor over a secure phone call
-                    </p>
-                    <button id="start-voice-call" class="btn" style="width: 100%;">
+                <div style="background: white; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center; display: flex; flex-direction: column; justify-content: space-between; align-items: center; height: 100%; min-height: 320px;">
+                    <div>
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📞</div>
+                        <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #1f2937;">Voice Call</h3>
+                        <p style="color: #6b7280; margin-bottom: 1.5rem; line-height: 1.6;">
+                            Speak with your doctor over a secure phone call
+                        </p>
+                    </div>
+                    <button id="start-voice-call" class="btn" style="width: 100%; margin-top: auto;">
                         Start Voice Call
                     </button>
                 </div>
