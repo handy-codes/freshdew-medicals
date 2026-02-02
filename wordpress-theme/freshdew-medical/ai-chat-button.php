@@ -155,44 +155,46 @@ $contact_info = freshdew_get_contact_info();
         
         // Check if all elements exist
         if (!chatToggle || !chatWindow) {
-            console.error('Chat elements not found');
+            console.error('Chat elements not found', { chatToggle, chatWindow });
             return;
         }
         
         let isOpen = false;
-    
-    function closeChat() {
-        isOpen = false;
-        chatWindow.style.display = 'none';
-        chatOverlay.style.display = 'none';
-        chatIcon.style.display = 'inline';
-        chatText.style.display = 'inline';
-        closeIcon.style.display = 'none';
-        document.body.style.overflow = '';
-    }
-    
-    function openChat() {
-        isOpen = true;
-        chatWindow.style.display = 'flex';
-        if (window.innerWidth <= 768) {
-            chatOverlay.style.display = 'block';
-            document.body.style.overflow = 'hidden';
+        
+        function closeChat() {
+            isOpen = false;
+            chatWindow.style.display = 'none';
+            chatOverlay.style.display = 'none';
+            chatIcon.style.display = 'inline';
+            chatText.style.display = 'inline';
+            closeIcon.style.display = 'none';
+            document.body.style.overflow = '';
         }
-        chatIcon.style.display = 'none';
-        chatText.style.display = 'none';
-        closeIcon.style.display = 'inline';
-        chatInput.focus();
-    }
-    
-    // Toggle chat window
-    chatToggle.addEventListener('click', function(e) {
-        e.stopPropagation();
-        if (isOpen) {
-            closeChat();
-        } else {
-            openChat();
+        
+        function openChat() {
+            isOpen = true;
+            chatWindow.style.display = 'flex';
+            if (window.innerWidth <= 768) {
+                chatOverlay.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+            chatIcon.style.display = 'none';
+            chatText.style.display = 'none';
+            closeIcon.style.display = 'inline';
+            if (chatInput) chatInput.focus();
         }
-    });
+        
+        // Toggle chat window
+        chatToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Chat button clicked', isOpen);
+            if (isOpen) {
+                closeChat();
+            } else {
+                openChat();
+            }
+        });
     
     // Close button
     chatCloseBtn.addEventListener('click', function(e) {

@@ -87,7 +87,7 @@ html body .site-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.75rem 0;
+    padding: 0.75rem 0 !important;
     position: relative;
 }
 
@@ -211,7 +211,7 @@ html body .site-header {
     text-decoration: none;
     color: #6b7280;
     font-weight: 600;
-    font-size: 1.125rem;
+    font-size: 1.125rem !important;
     transition: all 0.3s;
     padding: 0.5rem 1rem;
     position: relative;
@@ -241,11 +241,13 @@ html body .site-header {
 }
 
 .main-navigation .current-menu-item > a,
-.main-navigation .current_page_item > a {
-    color: #2563eb;
-    background: #eff6ff;
-    font-weight: 700;
-    border-bottom: 3px solid #2563eb;
+.main-navigation .current_page_item > a,
+.main-navigation a.current,
+.main-navigation a.active {
+    color: #2563eb !important;
+    background: #eff6ff !important;
+    font-weight: 700 !important;
+    border-bottom: 3px solid #2563eb !important;
 }
 
 .main-navigation .current-menu-item > a::after,
