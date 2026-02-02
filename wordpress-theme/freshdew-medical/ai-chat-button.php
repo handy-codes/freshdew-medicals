@@ -7,7 +7,7 @@
 $contact_info = freshdew_get_contact_info();
 ?>
 
-<div id="ai-chat-widget" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
+<div id="ai-chat-widget" style="position: fixed; bottom: 20px; right: 20px; z-index: 99999; pointer-events: auto;">
     <!-- Chat Button -->
     <button id="ai-chat-toggle" style="width: auto; min-width: 120px; height: 50px; border-radius: 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; color: white; font-size: 16px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: transform 0.3s; display: flex; align-items: center; justify-content: center; padding: 0 20px; gap: 8px;">
         <span id="chat-icon">💬</span>
@@ -104,41 +104,55 @@ $contact_info = freshdew_get_contact_info();
 
 @media (max-width: 768px) {
     #ai-chat-widget {
-        bottom: 15px;
-        right: 15px;
+        bottom: 15px !important;
+        right: 15px !important;
+        left: auto !important;
+        position: fixed !important;
+        z-index: 99999 !important;
+        pointer-events: auto !important;
     }
     
     #ai-chat-toggle {
-        width: auto;
-        min-width: 100px;
-        height: 44px;
-        font-size: 14px;
-        padding: 0 16px;
+        width: auto !important;
+        min-width: 100px !important;
+        height: 44px !important;
+        font-size: 14px !important;
+        padding: 0 16px !important;
+        position: relative !important;
+        z-index: 100000 !important;
+        pointer-events: auto !important;
+        cursor: pointer !important;
     }
     
     #chat-text {
-        font-size: 14px;
+        font-size: 14px !important;
     }
     
     #ai-chat-window {
-        bottom: 70px;
-        right: 15px;
-        left: 15px;
-        width: calc(100vw - 30px);
-        height: calc(100vh - 90px);
-        max-height: calc(100vh - 90px);
+        bottom: 70px !important;
+        right: 15px !important;
+        left: 15px !important;
+        width: calc(100vw - 30px) !important;
+        height: calc(100vh - 90px) !important;
+        max-height: calc(100vh - 90px) !important;
+        position: fixed !important;
+        z-index: 100000 !important;
     }
     
     #chat-messages {
-        max-height: calc(100vh - 250px);
+        max-height: calc(100vh - 250px) !important;
     }
 }
 </style>
 
 <script>
+console.log('Chat button script loading...');
 (function() {
+    console.log('Chat button script initialized');
+    
     // Wait for DOM to be ready
     function initChat() {
+        console.log('Initializing chat...');
         const chatToggle = document.getElementById('ai-chat-toggle');
         const chatWindow = document.getElementById('ai-chat-window');
         const chatIcon = document.getElementById('chat-icon');
@@ -153,11 +167,23 @@ $contact_info = freshdew_get_contact_info();
         const typingIndicator = document.getElementById('typing-indicator');
         const quickActions = document.querySelectorAll('.quick-action');
         
+        console.log('Chat elements found:', {
+            chatToggle: !!chatToggle,
+            chatWindow: !!chatWindow,
+            chatIcon: !!chatIcon,
+            chatText: !!chatText
+        });
+        
         // Check if all elements exist
         if (!chatToggle || !chatWindow) {
             console.error('Chat elements not found', { chatToggle, chatWindow });
             return;
         }
+        
+        // Ensure button is clickable
+        chatToggle.style.pointerEvents = 'auto';
+        chatToggle.style.cursor = 'pointer';
+        chatToggle.setAttribute('tabindex', '0');
         
         let isOpen = false;
         
@@ -184,17 +210,33 @@ $contact_info = freshdew_get_contact_info();
             if (chatInput) chatInput.focus();
         }
         
-        // Toggle chat window
-        chatToggle.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
+        // Toggle chat window - multiple event listeners for reliability
+        function handleToggle(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
             console.log('Chat button clicked', isOpen);
             if (isOpen) {
                 closeChat();
             } else {
                 openChat();
             }
-        });
+        }
+        
+        // Add click event
+        chatToggle.addEventListener('click', handleToggle, true);
+        chatToggle.addEventListener('touchend', handleToggle, true);
+        
+        // Also add to parent widget for mobile
+        const chatWidget = document.getElementById('ai-chat-widget');
+        if (chatWidget) {
+            chatWidget.addEventListener('click', function(e) {
+                if (e.target === chatToggle || chatToggle.contains(e.target)) {
+                    handleToggle(e);
+                }
+            }, true);
+        }
     
     // Close button
     chatCloseBtn.addEventListener('click', function(e) {
