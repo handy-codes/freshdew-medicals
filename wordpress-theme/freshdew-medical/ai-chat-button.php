@@ -109,20 +109,22 @@ $contact_info = freshdew_get_contact_info();
 }
 
 @media (max-width: 768px) {
+    /* Ensure chat widget is ALWAYS visible, even when menu is open */
     #ai-chat-widget {
-        /* Always visible on mobile (not hidden/off-screen) */
         position: fixed !important;
-        bottom: calc(76px + env(safe-area-inset-bottom)) !important;
-        right: 14px !important;
+        bottom: 20px !important;
+        right: 16px !important;
         left: auto !important;
-        z-index: 99999 !important;
+        z-index: 100001 !important; /* Higher than menu overlay (999) and menu (1000) */
         pointer-events: auto !important;
         display: block !important;
         visibility: visible !important;
         opacity: 1 !important;
-        max-width: calc(100vw - 28px) !important;
+        max-width: calc(100vw - 32px) !important;
+        transform: translateZ(0) !important; /* Force hardware acceleration */
     }
     
+    /* Ensure chat button is always clickable */
     #ai-chat-toggle {
         width: auto !important;
         min-width: 100px !important;
@@ -130,10 +132,10 @@ $contact_info = freshdew_get_contact_info();
         font-size: 14px !important;
         padding: 0 16px !important;
         position: relative !important;
-        z-index: 100000 !important;
+        z-index: 100002 !important;
         pointer-events: auto !important;
         cursor: pointer !important;
-        max-width: calc(100vw - 28px) !important;
+        max-width: calc(100vw - 32px) !important;
     }
     
     #chat-text {
@@ -141,18 +143,27 @@ $contact_info = freshdew_get_contact_info();
     }
     
     #ai-chat-window {
-        bottom: calc(140px + env(safe-area-inset-bottom)) !important;
-        right: 12px !important;
-        left: 12px !important;
-        width: calc(100vw - 24px) !important;
-        height: min(520px, calc(100vh - 240px)) !important;
-        max-height: min(520px, calc(100vh - 240px)) !important;
+        bottom: 80px !important;
+        right: 16px !important;
+        left: 16px !important;
+        width: calc(100vw - 32px) !important;
+        height: min(520px, calc(100vh - 120px)) !important;
+        max-height: min(520px, calc(100vh - 120px)) !important;
         position: fixed !important;
-        z-index: 100000 !important;
+        z-index: 100002 !important; /* Higher than menu */
     }
     
     #chat-messages {
-        max-height: calc(100vh - 250px) !important;
+        max-height: calc(100vh - 200px) !important;
+    }
+    
+    /* Override any menu-open styles that might hide the chat button */
+    body.menu-open #ai-chat-widget,
+    body.menu-open #ai-chat-toggle {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        z-index: 100001 !important;
     }
 }
 </style>

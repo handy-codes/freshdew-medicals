@@ -87,8 +87,8 @@ html body .site-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* Slightly more vertical breathing room (but not the old oversized header) */
-    padding: 0.65rem 0 !important;
+    /* Increased vertical padding for better spacing */
+    padding: 0.85rem 0 !important;
     position: relative;
 }
 
@@ -244,7 +244,7 @@ html body .site-header {
 
 /* Stronger selector in case other CSS overrides */
 .site-header .main-navigation .nav-menu > li > a {
-    font-size: 1.125rem !important;
+    font-size: 1rem !important;
 }
 
 /* Active state (works with WP classes + JS + aria-current) */
@@ -550,7 +550,7 @@ html body .site-header {
 
     /* Force navbar readability on mobile */
     .site-header .main-navigation a {
-        font-size: 1.125rem !important;
+        font-size: 1rem !important;
         font-weight: 600 !important;
     }
     
