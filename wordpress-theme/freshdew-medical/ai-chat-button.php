@@ -372,7 +372,7 @@ console.log('Chat button script loading...');
         }
     }
     
-    // Initialize when DOM is ready
+    // Initialize when DOM is ready  
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initChat);
     } else {
