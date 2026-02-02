@@ -5,6 +5,41 @@
     'use strict';
     
     $(document).ready(function() {
+        // Mark current page in navigation
+        function markCurrentPage() {
+            const currentPath = window.location.pathname;
+            const navLinks = document.querySelectorAll('.main-navigation a');
+            
+            navLinks.forEach(link => {
+                try {
+                    const linkUrl = new URL(link.href);
+                    const linkPath = linkUrl.pathname;
+                    const linkParent = link.closest('li');
+                    
+                    // Remove existing active class
+                    link.classList.remove('current', 'active');
+                    if (linkParent) {
+                        linkParent.classList.remove('current-menu-item', 'current_page_item');
+                    }
+                    
+                    // Check if this link matches current page
+                    if (linkPath === currentPath || 
+                        (currentPath === '/' && linkPath === '/') ||
+                        (currentPath !== '/' && linkPath.includes(currentPath))) {
+                        link.classList.add('current', 'active');
+                        if (linkParent) {
+                            linkParent.classList.add('current-menu-item', 'current_page_item');
+                        }
+                    }
+                } catch (e) {
+                    // Skip invalid URLs
+                }
+            });
+        }
+        
+        // Mark current page on load
+        markCurrentPage();
+        
         // Mobile menu toggle with hamburger/close icon
         $('.mobile-menu-toggle').on('click', function(e) {
             e.preventDefault();
