@@ -109,7 +109,7 @@ export default function HeroSection() {
                 variant="ghost"
                 className="text-white hover:bg-white/5 px-8 rounded-full text-lg font-semibold"
               >
-                Virtual Visit
+                Virtual Consultation
               </Button>
             </div>
 

@@ -78,7 +78,7 @@ $contact_info = freshdew_get_contact_info();
             
             <div style="text-align: center; margin-top: 3rem;">
                 <a href="<?php echo esc_url(home_url('/appointments/book')); ?>" class="btn" style="font-size: 1.125rem; padding: 1rem 2.5rem;">
-                    Schedule a Virtual Visit
+                    Schedule a Virtual Consultation
                 </a>
             </div>
         </div>
@@ -89,7 +89,7 @@ $contact_info = freshdew_get_contact_info();
 <section style="padding: 4rem 0; background: #f9fafb;">
     <div class="container">
         <div style="max-width: 900px; margin: 0 auto;">
-            <h2 style="font-size: 2.5rem; margin-bottom: 1rem; text-align: center; color: #1f2937;">Start Your Virtual Visit</h2>
+            <h2 style="font-size: 2.5rem; margin-bottom: 1rem; text-align: center; color: #1f2937;">Start Your Virtual Consultation</h2>
             <p style="text-align: center; color: #6b7280; margin-bottom: 3rem; font-size: 1.125rem;">
                 Connect with our healthcare professionals via secure video or voice call
             </p>

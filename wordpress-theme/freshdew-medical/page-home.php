@@ -44,7 +44,7 @@ $contact_info = freshdew_get_contact_info();
                     Book Appointment
                 </a>
                 <a href="<?php echo esc_url(home_url('/telehealth')); ?>" class="btn btn-outline">
-                    Virtual Visit
+                    Virtual Consultation
                 </a>
             </div>
             
