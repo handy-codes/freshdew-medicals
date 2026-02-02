@@ -9,7 +9,7 @@ $contact_info = freshdew_get_contact_info();
 
 <div id="ai-chat-widget" style="position: fixed; bottom: 20px; right: 20px; z-index: 99999; pointer-events: auto;">
     <!-- Chat Button -->
-    <button id="ai-chat-toggle" style="width: auto; min-width: 120px; height: 50px; border-radius: 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; color: white; font-size: 16px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: transform 0.3s; display: flex; align-items: center; justify-content: center; padding: 0 20px; gap: 8px;">
+    <button id="ai-chat-toggle" style="width: auto !important; min-width: 120px !important; height: 50px !important; border-radius: 25px !important; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; border: none !important; color: white !important; font-size: 16px !important; font-weight: 600 !important; cursor: pointer !important; box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important; transition: transform 0.3s !important; display: flex !important; align-items: center !important; justify-content: center !important; padding: 0 20px !important; gap: 8px !important; position: relative !important; z-index: 100000 !important; pointer-events: auto !important;">
         <span id="chat-icon">💬</span>
         <span id="chat-text">Ask Dew</span>
         <span id="close-icon" style="display: none;">×</span>
@@ -188,26 +188,32 @@ console.log('Chat button script loading...');
         let isOpen = false;
         
         function closeChat() {
+            console.log('Closing chat...');
             isOpen = false;
             chatWindow.style.display = 'none';
-            chatOverlay.style.display = 'none';
-            chatIcon.style.display = 'inline';
-            chatText.style.display = 'inline';
-            closeIcon.style.display = 'none';
+            if (chatOverlay) chatOverlay.style.display = 'none';
+            if (chatIcon) chatIcon.style.display = 'inline';
+            if (chatText) chatText.style.display = 'inline';
+            if (closeIcon) closeIcon.style.display = 'none';
             document.body.style.overflow = '';
         }
         
         function openChat() {
+            console.log('Opening chat...');
             isOpen = true;
             chatWindow.style.display = 'flex';
+            console.log('Chat window display set to flex');
             if (window.innerWidth <= 768) {
-                chatOverlay.style.display = 'block';
+                if (chatOverlay) chatOverlay.style.display = 'block';
                 document.body.style.overflow = 'hidden';
             }
-            chatIcon.style.display = 'none';
-            chatText.style.display = 'none';
-            closeIcon.style.display = 'inline';
-            if (chatInput) chatInput.focus();
+            if (chatIcon) chatIcon.style.display = 'none';
+            if (chatText) chatText.style.display = 'none';
+            if (closeIcon) closeIcon.style.display = 'inline';
+            if (chatInput) {
+                setTimeout(() => chatInput.focus(), 100);
+            }
+            console.log('Chat window should now be visible');
         }
         
         // Toggle chat window - multiple event listeners for reliability

@@ -10,33 +10,33 @@
     </linearGradient>
   </defs>
   
-  <!-- Medical Cross Icon (Larger, No Plus) -->
-  <g transform="translate(10, 15)">
-    <rect x="12" y="0" width="6" height="30" fill="url(#logoGradient)" rx="3"/>
-    <rect x="0" y="12" width="30" height="6" fill="url(#logoGradient)" rx="3"/>
+  <!-- Medical Cross Icon (No Plus Symbol) -->
+  <g transform="translate(15, 20)">
+    <rect x="12" y="0" width="8" height="35" fill="url(#logoGradient)" rx="4"/>
+    <rect x="0" y="13.5" width="32" height="8" fill="url(#logoGradient)" rx="4"/>
   </g>
   
-  <!-- Fresh Leaf Icon (Larger) -->
-  <g transform="translate(50, 12)">
+  <!-- Fresh Leaf Icon -->
+  <g transform="translate(60, 15)">
     <path d="M 15 3 Q 10 3 7 8 Q 5 13 7 18 Q 10 23 15 23 Q 20 23 23 18 Q 25 13 23 8 Q 20 3 15 3 Z" 
           fill="url(#leafGradient)" 
           stroke="#10b981" 
-          stroke-width="0.8"/>
+          stroke-width="1"/>
     <path d="M 15 3 L 15 23" 
           stroke="#10b981" 
-          stroke-width="1.5" 
+          stroke-width="2" 
           stroke-linecap="round"/>
     <!-- Water droplets -->
-    <circle cx="11" cy="7" r="2" fill="#67e8f9" opacity="0.9"/>
-    <circle cx="19" cy="9" r="1.5" fill="#67e8f9" opacity="0.9"/>
-    <circle cx="13" cy="15" r="1.8" fill="#67e8f9" opacity="0.9"/>
+    <circle cx="11" cy="7" r="2.5" fill="#67e8f9" opacity="0.9"/>
+    <circle cx="19" cy="9" r="2" fill="#67e8f9" opacity="0.9"/>
+    <circle cx="13" cy="15" r="2.2" fill="#67e8f9" opacity="0.9"/>
   </g>
   
-  <!-- Text (Larger and More Visible) -->
-  <text x="90" y="32" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="url(#logoGradient)">
+  <!-- Text -->
+  <text x="105" y="38" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="url(#logoGradient)">
     FreshDew
   </text>
-  <text x="90" y="52" font-family="Arial, sans-serif" font-size="16" font-weight="600" fill="#4b5563">
+  <text x="105" y="58" font-family="Arial, sans-serif" font-size="17" font-weight="600" fill="#4b5563">
     Medical Clinic
   </text>
 </svg>
