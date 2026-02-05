@@ -28,25 +28,6 @@ $contact_info = freshdew_get_contact_info();
                 be accessible to all Canadians.
             </p>
             
-            <h2 style="font-size: 2.5rem; margin: 3rem 0 2rem; color: #1f2937;">Our Values</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
-                <div style="padding: 2rem; background: #f9fafb; border-radius: 0.5rem;">
-                    <div style="font-size: 3rem; margin-bottom: 1rem;">❤️</div>
-                    <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #1f2937;">Compassion</h3>
-                    <p style="color: #6b7280; line-height: 1.6;">We treat every patient with empathy, respect, and understanding.</p>
-                </div>
-                <div style="padding: 2rem; background: #f9fafb; border-radius: 0.5rem;">
-                    <div style="font-size: 3rem; margin-bottom: 1rem;">⚡</div>
-                    <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #1f2937;">Innovation</h3>
-                    <p style="color: #6b7280; line-height: 1.6;">We embrace the latest medical technologies and telehealth solutions.</p>
-                </div>
-                <div style="padding: 2rem; background: #f9fafb; border-radius: 0.5rem;">
-                    <div style="font-size: 3rem; margin-bottom: 1rem;">🎯</div>
-                    <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #1f2937;">Excellence</h3>
-                    <p style="color: #6b7280; line-height: 1.6;">We strive for the highest standards in patient care and service.</p>
-                </div>
-            </div>
-            
             <!-- Meet Our Team Section -->
             <h2 style="font-size: 2.5rem; margin: 4rem 0 3rem; color: #1f2937; text-align: center;">Meet Our Team</h2>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem; margin-bottom: 4rem;">
