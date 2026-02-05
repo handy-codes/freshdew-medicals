@@ -308,6 +308,58 @@ function freshdew_ai_chat_endpoint() {
 }
 add_action('rest_api_init', 'freshdew_ai_chat_endpoint');
 
+/**
+ * Book Appointment API Endpoint
+ */
+function freshdew_book_appointment_endpoint() {
+    register_rest_route('freshdew/v1', '/book-appointment', array(
+        'methods' => 'POST',
+        'callback' => 'freshdew_book_appointment_handler',
+        'permission_callback' => '__return_true',
+    ));
+}
+add_action('rest_api_init', 'freshdew_book_appointment_endpoint');
+
+function freshdew_book_appointment_handler($request) {
+    $fullName = sanitize_text_field($request->get_param('fullName'));
+    $email = sanitize_email($request->get_param('email'));
+    $phone = sanitize_text_field($request->get_param('phone'));
+    $date = sanitize_text_field($request->get_param('date'));
+    $time = sanitize_text_field($request->get_param('time'));
+    $type = sanitize_text_field($request->get_param('type'));
+    $reason = sanitize_text_field($request->get_param('reason'));
+    $symptoms = sanitize_textarea_field($request->get_param('symptoms'));
+    
+    if (empty($fullName) || empty($email) || empty($phone) || empty($date) || empty($time) || empty($type)) {
+        return new WP_Error('missing_fields', 'Required fields are missing', array('status' => 400));
+    }
+    
+    // Store appointment in database or send email
+    // For now, we'll just return success
+    // You can integrate with your appointment management plugin here
+    
+    $contact_info = freshdew_get_contact_info();
+    
+    // Optionally send email notification
+    $subject = 'New Appointment Request - ' . $fullName;
+    $message = "New appointment request:\n\n";
+    $message .= "Name: $fullName\n";
+    $message .= "Email: $email\n";
+    $message .= "Phone: $phone\n";
+    $message .= "Date: $date\n";
+    $message .= "Time: $time\n";
+    $message .= "Type: $type\n";
+    $message .= "Reason: $reason\n";
+    $message .= "Symptoms: $symptoms\n";
+    
+    wp_mail($contact_info['email'], $subject, $message);
+    
+    return rest_ensure_response(array(
+        'success' => true,
+        'message' => 'Appointment request received. We will contact you shortly to confirm.'
+    ));
+}
+
 function freshdew_ai_chat_handler($request) {
     $message = $request->get_param('message');
     

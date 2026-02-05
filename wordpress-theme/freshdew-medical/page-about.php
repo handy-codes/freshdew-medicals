@@ -20,7 +20,7 @@ $contact_info = freshdew_get_contact_info();
 
 <section style="padding: 4rem 0;">
     <div class="container">
-        <div style="max-width: 900px; margin: 0 auto;">
+        <div style="max-width: 1200px; margin: 0 auto;">
             <h2 style="font-size: 2.5rem; margin-bottom: 2rem; color: #1f2937;">Our Mission</h2>
             <p style="color: #4b5563; line-height: 1.8; margin-bottom: 1.5rem; font-size: 1.125rem;">
                 FreshDew Medical Clinic is committed to delivering world-class medical care with cutting-edge technology, 
@@ -45,6 +45,89 @@ $contact_info = freshdew_get_contact_info();
                     <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #1f2937;">Excellence</h3>
                     <p style="color: #6b7280; line-height: 1.6;">We strive for the highest standards in patient care and service.</p>
                 </div>
+            </div>
+            
+            <!-- Meet Our Team Section -->
+            <h2 style="font-size: 2.5rem; margin: 4rem 0 3rem; color: #1f2937; text-align: center;">Meet Our Team</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem; margin-bottom: 4rem;">
+                
+                <!-- Doctor 1 - Male -->
+                <div style="background: white; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 12px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)';">
+                    <div style="width: 100%; height: 300px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+                        <div style="width: 200px; height: 200px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 4rem; color: white;">👨‍⚕️</div>
+                    </div>
+                    <div style="padding: 2rem;">
+                        <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem;">Dr. Michael Chen</h3>
+                        <p style="color: #667eea; font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem;">MD, CCFP, FRCPC</p>
+                        <p style="color: #6b7280; line-height: 1.7; margin-bottom: 1.5rem; font-size: 0.95rem;">
+                            Dr. Chen is a board-certified Family Physician with over 15 years of experience serving the Belleville community. 
+                            He specializes in preventive care, chronic disease management, and men's health. Dr. Chen completed his medical 
+                            degree at the University of Toronto and is committed to providing compassionate, patient-centered care.
+                        </p>
+                        <a href="<?php echo esc_url(home_url('/appointments/book')); ?>" class="btn" style="display: inline-block; width: 100%; text-align: center; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 0.5rem; font-weight: 600; transition: opacity 0.3s;" onmouseover="this.style.opacity='0.9';" onmouseout="this.style.opacity='1';">
+                            Book Appointment
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Doctor 2 - Female -->
+                <div style="background: white; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 12px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)';">
+                    <div style="width: 100%; height: 300px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+                        <div style="width: 200px; height: 200px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 4rem; color: white;">👩‍⚕️</div>
+                    </div>
+                    <div style="padding: 2rem;">
+                        <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem;">Dr. Sarah Johnson</h3>
+                        <p style="color: #667eea; font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem;">MD, CCFP, FCFP</p>
+                        <p style="color: #6b7280; line-height: 1.7; margin-bottom: 1.5rem; font-size: 0.95rem;">
+                            Dr. Johnson is a dedicated Family Physician with expertise in women's health, pediatrics, and preventive medicine. 
+                            She received her medical degree from McMaster University and has been practicing in Ontario for over 12 years. 
+                            Dr. Johnson is passionate about building long-term relationships with her patients and their families.
+                        </p>
+                        <a href="<?php echo esc_url(home_url('/appointments/book')); ?>" class="btn" style="display: inline-block; width: 100%; text-align: center; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 0.5rem; font-weight: 600; transition: opacity 0.3s;" onmouseover="this.style.opacity='0.9';" onmouseout="this.style.opacity='1';">
+                            Book Appointment
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Doctor 3 - Male -->
+                <div style="background: white; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 12px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)';">
+                    <div style="width: 100%; height: 300px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+                        <div style="width: 200px; height: 200px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 4rem; color: white;">👨‍⚕️</div>
+                    </div>
+                    <div style="padding: 2rem;">
+                        <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem;">Dr. James Wilson</h3>
+                        <p style="color: #667eea; font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem;">MD, CCFP, Dip Sport Med</p>
+                        <p style="color: #6b7280; line-height: 1.7; margin-bottom: 1.5rem; font-size: 0.95rem;">
+                            Dr. Wilson is a Family Physician with a special interest in sports medicine and musculoskeletal health. 
+                            He completed his medical training at Queen's University and holds a Diploma in Sport Medicine. 
+                            With over 10 years of experience, Dr. Wilson helps patients of all ages maintain active, healthy lifestyles.
+                        </p>
+                        <a href="<?php echo esc_url(home_url('/appointments/book')); ?>" class="btn" style="display: inline-block; width: 100%; text-align: center; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 0.5rem; font-weight: 600; transition: opacity 0.3s;" onmouseover="this.style.opacity='0.9';" onmouseout="this.style.opacity='1';">
+                            Book Appointment
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Doctor 4 - Female -->
+                <div style="background: white; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 12px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)';">
+                    <div style="width: 100%; height: 300px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+                        <div style="width: 200px; height: 200px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 4rem; color: white;">👩‍⚕️</div>
+                    </div>
+                    <div style="padding: 2rem;">
+                        <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem;">Dr. Emily Rodriguez</h3>
+                        <p style="color: #667eea; font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem;">MD, CCFP, MRCGP</p>
+                        <p style="color: #6b7280; line-height: 1.7; margin-bottom: 1.5rem; font-size: 0.95rem;">
+                            Dr. Rodriguez is a bilingual Family Physician fluent in English and Spanish, specializing in family medicine 
+                            and geriatric care. She completed her medical degree at the University of Ottawa and has extensive experience 
+                            in managing complex chronic conditions. Dr. Rodriguez is committed to providing culturally sensitive care 
+                            to diverse communities in Belleville.
+                        </p>
+                        <a href="<?php echo esc_url(home_url('/appointments/book')); ?>" class="btn" style="display: inline-block; width: 100%; text-align: center; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 0.5rem; font-weight: 600; transition: opacity 0.3s;" onmouseover="this.style.opacity='0.9';" onmouseout="this.style.opacity='1';">
+                            Book Appointment
+                        </a>
+                    </div>
+                </div>
+                
             </div>
             
             <h2 style="font-size: 2.5rem; margin: 3rem 0 2rem; color: #1f2937;">Our Services</h2>
