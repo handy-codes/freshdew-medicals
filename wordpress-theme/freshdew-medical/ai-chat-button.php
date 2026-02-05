@@ -8,12 +8,13 @@ $contact_info = freshdew_get_contact_info();
 ?>
 
 <!-- Wrapper to isolate from parent transforms - MUST be direct child of body -->
-<div id="ai-chat-widget-root" style="position: fixed; top: 0; left: 0; width: 0; height: 0; z-index: 2147483647; pointer-events: none; isolation: isolate;">
-<div id="ai-chat-widget" style="position: fixed !important; bottom: 24px !important; right: 24px !important; z-index: 2147483647 !important; pointer-events: auto !important; transform: translateZ(0) !important; will-change: transform !important;">
+<div id="ai-chat-widget-root" style="position: fixed; top: 0; left: 0; width: 0; height: 0; z-index: 9999; pointer-events: none; isolation: isolate;">
+<div id="ai-chat-widget" style="position: fixed !important; bottom: 16px !important; right: 16px !important; z-index: 9999 !important; pointer-events: auto !important; transform: translateZ(0) !important; will-change: transform !important;">
     <!-- Chat Button -->
-    <button id="ai-chat-toggle" style="width: auto !important; min-width: 120px !important; height: 50px !important; border-radius: 25px !important; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; border: none !important; color: white !important; font-size: 16px !important; font-weight: 600 !important; cursor: pointer !important; box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important; transition: transform 0.3s !important; display: flex !important; align-items: center !important; justify-content: center !important; padding: 0 20px !important; gap: 8px !important; position: relative !important; z-index: 100000 !important; pointer-events: auto !important;">
+    <button id="ai-chat-toggle" style="width: auto !important; min-width: 100px !important; height: 44px !important; border-radius: 22px !important; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; border: none !important; color: white !important; font-size: 14px !important; font-weight: 600 !important; cursor: pointer !important; box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important; transition: transform 0.3s !important; display: flex !important; align-items: center !important; justify-content: center !important; padding: 0 16px !important; gap: 6px !important; position: relative !important; z-index: 9999 !important; pointer-events: auto !important;">
         <span id="chat-icon">💬</span>
-        <span id="chat-text">Ask Dew</span>
+        <span id="chat-text-full" style="display: none;">Ask Dew</span>
+        <span id="chat-text-short">Dew</span>
         <span id="close-icon" style="display: none;">×</span>
     </button>
     
@@ -111,23 +112,48 @@ $contact_info = freshdew_get_contact_info();
     box-sizing: border-box;
 }
 
-@media (max-width: 768px) {
-    /* Force widget to be at body level, not inside menu - use maximum z-index */
+/* Responsive: Desktop/Tablet - Show full text */
+@media (min-width: 640px) {
+    #ai-chat-widget {
+        bottom: 24px !important;
+        right: 24px !important;
+    }
+    
+    #ai-chat-toggle {
+        min-width: 120px !important;
+        height: 50px !important;
+        font-size: 16px !important;
+        padding: 0 20px !important;
+        gap: 8px !important;
+        border-radius: 25px !important;
+    }
+    
+    #chat-text-full {
+        display: inline !important;
+    }
+    
+    #chat-text-short {
+        display: none !important;
+    }
+}
+
+/* Responsive: Mobile - Show short text */
+@media (max-width: 639px) {
+    /* Force widget to be at body level, not inside menu */
     body #ai-chat-widget-root,
     body #ai-chat-widget {
         position: fixed !important;
         top: auto !important;
         left: auto !important;
-        bottom: 20px !important;
+        bottom: 16px !important;
         right: 16px !important;
-        z-index: 2147483647 !important; /* Maximum z-index value */
+        z-index: 9999 !important;
         pointer-events: auto !important;
         display: block !important;
         visibility: visible !important;
         opacity: 1 !important;
         transform: translateZ(0) !important;
         will-change: transform !important;
-        max-width: calc(100vw - 32px) !important;
     }
     
     /* Ensure chat button is always clickable */
@@ -138,14 +164,17 @@ $contact_info = freshdew_get_contact_info();
         font-size: 14px !important;
         padding: 0 16px !important;
         position: relative !important;
-        z-index: 2147483647 !important;
+        z-index: 9999 !important;
         pointer-events: auto !important;
         cursor: pointer !important;
-        max-width: calc(100vw - 32px) !important;
     }
     
-    #chat-text {
-        font-size: 14px !important;
+    #chat-text-full {
+        display: none !important;
+    }
+    
+    #chat-text-short {
+        display: inline !important;
     }
     
     #ai-chat-window {
@@ -156,7 +185,7 @@ $contact_info = freshdew_get_contact_info();
         height: min(520px, calc(100vh - 120px)) !important;
         max-height: min(520px, calc(100vh - 120px)) !important;
         position: fixed !important;
-        z-index: 2147483647 !important; /* Maximum z-index */
+        z-index: 9999 !important;
     }
     
     #chat-messages {
@@ -170,7 +199,7 @@ $contact_info = freshdew_get_contact_info();
         display: block !important;
         visibility: visible !important;
         opacity: 1 !important;
-        z-index: 2147483647 !important;
+        z-index: 9999 !important;
         position: fixed !important;
     }
 }
@@ -187,7 +216,8 @@ console.log('Chat button script loading...');
         const chatToggle = document.getElementById('ai-chat-toggle');
         const chatWindow = document.getElementById('ai-chat-window');
         const chatIcon = document.getElementById('chat-icon');
-        const chatText = document.getElementById('chat-text');
+        const chatTextFull = document.getElementById('chat-text-full');
+        const chatTextShort = document.getElementById('chat-text-short');
         const closeIcon = document.getElementById('close-icon');
         const chatCloseBtn = document.getElementById('chat-close-btn');
         const chatHeader = document.getElementById('chat-header');
@@ -202,7 +232,8 @@ console.log('Chat button script loading...');
             chatToggle: !!chatToggle,
             chatWindow: !!chatWindow,
             chatIcon: !!chatIcon,
-            chatText: !!chatText
+            chatTextFull: !!chatTextFull,
+            chatTextShort: !!chatTextShort
         });
         
         // Check if all elements exist
@@ -224,7 +255,10 @@ console.log('Chat button script loading...');
             chatWindow.style.display = 'none';
             if (chatOverlay) chatOverlay.style.display = 'none';
             if (chatIcon) chatIcon.style.display = 'inline';
-            if (chatText) chatText.style.display = 'inline';
+            const chatTextFull = document.getElementById('chat-text-full');
+            const chatTextShort = document.getElementById('chat-text-short');
+            if (chatTextFull) chatTextFull.style.display = window.innerWidth >= 640 ? 'inline' : 'none';
+            if (chatTextShort) chatTextShort.style.display = window.innerWidth < 640 ? 'inline' : 'none';
             if (closeIcon) closeIcon.style.display = 'none';
             document.body.style.overflow = '';
         }
@@ -239,7 +273,10 @@ console.log('Chat button script loading...');
                 document.body.style.overflow = 'hidden';
             }
             if (chatIcon) chatIcon.style.display = 'none';
-            if (chatText) chatText.style.display = 'none';
+            const chatTextFull = document.getElementById('chat-text-full');
+            const chatTextShort = document.getElementById('chat-text-short');
+            if (chatTextFull) chatTextFull.style.display = 'none';
+            if (chatTextShort) chatTextShort.style.display = 'none';
             if (closeIcon) closeIcon.style.display = 'inline';
             if (chatInput) {
                 setTimeout(() => chatInput.focus(), 100);
@@ -358,12 +395,30 @@ console.log('Chat button script loading...');
         }
     });
     
-    // Quick actions
-    quickActions.forEach(button => {
-        button.addEventListener('click', function() {
-            sendMessage(this.textContent);
+        // Quick actions
+        quickActions.forEach(button => {
+            button.addEventListener('click', function() {
+                sendMessage(this.textContent);
+            });
         });
-    });
+        
+        // Handle window resize for responsive text
+        function updateChatButtonText() {
+            if (!isOpen) {
+                if (chatTextFull && chatTextShort) {
+                    if (window.innerWidth >= 640) {
+                        chatTextFull.style.display = 'inline';
+                        chatTextShort.style.display = 'none';
+                    } else {
+                        chatTextFull.style.display = 'none';
+                        chatTextShort.style.display = 'inline';
+                    }
+                }
+            }
+        }
+        
+        window.addEventListener('resize', updateChatButtonText);
+        updateChatButtonText(); // Initial call
     
         function escapeHtml(text) {
             const div = document.createElement('div');
