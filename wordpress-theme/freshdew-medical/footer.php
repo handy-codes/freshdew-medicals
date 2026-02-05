@@ -7,7 +7,7 @@ $contact_info = freshdew_get_contact_info();
         <div class="footer-content">
             <div class="footer-section">
                 <h3><?php echo esc_html($contact_info['name']); ?></h3>
-                <p style="color: #9ca3af; margin-bottom: 1rem;">
+                <p>
                     Providing world-class healthcare services in Canada.
                 </p>
             </div>
@@ -26,7 +26,7 @@ $contact_info = freshdew_get_contact_info();
             <div class="footer-section">
                 <h3>Contact Us</h3>
                 <div class="contact-info">
-                    <address style="font-style: normal; color: #9ca3af; line-height: 1.8;">
+                    <address style="font-style: normal; line-height: 1.8;">
                         <?php echo esc_html($contact_info['address']); ?><br>
                         <?php echo esc_html($contact_info['city']); ?>, <?php echo esc_html($contact_info['province']); ?> <?php echo esc_html($contact_info['postal_code']); ?><br>
                         Canada<br><br>
