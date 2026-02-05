@@ -273,7 +273,7 @@ function freshdew_get_contact_info() {
         'phone_formatted' => '(613) 288-0183',
         'fax' => '6132880321',
         'fax_formatted' => '(613) 288-0321',
-        'email' => 'princeowo73@gmail.com', // Test email for appointment bookings
+        'email' => 'info@freshdewmedicalclinic.com',
         'website' => 'www.freshdewmedicalclinic.com',
         'latitude' => 44.1628,
         'longitude' => -77.3831,
@@ -385,6 +385,10 @@ function freshdew_book_appointment_handler($request) {
     // Improved headers to prevent spam
     // Use the actual contact email as From address for better deliverability
     $from_email = $contact_info['email'];
+    
+    // Check if SMTP is enabled, otherwise use default WordPress mail
+    $smtp_enabled = get_option('freshdew_smtp_enabled', 0);
+    
     $headers = array(
         'Content-Type: text/html; charset=UTF-8',
         'From: FreshDew Medical Clinic <' . $from_email . '>',
@@ -392,6 +396,12 @@ function freshdew_book_appointment_handler($request) {
         'X-Mailer: WordPress',
         'MIME-Version: 1.0',
     );
+    
+    // If SMTP is not configured, add additional headers for better deliverability
+    if (!$smtp_enabled) {
+        $headers[] = 'X-Priority: 1';
+        $headers[] = 'Importance: High';
+    }
     
     // Send HTML email
     $email_sent = wp_mail($to, $subject, $message_html, $headers);
@@ -546,7 +556,7 @@ function freshdew_configure_smtp($phpmailer) {
     }
     
     $phpmailer->isSMTP();
-    $phpmailer->Host = get_option('freshdew_smtp_host', 'smtp.gmail.com');
+    $phpmailer->Host = get_option('freshdew_smtp_host', 'smtp.hostinger.com');
     $phpmailer->SMTPAuth = true;
     $phpmailer->Port = get_option('freshdew_smtp_port', '587');
     $phpmailer->Username = get_option('freshdew_smtp_username', '');
@@ -592,7 +602,7 @@ function freshdew_ai_settings_page() {
     
     $api_key = get_option('freshdew_groq_api_key', '');
     $smtp_enabled = get_option('freshdew_smtp_enabled', 0);
-    $smtp_host = get_option('freshdew_smtp_host', 'smtp.gmail.com');
+    $smtp_host = get_option('freshdew_smtp_host', 'smtp.hostinger.com');
     $smtp_port = get_option('freshdew_smtp_port', '587');
     $smtp_encryption = get_option('freshdew_smtp_encryption', 'tls');
     $smtp_username = get_option('freshdew_smtp_username', '');
@@ -651,7 +661,7 @@ function freshdew_ai_settings_page() {
                         </th>
                         <td>
                             <input type="text" id="smtp_host" name="smtp_host" value="<?php echo esc_attr($smtp_host); ?>" class="regular-text" />
-                            <p class="description">Gmail: smtp.gmail.com | Outlook: smtp-mail.outlook.com | Custom: your-smtp-server.com</p>
+                            <p class="description">Hostinger: smtp.hostinger.com | Gmail: smtp.gmail.com | Outlook: smtp-mail.outlook.com</p>
                         </td>
                     </tr>
                     <tr>
@@ -681,7 +691,7 @@ function freshdew_ai_settings_page() {
                         </th>
                         <td>
                             <input type="email" id="smtp_username" name="smtp_username" value="<?php echo esc_attr($smtp_username); ?>" class="regular-text" />
-                            <p class="description">Your email address (e.g., princeowo73@gmail.com)</p>
+                            <p class="description">Your email address (e.g., info@freshdewmedicalclinic.com)</p>
                         </td>
                     </tr>
                     <tr>
@@ -691,6 +701,7 @@ function freshdew_ai_settings_page() {
                         <td>
                             <input type="password" id="smtp_password" name="smtp_password" value="<?php echo esc_attr($smtp_password); ?>" class="regular-text" />
                             <p class="description">
+                                For Hostinger: Use your email account password<br>
                                 For Gmail: Use an <a href="https://support.google.com/accounts/answer/185833" target="_blank">App Password</a> (not your regular password)<br>
                                 For other providers: Use your email password or app-specific password
                             </p>

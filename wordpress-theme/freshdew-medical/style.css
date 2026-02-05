@@ -414,6 +414,79 @@ html body .site-header {
     color: #9ca3af;
 }
 
+/* Social Media Icons */
+.social-links {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.social-icon {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    color: #fbbf24;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.social-icon svg {
+    width: 24px;
+    height: 24px;
+    z-index: 2;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.social-icon::before {
+    content: '';
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    border: 2px solid transparent;
+    border-top-color: #fbbf24;
+    border-radius: 50%;
+    opacity: 0;
+    transform: rotate(0deg);
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.social-icon:hover {
+    color: #f59e0b;
+}
+
+.social-icon:hover::before {
+    opacity: 1;
+    animation: rotateCircle 0.6s linear forwards;
+}
+
+.social-icon:not(:hover)::before {
+    animation: rotateCircleReverse 0.6s linear forwards;
+}
+
+@keyframes rotateCircle {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes rotateCircleReverse {
+    0% {
+        transform: rotate(360deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
 /* Contact Info */
 .contact-info {
     line-height: 1.8;

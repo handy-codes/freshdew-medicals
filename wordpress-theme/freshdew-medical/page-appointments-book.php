@@ -62,8 +62,10 @@ $contact_info = freshdew_get_contact_info();
                     </div>
                     
                     <div>
-                        <label for="reason" style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Reason for Visit *</label>
-                        <input type="text" id="reason" name="reason" required style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem;" placeholder="Brief reason for your appointment">
+                        <label for="reason" style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">
+                            Reason for Visit <span style="color: #ef4444;">*</span>
+                        </label>
+                        <input type="text" id="reason" name="reason" required style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem;" placeholder="Brief reason for your appointment (required)">
                     </div>
                     
                     <div>
