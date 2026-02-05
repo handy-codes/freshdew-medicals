@@ -7,17 +7,17 @@
 $contact_info = freshdew_get_contact_info();
 ?>
 
-<!-- Wrapper to isolate from parent transforms - MUST be direct child of body -->
-<div id="ai-chat-widget-root" style="position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; z-index: 2147483647 !important; pointer-events: none !important; isolation: isolate !important;">
-<div id="ai-chat-widget" style="position: fixed !important; bottom: 16px !important; right: 16px !important; z-index: 2147483647 !important; pointer-events: auto !important; transform: translateZ(0) !important; will-change: transform !important;">
-    <!-- Chat Button -->
-    <button id="ai-chat-toggle" style="width: auto !important; min-width: 100px !important; height: 44px !important; border-radius: 22px !important; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; border: none !important; color: white !important; font-size: 14px !important; font-weight: 600 !important; cursor: pointer !important; box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important; transition: transform 0.3s !important; display: flex !important; align-items: center !important; justify-content: center !important; padding: 0 16px !important; gap: 6px !important; position: fixed !important; bottom: 16px !important; right: 16px !important; z-index: 2147483647 !important; pointer-events: auto !important;">
-        <span id="chat-icon">💬</span>
-        <span id="chat-text-full" style="display: none;">Ask Dew</span>
-        <span id="chat-text-short">Dew</span>
-        <span id="close-icon" style="display: none;">×</span>
-    </button>
-    
+<!-- Chat Button - Separate from widget container, like Next.js -->
+<button id="ai-chat-toggle" style="position: fixed !important; bottom: 16px !important; right: 16px !important; z-index: 9999 !important; width: auto !important; min-width: 100px !important; height: 44px !important; border-radius: 22px !important; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; border: none !important; color: white !important; font-size: 14px !important; font-weight: 600 !important; cursor: pointer !important; box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important; transition: transform 0.3s !important; display: flex !important; align-items: center !important; justify-content: center !important; padding: 0 16px !important; gap: 6px !important; pointer-events: auto !important;">
+    <span id="chat-icon">💬</span>
+    <span id="chat-text-full" style="display: none;">Ask Dew</span>
+    <span id="chat-text-short">Dew</span>
+    <span id="close-icon" style="display: none;">×</span>
+</button>
+
+<!-- Chat Window Container - Separate wrapper, no width/height causing overflow -->
+<div id="ai-chat-widget-root" style="position: fixed; top: 0; left: 0; width: 0; height: 0; z-index: 9998; pointer-events: none;">
+<div id="ai-chat-widget" style="position: fixed !important; bottom: 80px !important; right: 16px !important; z-index: 9998 !important; pointer-events: auto !important;">
     <!-- Chat Window -->
     <div id="ai-chat-window" style="display: none; position: fixed; bottom: 96px; right: 24px; width: 360px; max-width: calc(100vw - 32px); height: 520px; max-height: calc(100vh - 140px); background: white; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.2); flex-direction: column; overflow: hidden; z-index: 100000;">
         <!-- Chat Header (Sticky) -->
@@ -60,7 +60,7 @@ $contact_info = freshdew_get_contact_info();
     </div>
     
     <!-- Overlay for mobile -->
-    <div id="chat-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9998;"></div>
+    <div id="chat-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9997;"></div>
 </div>
 </div><!-- Close ai-chat-widget-root -->
 
@@ -112,75 +112,57 @@ $contact_info = freshdew_get_contact_info();
     box-sizing: border-box;
 }
 
-/* CRITICAL: Break chat button free from ANY parent positioning/transform */
-/* This ensures it's always positioned relative to viewport, not any parent */
-body #ai-chat-widget-root,
-html body #ai-chat-widget-root,
-#ai-chat-widget-root {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    z-index: 2147483647 !important;
-    pointer-events: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    transform: none !important;
-    transition: none !important;
-    right: auto !important;
-    bottom: auto !important;
-}
-
-body #ai-chat-widget,
-html body #ai-chat-widget,
-#ai-chat-widget {
-    position: fixed !important;
-    bottom: 16px !important;
-    right: 16px !important;
-    top: auto !important;
-    left: auto !important;
-    z-index: 2147483647 !important;
-    pointer-events: auto !important;
-    transform: none !important;
-    transition: none !important;
-    margin: 0 !important;
-}
-
-body #ai-chat-toggle,
-html body #ai-chat-toggle,
+/* Simple fixed positioning - exactly like Next.js implementation */
+/* Button is directly fixed to viewport - no wrapper causing overflow */
 #ai-chat-toggle {
     position: fixed !important;
     bottom: 16px !important;
     right: 16px !important;
-    top: auto !important;
-    left: auto !important;
-    z-index: 2147483647 !important;
+    z-index: 9999 !important;
     pointer-events: auto !important;
     cursor: pointer !important;
-    transform: none !important;
-    transition: transform 0.3s !important;
-    margin: 0 !important;
     display: flex !important;
     visibility: visible !important;
     opacity: 1 !important;
+    margin: 0 !important;
+    padding: 0 16px !important;
 }
 
-/* Responsive: Desktop/Tablet - Show full text */
+/* Chat window container - separate from button */
+#ai-chat-widget-root {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    z-index: 9998 !important;
+    pointer-events: none !important;
+}
+
+#ai-chat-widget {
+    position: fixed !important;
+    bottom: 80px !important;
+    right: 16px !important;
+    z-index: 9998 !important;
+    pointer-events: auto !important;
+}
+
+/* Responsive: Desktop/Tablet (640px+) - Show full text, match Next.js md: breakpoint */
 @media (min-width: 640px) {
-    #ai-chat-widget,
     #ai-chat-toggle {
         bottom: 24px !important;
         right: 24px !important;
-    }
-    
-    #ai-chat-toggle {
         min-width: 120px !important;
         height: 50px !important;
         font-size: 16px !important;
         padding: 0 20px !important;
         gap: 8px !important;
         border-radius: 25px !important;
+    }
+    
+    #ai-chat-widget {
+        bottom: 96px !important;
+        right: 24px !important;
     }
     
     #chat-text-full {
@@ -192,80 +174,23 @@ html body #ai-chat-toggle,
     }
 }
 
-/* Responsive: Mobile - Show short text */
+/* Responsive: Mobile (< 640px) - Show short text, match Next.js sm: breakpoint */
 @media (max-width: 639px) {
-    /* CRITICAL: Ensure button stays fixed to viewport on mobile */
-    body #ai-chat-widget-root,
-    html body #ai-chat-widget-root,
-    body.menu-open #ai-chat-widget-root,
-    .main-navigation #ai-chat-widget-root,
-    * #ai-chat-widget-root,
-    #ai-chat-widget-root {
-        position: fixed !important;
-        width: 100vw !important;
-        height: 100vh !important;
-        top: 0 !important;
-        left: 0 !important;
-        right: auto !important;
-        bottom: auto !important;
-        z-index: 2147483647 !important;
-        pointer-events: none !important;
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        transform: none !important;
-        transition: none !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-    
-    body #ai-chat-widget,
-    html body #ai-chat-widget,
-    body.menu-open #ai-chat-widget,
-    .main-navigation #ai-chat-widget,
-    * #ai-chat-widget,
-    #ai-chat-widget {
-        position: fixed !important;
-        bottom: 16px !important;
-        right: 16px !important;
-        top: auto !important;
-        left: auto !important;
-        z-index: 2147483647 !important;
-        pointer-events: auto !important;
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        transform: none !important;
-        transition: none !important;
-        margin: 0 !important;
-    }
-    
-    /* Ensure chat button is always clickable and visible */
-    body #ai-chat-toggle,
-    html body #ai-chat-toggle,
-    body.menu-open #ai-chat-toggle,
-    .main-navigation #ai-chat-toggle,
-    * #ai-chat-toggle,
+    /* Button stays fixed - simple positioning like Next.js */
     #ai-chat-toggle {
-        position: fixed !important;
         bottom: 16px !important;
         right: 16px !important;
-        top: auto !important;
-        left: auto !important;
-        width: auto !important;
         min-width: 100px !important;
         height: 44px !important;
         font-size: 14px !important;
         padding: 0 16px !important;
-        z-index: 2147483647 !important;
-        pointer-events: auto !important;
-        cursor: pointer !important;
-        display: flex !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        transform: none !important;
-        transition: transform 0.3s !important;
-        margin: 0 !important;
+    }
+    
+    #ai-chat-widget {
+        bottom: 80px !important;
+        right: 16px !important;
+        left: 16px !important;
+        width: calc(100vw - 32px) !important;
     }
     
     #chat-text-full {

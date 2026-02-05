@@ -189,46 +189,34 @@ function freshdew_render_ai_chat_widget() {
     // Render widget template
     get_template_part('ai-chat-button');
     
-    // JavaScript to ensure widget is at body root (fixes mobile menu containment issue)
+    // JavaScript to ensure chat button and widget are at body root (like Next.js layout)
     ?>
     <script>
     (function() {
-        function ensureChatWidgetAtBodyRoot() {
+        function ensureChatAtBodyRoot() {
+            const chatToggle = document.getElementById('ai-chat-toggle');
             const widgetRoot = document.getElementById('ai-chat-widget-root');
-            if (!widgetRoot) {
-                console.log('Chat widget root not found');
-                return;
+            
+            // Move button to body if not already there (like Next.js renders it at layout level)
+            if (chatToggle && chatToggle.parentNode !== document.body) {
+                document.body.appendChild(chatToggle);
             }
             
-            // If widget is not a direct child of body, move it there
-            if (widgetRoot.parentNode !== document.body) {
-                console.log('Moving chat widget to body root');
+            // Move widget container to body if not already there
+            if (widgetRoot && widgetRoot.parentNode !== document.body) {
                 document.body.appendChild(widgetRoot);
             }
-            
-            // Force fixed positioning and break from any parent transforms
-            widgetRoot.style.position = 'fixed';
-            widgetRoot.style.top = '0';
-            widgetRoot.style.left = '0';
-            widgetRoot.style.transform = 'none';
-            widgetRoot.style.transition = 'none';
-            widgetRoot.style.right = 'auto';
-            widgetRoot.style.bottom = 'auto';
-            
-            console.log('Chat widget ensured at body root');
         }
         
         // Run immediately if DOM is ready, otherwise wait
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', ensureChatWidgetAtBodyRoot);
+            document.addEventListener('DOMContentLoaded', ensureChatAtBodyRoot);
         } else {
-            ensureChatWidgetAtBodyRoot();
+            ensureChatAtBodyRoot();
         }
         
-        // Also run after delays to catch any late DOM manipulation
-        setTimeout(ensureChatWidgetAtBodyRoot, 100);
-        setTimeout(ensureChatWidgetAtBodyRoot, 500);
-        setTimeout(ensureChatWidgetAtBodyRoot, 1000);
+        // Also run after a short delay to catch any late DOM manipulation
+        setTimeout(ensureChatAtBodyRoot, 100);
     })();
     </script>
     <?php
