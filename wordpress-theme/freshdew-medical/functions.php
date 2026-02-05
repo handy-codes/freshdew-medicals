@@ -330,7 +330,7 @@ function freshdew_book_appointment_handler($request) {
     $reason = sanitize_text_field($request->get_param('reason'));
     $symptoms = sanitize_textarea_field($request->get_param('symptoms'));
     
-    if (empty($fullName) || empty($email) || empty($phone) || empty($date) || empty($time) || empty($type)) {
+    if (empty($fullName) || empty($email) || empty($phone) || empty($date) || empty($time) || empty($type) || empty($reason)) {
         return new WP_Error('missing_fields', 'Required fields are missing', array('status' => 400));
     }
     
@@ -340,30 +340,61 @@ function freshdew_book_appointment_handler($request) {
     
     $contact_info = freshdew_get_contact_info();
     
-    // Prepare email notification
-    $to = $contact_info['email']; // info@freshdewmedicalclinic.com
+    // Prepare email notification with better formatting to avoid spam
+    $to = $contact_info['email'];
     $subject = 'New Appointment Request - ' . $fullName;
-    $message = "New appointment request received:\n\n";
-    $message .= "Name: $fullName\n";
-    $message .= "Email: $email\n";
-    $message .= "Phone: $phone\n";
-    $message .= "Date: $date\n";
-    $message .= "Time: $time\n";
-    $message .= "Type: $type\n";
-    $message .= "Reason: " . ($reason ? $reason : 'Not provided') . "\n";
-    $message .= "Symptoms: " . ($symptoms ? $symptoms : 'Not provided') . "\n";
-    $message .= "\n---\n";
-    $message .= "Submitted: " . current_time('mysql') . "\n";
-    $message .= "IP Address: " . $_SERVER['REMOTE_ADDR'] . "\n";
     
+    // HTML email for better deliverability
+    $message_html = '<html><body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">';
+    $message_html .= '<div style="max-width: 600px; margin: 0 auto; padding: 20px; background: #f9fafb; border-radius: 8px;">';
+    $message_html .= '<h2 style="color: #667eea; margin-bottom: 20px;">New Appointment Request</h2>';
+    $message_html .= '<div style="background: white; padding: 20px; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">';
+    $message_html .= '<p><strong>Name:</strong> ' . esc_html($fullName) . '</p>';
+    $message_html .= '<p><strong>Email:</strong> <a href="mailto:' . esc_attr($email) . '">' . esc_html($email) . '</a></p>';
+    $message_html .= '<p><strong>Phone:</strong> <a href="tel:' . esc_attr($phone) . '">' . esc_html($phone) . '</a></p>';
+    $message_html .= '<p><strong>Preferred Date:</strong> ' . esc_html($date) . '</p>';
+    $message_html .= '<p><strong>Preferred Time:</strong> ' . esc_html($time) . '</p>';
+    $message_html .= '<p><strong>Appointment Type:</strong> ' . esc_html($type) . '</p>';
+    $message_html .= '<p><strong>Reason for Visit:</strong> ' . esc_html($reason) . '</p>';
+    if ($symptoms) {
+        $message_html .= '<p><strong>Symptoms:</strong> ' . esc_html($symptoms) . '</p>';
+    }
+    $message_html .= '</div>';
+    $message_html .= '<p style="margin-top: 20px; font-size: 12px; color: #666;">';
+    $message_html .= 'Submitted: ' . current_time('mysql') . '<br>';
+    $message_html .= 'IP Address: ' . $_SERVER['REMOTE_ADDR'];
+    $message_html .= '</p>';
+    $message_html .= '</div></body></html>';
+    
+    // Plain text version for email clients that don't support HTML
+    $message_text = "New appointment request received:\n\n";
+    $message_text .= "Name: $fullName\n";
+    $message_text .= "Email: $email\n";
+    $message_text .= "Phone: $phone\n";
+    $message_text .= "Date: $date\n";
+    $message_text .= "Time: $time\n";
+    $message_text .= "Type: $type\n";
+    $message_text .= "Reason: $reason\n";
+    if ($symptoms) {
+        $message_text .= "Symptoms: $symptoms\n";
+    }
+    $message_text .= "\n---\n";
+    $message_text .= "Submitted: " . current_time('mysql') . "\n";
+    $message_text .= "IP Address: " . $_SERVER['REMOTE_ADDR'] . "\n";
+    
+    // Improved headers to prevent spam
+    // Use the actual contact email as From address for better deliverability
+    $from_email = $contact_info['email'];
     $headers = array(
-        'Content-Type: text/plain; charset=UTF-8',
-        'From: FreshDew Medical Clinic <' . $to . '>',
-        'Reply-To: ' . $email
+        'Content-Type: text/html; charset=UTF-8',
+        'From: FreshDew Medical Clinic <' . $from_email . '>',
+        'Reply-To: ' . $email,
+        'X-Mailer: WordPress',
+        'MIME-Version: 1.0',
     );
     
-    // Send email notification
-    $email_sent = wp_mail($to, $subject, $message, $headers);
+    // Send HTML email
+    $email_sent = wp_mail($to, $subject, $message_html, $headers);
     
     // Log appointment for debugging (optional - can be removed in production)
     error_log('Appointment Booking: ' . $fullName . ' - ' . $date . ' ' . $time . ' - Email sent: ' . ($email_sent ? 'Yes' : 'No'));
@@ -493,35 +524,214 @@ function freshdew_add_settings_page() {
 }
 add_action('admin_menu', 'freshdew_add_settings_page');
 
+/**
+ * Enqueue admin scripts for settings page
+ */
+function freshdew_enqueue_admin_scripts($hook) {
+    if ($hook !== 'settings_page_freshdew-ai-settings') {
+        return;
+    }
+    wp_enqueue_script('jquery');
+}
+add_action('admin_enqueue_scripts', 'freshdew_enqueue_admin_scripts');
+
+/**
+ * Configure SMTP for better email deliverability
+ */
+function freshdew_configure_smtp($phpmailer) {
+    $smtp_enabled = get_option('freshdew_smtp_enabled', 0);
+    
+    if (!$smtp_enabled) {
+        return; // SMTP not enabled
+    }
+    
+    $phpmailer->isSMTP();
+    $phpmailer->Host = get_option('freshdew_smtp_host', 'smtp.gmail.com');
+    $phpmailer->SMTPAuth = true;
+    $phpmailer->Port = get_option('freshdew_smtp_port', '587');
+    $phpmailer->Username = get_option('freshdew_smtp_username', '');
+    $phpmailer->Password = get_option('freshdew_smtp_password', '');
+    
+    $encryption = get_option('freshdew_smtp_encryption', 'tls');
+    if ($encryption === 'ssl') {
+        $phpmailer->SMTPSecure = 'ssl';
+    } elseif ($encryption === 'tls') {
+        $phpmailer->SMTPSecure = 'tls';
+    }
+    
+    $from_email = get_option('freshdew_smtp_from_email', '');
+    $from_name = get_option('freshdew_smtp_from_name', 'FreshDew Medical Clinic');
+    
+    if ($from_email) {
+        $phpmailer->setFrom($from_email, $from_name);
+    }
+    
+    // Enable debugging (optional - can be disabled in production)
+    // $phpmailer->SMTPDebug = 2;
+    // $phpmailer->Debugoutput = 'error_log';
+}
+add_action('phpmailer_init', 'freshdew_configure_smtp');
+
 function freshdew_ai_settings_page() {
     if (isset($_POST['submit'])) {
         check_admin_referer('freshdew_ai_settings');
         update_option('freshdew_groq_api_key', sanitize_text_field($_POST['groq_api_key']));
+        
+        // Save SMTP settings
+        update_option('freshdew_smtp_enabled', isset($_POST['smtp_enabled']) ? 1 : 0);
+        update_option('freshdew_smtp_host', sanitize_text_field($_POST['smtp_host']));
+        update_option('freshdew_smtp_port', sanitize_text_field($_POST['smtp_port']));
+        update_option('freshdew_smtp_encryption', sanitize_text_field($_POST['smtp_encryption']));
+        update_option('freshdew_smtp_username', sanitize_text_field($_POST['smtp_username']));
+        update_option('freshdew_smtp_password', sanitize_text_field($_POST['smtp_password']));
+        update_option('freshdew_smtp_from_email', sanitize_email($_POST['smtp_from_email']));
+        update_option('freshdew_smtp_from_name', sanitize_text_field($_POST['smtp_from_name']));
+        
         echo '<div class="notice notice-success"><p>Settings saved!</p></div>';
     }
     
     $api_key = get_option('freshdew_groq_api_key', '');
+    $smtp_enabled = get_option('freshdew_smtp_enabled', 0);
+    $smtp_host = get_option('freshdew_smtp_host', 'smtp.gmail.com');
+    $smtp_port = get_option('freshdew_smtp_port', '587');
+    $smtp_encryption = get_option('freshdew_smtp_encryption', 'tls');
+    $smtp_username = get_option('freshdew_smtp_username', '');
+    $smtp_password = get_option('freshdew_smtp_password', '');
+    $smtp_from_email = get_option('freshdew_smtp_from_email', '');
+    $smtp_from_name = get_option('freshdew_smtp_from_name', 'FreshDew Medical Clinic');
     ?>
     <div class="wrap">
-        <h1>FreshDew AI Chat Settings</h1>
-        <form method="post" action="">
-            <?php wp_nonce_field('freshdew_ai_settings'); ?>
-            <table class="form-table">
-                <tr>
-                    <th scope="row">
-                        <label for="groq_api_key">Groq API Key</label>
-                    </th>
-                    <td>
-                        <input type="password" id="groq_api_key" name="groq_api_key" value="<?php echo esc_attr($api_key); ?>" class="regular-text" />
-                        <p class="description">
-                            Get your API key from <a href="https://console.groq.com/keys" target="_blank">Groq Console</a>
-                        </p>
-                    </td>
-                </tr>
-            </table>
-            <?php submit_button(); ?>
-        </form>
+        <h1>FreshDew Settings</h1>
+        
+        <h2 class="nav-tab-wrapper">
+            <a href="#ai-settings" class="nav-tab nav-tab-active">AI Chat Settings</a>
+            <a href="#smtp-settings" class="nav-tab">Email SMTP Settings</a>
+        </h2>
+        
+        <div id="ai-settings" class="tab-content">
+            <form method="post" action="">
+                <?php wp_nonce_field('freshdew_ai_settings'); ?>
+                <h2>AI Chat Settings</h2>
+                <table class="form-table">
+                    <tr>
+                        <th scope="row">
+                            <label for="groq_api_key">Groq API Key</label>
+                        </th>
+                        <td>
+                            <input type="password" id="groq_api_key" name="groq_api_key" value="<?php echo esc_attr($api_key); ?>" class="regular-text" />
+                            <p class="description">
+                                Get your API key from <a href="https://console.groq.com/keys" target="_blank">Groq Console</a>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+                <?php submit_button(); ?>
+            </form>
+        </div>
+        
+        <div id="smtp-settings" class="tab-content" style="display: none;">
+            <form method="post" action="">
+                <?php wp_nonce_field('freshdew_ai_settings'); ?>
+                <h2>Email SMTP Settings</h2>
+                <p class="description">Configure SMTP to ensure appointment booking emails are delivered properly and avoid spam folders.</p>
+                
+                <table class="form-table">
+                    <tr>
+                        <th scope="row">
+                            <label for="smtp_enabled">Enable SMTP</label>
+                        </th>
+                        <td>
+                            <input type="checkbox" id="smtp_enabled" name="smtp_enabled" value="1" <?php checked($smtp_enabled, 1); ?> />
+                            <p class="description">Enable SMTP authentication for better email deliverability</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <label for="smtp_host">SMTP Host</label>
+                        </th>
+                        <td>
+                            <input type="text" id="smtp_host" name="smtp_host" value="<?php echo esc_attr($smtp_host); ?>" class="regular-text" />
+                            <p class="description">Gmail: smtp.gmail.com | Outlook: smtp-mail.outlook.com | Custom: your-smtp-server.com</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <label for="smtp_port">SMTP Port</label>
+                        </th>
+                        <td>
+                            <input type="number" id="smtp_port" name="smtp_port" value="<?php echo esc_attr($smtp_port); ?>" class="small-text" />
+                            <p class="description">Common ports: 587 (TLS), 465 (SSL), 25 (unencrypted)</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <label for="smtp_encryption">Encryption</label>
+                        </th>
+                        <td>
+                            <select id="smtp_encryption" name="smtp_encryption">
+                                <option value="tls" <?php selected($smtp_encryption, 'tls'); ?>>TLS (Recommended)</option>
+                                <option value="ssl" <?php selected($smtp_encryption, 'ssl'); ?>>SSL</option>
+                                <option value="none" <?php selected($smtp_encryption, 'none'); ?>>None</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <label for="smtp_username">SMTP Username</label>
+                        </th>
+                        <td>
+                            <input type="email" id="smtp_username" name="smtp_username" value="<?php echo esc_attr($smtp_username); ?>" class="regular-text" />
+                            <p class="description">Your email address (e.g., princeowo73@gmail.com)</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <label for="smtp_password">SMTP Password</label>
+                        </th>
+                        <td>
+                            <input type="password" id="smtp_password" name="smtp_password" value="<?php echo esc_attr($smtp_password); ?>" class="regular-text" />
+                            <p class="description">
+                                For Gmail: Use an <a href="https://support.google.com/accounts/answer/185833" target="_blank">App Password</a> (not your regular password)<br>
+                                For other providers: Use your email password or app-specific password
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <label for="smtp_from_email">From Email</label>
+                        </th>
+                        <td>
+                            <input type="email" id="smtp_from_email" name="smtp_from_email" value="<?php echo esc_attr($smtp_from_email); ?>" class="regular-text" />
+                            <p class="description">Email address to send from (usually same as SMTP username)</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <label for="smtp_from_name">From Name</label>
+                        </th>
+                        <td>
+                            <input type="text" id="smtp_from_name" name="smtp_from_name" value="<?php echo esc_attr($smtp_from_name); ?>" class="regular-text" />
+                            <p class="description">Name shown as sender (e.g., FreshDew Medical Clinic)</p>
+                        </td>
+                    </tr>
+                </table>
+                <?php submit_button(); ?>
+            </form>
+        </div>
     </div>
+    
+    <script>
+    jQuery(document).ready(function($) {
+        $('.nav-tab').on('click', function(e) {
+            e.preventDefault();
+            var target = $(this).attr('href');
+            $('.nav-tab').removeClass('nav-tab-active');
+            $(this).addClass('nav-tab-active');
+            $('.tab-content').hide();
+            $(target).show();
+        });
+    });
+    </script>
     <?php
 }
 

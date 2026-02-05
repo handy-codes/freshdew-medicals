@@ -62,8 +62,8 @@ $contact_info = freshdew_get_contact_info();
                     </div>
                     
                     <div>
-                        <label for="reason" style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Reason for Visit</label>
-                        <input type="text" id="reason" name="reason" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem;" placeholder="Brief reason for your appointment">
+                        <label for="reason" style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Reason for Visit *</label>
+                        <input type="text" id="reason" name="reason" required style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem;" placeholder="Brief reason for your appointment">
                     </div>
                     
                     <div>
@@ -104,6 +104,14 @@ $contact_info = freshdew_get_contact_info();
         messageDiv.style.display = 'none';
         
         // Get form data
+        const reason = document.getElementById('reason').value.trim();
+        if (!reason) {
+            showMessage('error', 'Please provide a reason for your visit.');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Book Appointment';
+            return;
+        }
+        
         const formData = {
             fullName: document.getElementById('fullName').value,
             email: document.getElementById('email').value,
@@ -111,7 +119,7 @@ $contact_info = freshdew_get_contact_info();
             date: document.getElementById('date').value,
             time: document.getElementById('time').value,
             type: document.getElementById('type').value,
-            reason: document.getElementById('reason').value,
+            reason: reason,
             symptoms: document.getElementById('symptoms').value
         };
         
@@ -148,6 +156,10 @@ $contact_info = freshdew_get_contact_info();
             messageDiv.style.background = '#d1fae5';
             messageDiv.style.color = '#065f46';
             messageDiv.style.border = '1px solid #6ee7b7';
+        } else if (type === 'error') {
+            messageDiv.style.background = '#fee2e2';
+            messageDiv.style.color = '#991b1b';
+            messageDiv.style.border = '1px solid #fca5a5';
         } else {
             messageDiv.style.background = '#dbeafe';
             messageDiv.style.color = '#1e40af';
