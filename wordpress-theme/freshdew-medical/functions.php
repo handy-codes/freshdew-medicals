@@ -195,12 +195,27 @@ function freshdew_render_ai_chat_widget() {
     (function() {
         function ensureChatWidgetAtBodyRoot() {
             const widgetRoot = document.getElementById('ai-chat-widget-root');
-            if (!widgetRoot) return;
+            if (!widgetRoot) {
+                console.log('Chat widget root not found');
+                return;
+            }
             
             // If widget is not a direct child of body, move it there
             if (widgetRoot.parentNode !== document.body) {
+                console.log('Moving chat widget to body root');
                 document.body.appendChild(widgetRoot);
             }
+            
+            // Force fixed positioning and break from any parent transforms
+            widgetRoot.style.position = 'fixed';
+            widgetRoot.style.top = '0';
+            widgetRoot.style.left = '0';
+            widgetRoot.style.transform = 'none';
+            widgetRoot.style.transition = 'none';
+            widgetRoot.style.right = 'auto';
+            widgetRoot.style.bottom = 'auto';
+            
+            console.log('Chat widget ensured at body root');
         }
         
         // Run immediately if DOM is ready, otherwise wait
@@ -210,8 +225,10 @@ function freshdew_render_ai_chat_widget() {
             ensureChatWidgetAtBodyRoot();
         }
         
-        // Also run after a short delay to catch any late DOM manipulation
+        // Also run after delays to catch any late DOM manipulation
         setTimeout(ensureChatWidgetAtBodyRoot, 100);
+        setTimeout(ensureChatWidgetAtBodyRoot, 500);
+        setTimeout(ensureChatWidgetAtBodyRoot, 1000);
     })();
     </script>
     <?php

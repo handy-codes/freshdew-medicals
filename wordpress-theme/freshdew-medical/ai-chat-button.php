@@ -8,10 +8,10 @@ $contact_info = freshdew_get_contact_info();
 ?>
 
 <!-- Wrapper to isolate from parent transforms - MUST be direct child of body -->
-<div id="ai-chat-widget-root" style="position: fixed; top: 0; left: 0; width: 0; height: 0; z-index: 9999; pointer-events: none; isolation: isolate;">
-<div id="ai-chat-widget" style="position: fixed !important; bottom: 16px !important; right: 16px !important; z-index: 9999 !important; pointer-events: auto !important; transform: translateZ(0) !important; will-change: transform !important;">
+<div id="ai-chat-widget-root" style="position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; z-index: 2147483647 !important; pointer-events: none !important; isolation: isolate !important;">
+<div id="ai-chat-widget" style="position: fixed !important; bottom: 16px !important; right: 16px !important; z-index: 2147483647 !important; pointer-events: auto !important; transform: translateZ(0) !important; will-change: transform !important;">
     <!-- Chat Button -->
-    <button id="ai-chat-toggle" style="width: auto !important; min-width: 100px !important; height: 44px !important; border-radius: 22px !important; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; border: none !important; color: white !important; font-size: 14px !important; font-weight: 600 !important; cursor: pointer !important; box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important; transition: transform 0.3s !important; display: flex !important; align-items: center !important; justify-content: center !important; padding: 0 16px !important; gap: 6px !important; position: relative !important; z-index: 9999 !important; pointer-events: auto !important;">
+    <button id="ai-chat-toggle" style="width: auto !important; min-width: 100px !important; height: 44px !important; border-radius: 22px !important; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; border: none !important; color: white !important; font-size: 14px !important; font-weight: 600 !important; cursor: pointer !important; box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important; transition: transform 0.3s !important; display: flex !important; align-items: center !important; justify-content: center !important; padding: 0 16px !important; gap: 6px !important; position: fixed !important; bottom: 16px !important; right: 16px !important; z-index: 2147483647 !important; pointer-events: auto !important;">
         <span id="chat-icon">💬</span>
         <span id="chat-text-full" style="display: none;">Ask Dew</span>
         <span id="chat-text-short">Dew</span>
@@ -71,7 +71,7 @@ $contact_info = freshdew_get_contact_info();
 }
 
 #ai-chat-toggle:hover {
-    transform: scale(1.05);
+    transform: scale(1.05) !important;
 }
 
 #chat-close-btn:hover {
@@ -112,9 +112,64 @@ $contact_info = freshdew_get_contact_info();
     box-sizing: border-box;
 }
 
+/* CRITICAL: Break chat button free from ANY parent positioning/transform */
+/* This ensures it's always positioned relative to viewport, not any parent */
+body #ai-chat-widget-root,
+html body #ai-chat-widget-root,
+#ai-chat-widget-root {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 2147483647 !important;
+    pointer-events: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+    transition: none !important;
+    right: auto !important;
+    bottom: auto !important;
+}
+
+body #ai-chat-widget,
+html body #ai-chat-widget,
+#ai-chat-widget {
+    position: fixed !important;
+    bottom: 16px !important;
+    right: 16px !important;
+    top: auto !important;
+    left: auto !important;
+    z-index: 2147483647 !important;
+    pointer-events: auto !important;
+    transform: none !important;
+    transition: none !important;
+    margin: 0 !important;
+}
+
+body #ai-chat-toggle,
+html body #ai-chat-toggle,
+#ai-chat-toggle {
+    position: fixed !important;
+    bottom: 16px !important;
+    right: 16px !important;
+    top: auto !important;
+    left: auto !important;
+    z-index: 2147483647 !important;
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    transform: none !important;
+    transition: transform 0.3s !important;
+    margin: 0 !important;
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
 /* Responsive: Desktop/Tablet - Show full text */
 @media (min-width: 640px) {
-    #ai-chat-widget {
+    #ai-chat-widget,
+    #ai-chat-toggle {
         bottom: 24px !important;
         right: 24px !important;
     }
@@ -139,34 +194,78 @@ $contact_info = freshdew_get_contact_info();
 
 /* Responsive: Mobile - Show short text */
 @media (max-width: 639px) {
-    /* Force widget to be at body level, not inside menu */
+    /* CRITICAL: Ensure button stays fixed to viewport on mobile */
     body #ai-chat-widget-root,
-    body #ai-chat-widget {
+    html body #ai-chat-widget-root,
+    body.menu-open #ai-chat-widget-root,
+    .main-navigation #ai-chat-widget-root,
+    * #ai-chat-widget-root,
+    #ai-chat-widget-root {
         position: fixed !important;
-        top: auto !important;
-        left: auto !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: auto !important;
+        bottom: auto !important;
+        z-index: 2147483647 !important;
+        pointer-events: none !important;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    body #ai-chat-widget,
+    html body #ai-chat-widget,
+    body.menu-open #ai-chat-widget,
+    .main-navigation #ai-chat-widget,
+    * #ai-chat-widget,
+    #ai-chat-widget {
+        position: fixed !important;
         bottom: 16px !important;
         right: 16px !important;
-        z-index: 9999 !important;
+        top: auto !important;
+        left: auto !important;
+        z-index: 2147483647 !important;
         pointer-events: auto !important;
         display: block !important;
         visibility: visible !important;
         opacity: 1 !important;
-        transform: translateZ(0) !important;
-        will-change: transform !important;
+        transform: none !important;
+        transition: none !important;
+        margin: 0 !important;
     }
     
-    /* Ensure chat button is always clickable */
+    /* Ensure chat button is always clickable and visible */
+    body #ai-chat-toggle,
+    html body #ai-chat-toggle,
+    body.menu-open #ai-chat-toggle,
+    .main-navigation #ai-chat-toggle,
+    * #ai-chat-toggle,
     #ai-chat-toggle {
+        position: fixed !important;
+        bottom: 16px !important;
+        right: 16px !important;
+        top: auto !important;
+        left: auto !important;
         width: auto !important;
         min-width: 100px !important;
         height: 44px !important;
         font-size: 14px !important;
         padding: 0 16px !important;
-        position: relative !important;
-        z-index: 9999 !important;
+        z-index: 2147483647 !important;
         pointer-events: auto !important;
         cursor: pointer !important;
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        transform: none !important;
+        transition: transform 0.3s !important;
+        margin: 0 !important;
     }
     
     #chat-text-full {
@@ -185,21 +284,24 @@ $contact_info = freshdew_get_contact_info();
         height: min(520px, calc(100vh - 120px)) !important;
         max-height: min(520px, calc(100vh - 120px)) !important;
         position: fixed !important;
-        z-index: 9999 !important;
+        z-index: 2147483647 !important;
     }
     
     #chat-messages {
         max-height: calc(100vh - 200px) !important;
     }
     
-    /* Ensure widget is visible even when menu is open */
+    /* Ensure widget is visible even when menu is open - MAXIMUM PRIORITY */
     body.menu-open #ai-chat-widget-root,
     body.menu-open #ai-chat-widget,
-    body.menu-open #ai-chat-toggle {
+    body.menu-open #ai-chat-toggle,
+    html.menu-open #ai-chat-widget-root,
+    html.menu-open #ai-chat-widget,
+    html.menu-open #ai-chat-toggle {
         display: block !important;
         visibility: visible !important;
         opacity: 1 !important;
-        z-index: 9999 !important;
+        z-index: 2147483647 !important;
         position: fixed !important;
     }
 }
