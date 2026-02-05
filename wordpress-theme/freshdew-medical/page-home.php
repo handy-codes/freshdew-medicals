@@ -136,6 +136,37 @@ $contact_info = freshdew_get_contact_info();
     </div>
 </section>
 
+<!-- Clinic Policies Section -->
+<section style="padding: 4rem 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <div class="container">
+        <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: white; font-weight: 700;">Clinic Policies</h2>
+        <div style="max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 2rem;">
+            
+            <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 2rem; border-radius: 0.75rem; border: 1px solid rgba(255, 255, 255, 0.2);">
+                <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: white; font-weight: 600;">Safety of Staff and Patient</h3>
+                <p style="color: rgba(255, 255, 255, 0.95); line-height: 1.8; font-size: 1.05rem;">
+                    We aim to provide high standards of care and work under incredible pressure. We understand you may be experiencing stress coming into the clinic. We have a zero Tolerance policy and strictly prohibit abusive, violent, threatening or any form of assault towards staff and patients. Violators will be immediately removed from the Practice and Police may be contacted.
+                </p>
+            </div>
+            
+            <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 2rem; border-radius: 0.75rem; border: 1px solid rgba(255, 255, 255, 0.2);">
+                <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: white; font-weight: 600;">No Show</h3>
+                <p style="color: rgba(255, 255, 255, 0.95); line-height: 1.8; font-size: 1.05rem;">
+                    We understand circumstances changed so we provide a free 24hour cancellation notice, otherwise there will be a $50 no show fee.
+                </p>
+            </div>
+            
+            <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 2rem; border-radius: 0.75rem; border: 1px solid rgba(255, 255, 255, 0.2);">
+                <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: white; font-weight: 600;">Medical Visit</h3>
+                <p style="color: rgba(255, 255, 255, 0.95); line-height: 1.8; font-size: 1.05rem;">
+                    To ensure effective treatment, only ONE medical issue will be discussed. You are welcome to book other appointments.
+                </p>
+            </div>
+            
+        </div>
+    </div>
+</section>
+
 <!-- Location & Map Section -->
 <section style="padding: 4rem 0; background: #f9fafb;">
     <div class="container">

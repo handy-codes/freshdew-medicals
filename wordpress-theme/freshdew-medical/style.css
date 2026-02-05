@@ -21,6 +21,12 @@ Tags: healthcare, medical, hospital, responsive, modern
     box-sizing: border-box;
 }
 
+html {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+}
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
     line-height: 1.6;
@@ -28,6 +34,9 @@ body {
     background-color: #fff;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
 }
 
 /* Container */
@@ -35,6 +44,8 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* Header Styles */
@@ -587,6 +598,27 @@ html body .site-header {
 
 /* Responsive - Mobile Menu */
 @media (max-width: 768px) {
+    /* Prevent horizontal overflow on mobile */
+    html, body {
+        overflow-x: hidden !important;
+        width: 100% !important;
+        max-width: 100vw !important;
+    }
+    
+    .container {
+        max-width: 100% !important;
+        padding: 0 16px !important;
+    }
+    
+    * {
+        max-width: 100% !important;
+    }
+    
+    img, video, iframe {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+    
     .mobile-menu-toggle {
         display: flex !important;
         visibility: visible !important;
