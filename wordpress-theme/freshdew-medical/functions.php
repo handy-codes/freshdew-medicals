@@ -340,23 +340,39 @@ function freshdew_book_appointment_handler($request) {
     
     $contact_info = freshdew_get_contact_info();
     
-    // Optionally send email notification
+    // Prepare email notification
+    $to = $contact_info['email']; // info@freshdewmedicalclinic.com
     $subject = 'New Appointment Request - ' . $fullName;
-    $message = "New appointment request:\n\n";
+    $message = "New appointment request received:\n\n";
     $message .= "Name: $fullName\n";
     $message .= "Email: $email\n";
     $message .= "Phone: $phone\n";
     $message .= "Date: $date\n";
     $message .= "Time: $time\n";
     $message .= "Type: $type\n";
-    $message .= "Reason: $reason\n";
-    $message .= "Symptoms: $symptoms\n";
+    $message .= "Reason: " . ($reason ? $reason : 'Not provided') . "\n";
+    $message .= "Symptoms: " . ($symptoms ? $symptoms : 'Not provided') . "\n";
+    $message .= "\n---\n";
+    $message .= "Submitted: " . current_time('mysql') . "\n";
+    $message .= "IP Address: " . $_SERVER['REMOTE_ADDR'] . "\n";
     
-    wp_mail($contact_info['email'], $subject, $message);
+    $headers = array(
+        'Content-Type: text/plain; charset=UTF-8',
+        'From: FreshDew Medical Clinic <' . $to . '>',
+        'Reply-To: ' . $email
+    );
+    
+    // Send email notification
+    $email_sent = wp_mail($to, $subject, $message, $headers);
+    
+    // Log appointment for debugging (optional - can be removed in production)
+    error_log('Appointment Booking: ' . $fullName . ' - ' . $date . ' ' . $time . ' - Email sent: ' . ($email_sent ? 'Yes' : 'No'));
     
     return rest_ensure_response(array(
         'success' => true,
-        'message' => 'Appointment request received. We will contact you shortly to confirm.'
+        'message' => 'Appointment request received. We will contact you shortly to confirm.',
+        'email_sent' => $email_sent,
+        'notification_email' => $to
     ));
 }
 
