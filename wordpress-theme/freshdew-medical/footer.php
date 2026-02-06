@@ -6,7 +6,7 @@ $contact_info = freshdew_get_contact_info();
     <div class="container">
         <div class="footer-content">
             <div class="footer-section">
-                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                <div class="footer-brand-text" style="margin-bottom: 1rem;">
                     <?php
                     // Use same logo logic as header
                     $custom_logo_id = get_theme_mod('custom_logo');
@@ -24,7 +24,7 @@ $contact_info = freshdew_get_contact_info();
                         }
                     }
                     ?>
-                    <div class="footer-brand-text">
+                    <div>
                         <h3 class="footer-brand-name">FreshDew</h3>
                         <p class="footer-brand-tagline">Medical Clinic</p>
                     </div>
