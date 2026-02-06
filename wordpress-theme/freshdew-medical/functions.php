@@ -429,19 +429,7 @@ function freshdew_ai_chat_handler($request) {
     // Check if Groq API key is configured
     $groq_api_key = get_option('freshdew_groq_api_key', '');
     
-    if (!empty($groq_api_key)) {
-        // Use Groq API
-        $response = freshdew_call_groq_api($message, $groq_api_key, $contact_info);
-        if ($response && !empty($response)) {
-            return rest_ensure_response(array('response' => $response));
-        }
-        // If API call failed, log it and fall through to rule-based responses
-        error_log('Groq API call failed or returned empty response. Falling back to rule-based responses.');
-    } else {
-        error_log('Groq API key not configured. Using rule-based responses.');
-    }
-    
-    // Fallback to rule-based responses
+    // Rule-based responses for common queries
     $responses = array(
         'book appointment' => 'To book an appointment, please visit our appointments page or call us at ' . $contact_info['phone_formatted'] . '.',
         'find doctor' => 'You can find our doctors by visiting the family practice page or contacting our office at ' . $contact_info['phone_formatted'] . '.',
@@ -453,9 +441,10 @@ function freshdew_ai_chat_handler($request) {
         'email' => 'You can email us at ' . $contact_info['email'] . '.',
     );
     
-    $lowerMessage = strtolower($message);
-    $response = 'I can help you with booking appointments, finding doctors, and general health information. How can I assist you today?';
+    $lowerMessage = strtolower(trim($message));
     
+    // Check for rule-based matches first
+    $response = null;
     foreach ($responses as $key => $value) {
         if (strpos($lowerMessage, $key) !== false) {
             $response = $value;
@@ -463,6 +452,25 @@ function freshdew_ai_chat_handler($request) {
         }
     }
     
+    // If rule-based match found, return it
+    if ($response !== null) {
+        return rest_ensure_response(array('response' => $response));
+    }
+    
+    // If no rule-based match, try Groq API if configured
+    if (!empty($groq_api_key)) {
+        $groq_response = freshdew_call_groq_api($message, $groq_api_key, $contact_info);
+        if ($groq_response && !empty($groq_response) && strlen($groq_response) > 10) {
+            return rest_ensure_response(array('response' => $groq_response));
+        }
+        // If Groq fails, log it
+        error_log('Groq API call failed or returned invalid response. Using default response.');
+    } else {
+        error_log('Groq API key not configured. Using default response.');
+    }
+    
+    // Default response only if both rule-based and Groq fail
+    $response = 'I can help you with booking appointments, finding doctors, and general health information. How can I assist you today?';
     return rest_ensure_response(array('response' => $response));
 }
 

@@ -11,7 +11,7 @@ $contact_info = freshdew_get_contact_info();
 <button id="ai-chat-toggle" style="position: fixed !important; bottom: 16px !important; right: 16px !important; z-index: 9999 !important; width: auto !important; min-width: 100px !important; height: 44px !important; border-radius: 22px !important; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; border: none !important; color: white !important; font-size: 14px !important; font-weight: 600 !important; cursor: pointer !important; box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important; transition: transform 0.3s !important; display: flex !important; align-items: center !important; justify-content: center !important; padding: 0 16px !important; gap: 6px !important; pointer-events: auto !important;">
     <span id="chat-icon">💬</span>
     <span id="chat-text-full" style="display: none;">Ask Dew</span>
-    <span id="chat-text-short">Dew</span>
+    <span id="chat-text-short" style="display: none;">Ask Dew</span>
     <span id="close-icon" style="display: none;">×</span>
 </button>
 
@@ -174,7 +174,7 @@ $contact_info = freshdew_get_contact_info();
     }
 }
 
-/* Responsive: Mobile (< 640px) - Show short text, match Next.js sm: breakpoint */
+/* Responsive: Mobile (< 640px) - Show "Ask Dew" but smaller */
 @media (max-width: 639px) {
     /* Button stays fixed - simple positioning like Next.js */
     #ai-chat-toggle {
@@ -182,8 +182,8 @@ $contact_info = freshdew_get_contact_info();
         right: 16px !important;
         min-width: 100px !important;
         height: 44px !important;
-        font-size: 14px !important;
-        padding: 0 16px !important;
+        font-size: 12px !important;
+        padding: 0 12px !important;
     }
     
     #ai-chat-widget {
@@ -199,6 +199,7 @@ $contact_info = freshdew_get_contact_info();
     
     #chat-text-short {
         display: inline !important;
+        font-size: 12px !important;
     }
     
     #ai-chat-window {
@@ -285,7 +286,10 @@ console.log('Chat button script loading...');
             const chatTextFull = document.getElementById('chat-text-full');
             const chatTextShort = document.getElementById('chat-text-short');
             if (chatTextFull) chatTextFull.style.display = window.innerWidth >= 640 ? 'inline' : 'none';
-            if (chatTextShort) chatTextShort.style.display = window.innerWidth < 640 ? 'inline' : 'none';
+            if (chatTextShort) {
+                chatTextShort.style.display = window.innerWidth < 640 ? 'inline' : 'none';
+                chatTextShort.textContent = 'Ask Dew';
+            }
             if (closeIcon) closeIcon.style.display = 'none';
             document.body.style.overflow = '';
         }
@@ -439,6 +443,7 @@ console.log('Chat button script loading...');
                     } else {
                         chatTextFull.style.display = 'none';
                         chatTextShort.style.display = 'inline';
+                        chatTextShort.textContent = 'Ask Dew';
                     }
                 }
             }
