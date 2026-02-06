@@ -13,21 +13,21 @@ $contact_info = freshdew_get_contact_info();
                     if ($custom_logo_id) {
                         $logo_src = wp_get_attachment_image_url($custom_logo_id, 'full');
                         if ($logo_src) {
-                            echo '<img src="' . esc_url($logo_src) . '" alt="' . esc_attr(get_bloginfo('name')) . '" style="height: 44px; width: 44px; border-radius: 9999px; object-fit: contain;">';
+                            echo '<img src="' . esc_url($logo_src) . '" alt="' . esc_attr(get_bloginfo('name')) . '" class="brand-logo" loading="lazy" decoding="async">';
                         }
                     } else {
                         $logo = get_theme_mod('freshdew_logo');
                         if ($logo) {
-                            echo '<img src="' . esc_url($logo) . '" alt="' . esc_attr(get_bloginfo('name')) . '" style="height: 44px; width: 44px; border-radius: 9999px; object-fit: contain;">';
+                            echo '<img src="' . esc_url($logo) . '" alt="' . esc_attr(get_bloginfo('name')) . '" class="brand-logo" loading="lazy" decoding="async">';
                         } else {
-                            echo '<span style="display:inline-flex;align-items:center;justify-content:center;height:44px;width:44px;background:#e0f2fe;color:#2563eb;font-weight:900;border-radius:9999px;">FD</span>';
+                            echo '<span class="brand-logo" aria-hidden="true" style="display:inline-flex;align-items:center;justify-content:center;height:44px;width:44px;background:#e0f2fe;color:#2563eb;font-weight:900;border-radius:9999px;">FD</span>';
                         }
                     }
                     ?>
-                    <div style="display: flex; flex-direction: column;">
-                        <h3 class="footer-brand-name">FreshDew</h3>
-                        <p class="footer-brand-tagline">Medical Clinic</p>
-                    </div>
+                    <span class="brand-text">
+                        <span class="brand-name">FreshDew</span>
+                        <span class="brand-tagline">Medical Clinic</span>
+                    </span>
                 </a>
                 <p class="footer-description">
                     Providing world-class healthcare services in Canada.
