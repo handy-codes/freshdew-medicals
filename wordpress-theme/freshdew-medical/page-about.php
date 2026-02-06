@@ -35,7 +35,14 @@ $contact_info = freshdew_get_contact_info();
                 <!-- Doctor 1 - Male -->
                 <div style="background: white; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 12px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)';">
                     <div style="width: 100%; height: 300px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
-                        <div style="width: 200px; height: 200px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 4rem; color: white;">👨‍⚕️</div>
+                        <?php
+                        $doctor1_image = get_template_directory_uri() . '/assets/images/doctors/dr-michael-chen.jpg';
+                        if (file_exists(get_template_directory() . '/assets/images/doctors/dr-michael-chen.jpg')) {
+                            echo '<img src="' . esc_url($doctor1_image) . '" alt="Dr. Michael Chen" style="width: 200px; height: 200px; border-radius: 50%; object-fit: cover; border: 4px solid rgba(255,255,255,0.3);">';
+                        } else {
+                            echo '<div style="width: 200px; height: 200px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: 600;">MC</div>';
+                        }
+                        ?>
                     </div>
                     <div style="padding: 2rem;">
                         <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem;">Dr. Michael Chen</h3>
@@ -54,7 +61,14 @@ $contact_info = freshdew_get_contact_info();
                 <!-- Doctor 2 - Female -->
                 <div style="background: white; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 12px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)';">
                     <div style="width: 100%; height: 300px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
-                        <div style="width: 200px; height: 200px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 4rem; color: white;">👩‍⚕️</div>
+                        <?php
+                        $doctor2_image = get_template_directory_uri() . '/assets/images/doctors/dr-sarah-johnson.jpg';
+                        if (file_exists(get_template_directory() . '/assets/images/doctors/dr-sarah-johnson.jpg')) {
+                            echo '<img src="' . esc_url($doctor2_image) . '" alt="Dr. Sarah Johnson" style="width: 200px; height: 200px; border-radius: 50%; object-fit: cover; border: 4px solid rgba(255,255,255,0.3);">';
+                        } else {
+                            echo '<div style="width: 200px; height: 200px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: 600;">SJ</div>';
+                        }
+                        ?>
                     </div>
                     <div style="padding: 2rem;">
                         <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem;">Dr. Sarah Johnson</h3>
@@ -73,7 +87,14 @@ $contact_info = freshdew_get_contact_info();
                 <!-- Doctor 3 - Male -->
                 <div style="background: white; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 12px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)';">
                     <div style="width: 100%; height: 300px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
-                        <div style="width: 200px; height: 200px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 4rem; color: white;">👨‍⚕️</div>
+                        <?php
+                        $doctor3_image = get_template_directory_uri() . '/assets/images/doctors/dr-james-wilson.jpg';
+                        if (file_exists(get_template_directory() . '/assets/images/doctors/dr-james-wilson.jpg')) {
+                            echo '<img src="' . esc_url($doctor3_image) . '" alt="Dr. James Wilson" style="width: 200px; height: 200px; border-radius: 50%; object-fit: cover; border: 4px solid rgba(255,255,255,0.3);">';
+                        } else {
+                            echo '<div style="width: 200px; height: 200px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: 600;">JW</div>';
+                        }
+                        ?>
                     </div>
                     <div style="padding: 2rem;">
                         <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem;">Dr. James Wilson</h3>
@@ -92,7 +113,14 @@ $contact_info = freshdew_get_contact_info();
                 <!-- Doctor 4 - Female -->
                 <div style="background: white; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 12px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)';">
                     <div style="width: 100%; height: 300px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
-                        <div style="width: 200px; height: 200px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 4rem; color: white;">👩‍⚕️</div>
+                        <?php
+                        $doctor4_image = get_template_directory_uri() . '/assets/images/doctors/dr-emily-rodriguez.jpg';
+                        if (file_exists(get_template_directory() . '/assets/images/doctors/dr-emily-rodriguez.jpg')) {
+                            echo '<img src="' . esc_url($doctor4_image) . '" alt="Dr. Emily Rodriguez" style="width: 200px; height: 200px; border-radius: 50%; object-fit: cover; border: 4px solid rgba(255,255,255,0.3);">';
+                        } else {
+                            echo '<div style="width: 200px; height: 200px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: 600;">ER</div>';
+                        }
+                        ?>
                     </div>
                     <div style="padding: 2rem;">
                         <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem;">Dr. Emily Rodriguez</h3>

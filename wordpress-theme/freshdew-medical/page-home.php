@@ -102,7 +102,19 @@ $contact_info = freshdew_get_contact_info();
             foreach ($services as $service) :
             ?>
             <div style="background: white; padding: 2rem; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-                <div style="font-size: 3rem; margin-bottom: 1rem;"><?php echo esc_html($service['icon']); ?></div>
+                <div style="width: 64px; height: 64px; margin-bottom: 1rem; color: #2563eb;">
+                    <?php
+                    $icon_svg = '';
+                    if ($service['title'] === 'Walk-in Clinic') {
+                        $icon_svg = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>';
+                    } elseif ($service['title'] === 'Family Practice') {
+                        $icon_svg = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>';
+                    } elseif ($service['title'] === 'Telehealth') {
+                        $icon_svg = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>';
+                    }
+                    echo $icon_svg;
+                    ?>
+                </div>
                 <h3 style="font-size: 1.5rem; margin-bottom: 1rem;"><?php echo esc_html($service['title']); ?></h3>
                 <p style="color: #6b7280; margin-bottom: 1.5rem;"><?php echo esc_html($service['description']); ?></p>
                 <a href="<?php echo esc_url($service['link']); ?>" class="btn">Learn More</a>

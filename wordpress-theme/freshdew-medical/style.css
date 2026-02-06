@@ -99,7 +99,7 @@ html body .site-header {
     justify-content: space-between;
     align-items: center;
     /* Increased vertical padding for better spacing */
-    padding: 0.85rem 0 !important;
+    padding: 1.25rem 0 !important;
     position: relative;
 }
 
@@ -627,17 +627,21 @@ html body .site-header {
     
     .main-navigation {
         position: fixed;
-        top: 0;
         right: -100%;
         width: 80%;
         max-width: 320px;
-        height: 100vh;
+        height: 80vh;
         background: #fff;
         box-shadow: -2px 0 10px rgba(0,0,0,0.1);
         transition: right 0.3s ease;
         z-index: 1000;
-        padding: 80px 2rem 2rem;
+        padding: 0;
         overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        /* Calculate top position based on header height - header padding is 1.25rem top + 1.25rem bottom = 2.5rem, logo is ~44px */
+        top: calc(44px + 2.5rem);
+        margin-top: 0;
     }
     
     .main-navigation.active {
@@ -648,6 +652,8 @@ html body .site-header {
         flex-direction: column;
         gap: 0;
         width: 100%;
+        margin: 0;
+        padding: 0;
     }
     
     .main-navigation li {
@@ -657,11 +663,12 @@ html body .site-header {
     
     .main-navigation a {
         display: block;
-        padding: 1rem;
-        font-size: 1.1rem;
+        padding: 1.25rem 1.5rem;
+        font-size: 1.25rem;
         color: #1f2937;
-        border-radius: 6px;
-        margin: 0.25rem 0;
+        border-radius: 0;
+        margin: 0;
+        font-weight: 500;
     }
     
     .main-navigation a::after {
@@ -700,7 +707,12 @@ html body .site-header {
     }
     
     .header-content {
-        padding: 0.75rem 0 !important;
+        padding: 1rem 0 !important;
+    }
+    
+    /* Recalculate mobile menu top position for mobile header padding */
+    .main-navigation {
+        top: calc(44px + 2rem); /* Logo height + mobile header padding (1rem top + 1rem bottom) */
     }
     
     .logo-image,

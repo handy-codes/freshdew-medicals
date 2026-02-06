@@ -29,17 +29,29 @@ $contact_info = freshdew_get_contact_info();
             
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin: 3rem 0;">
                 <div style="padding: 2rem; background: white; border-radius: 0.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                    <div style="font-size: 2.5rem; margin-bottom: 1rem;">💻</div>
+                    <div style="width: 64px; height: 64px; margin-bottom: 1rem; color: #2563eb;">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                    </div>
                     <h3 style="font-size: 1.25rem; margin-bottom: 1rem; color: #1f2937;">Video Consultations</h3>
                     <p style="color: #6b7280; line-height: 1.6;">Secure video calls with your doctor from your computer or mobile device.</p>
                 </div>
                 <div style="padding: 2rem; background: white; border-radius: 0.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                    <div style="font-size: 2.5rem; margin-bottom: 1rem;">📱</div>
+                    <div style="width: 64px; height: 64px; margin-bottom: 1rem; color: #2563eb;">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                        </svg>
+                    </div>
                     <h3 style="font-size: 1.25rem; margin-bottom: 1rem; color: #1f2937;">Phone Consultations</h3>
                     <p style="color: #6b7280; line-height: 1.6;">Speak with a healthcare professional over the phone.</p>
                 </div>
                 <div style="padding: 2rem; background: white; border-radius: 0.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                    <div style="font-size: 2.5rem; margin-bottom: 1rem;">📋</div>
+                    <div style="width: 64px; height: 64px; margin-bottom: 1rem; color: #2563eb;">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                    </div>
                     <h3 style="font-size: 1.25rem; margin-bottom: 1rem; color: #1f2937;">Follow-up Care</h3>
                     <p style="color: #6b7280; line-height: 1.6;">Convenient follow-up appointments without leaving home.</p>
                 </div>
@@ -97,7 +109,11 @@ $contact_info = freshdew_get_contact_info();
             <div class="telehealth-buttons" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin-bottom: 3rem; align-items: stretch;">
                 <div style="background: white; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center; display: flex; flex-direction: column; justify-content: space-between; align-items: center; height: 100%; min-height: 320px;">
                     <div>
-                        <div style="font-size: 3rem; margin-bottom: 1rem;">📹</div>
+                        <div style="width: 80px; height: 80px; margin: 0 auto 1rem; color: #2563eb;">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                        </div>
                         <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #1f2937;">Video Consultation</h3>
                         <p style="color: #6b7280; margin-bottom: 1.5rem; line-height: 1.6;">
                             Face-to-face consultation with your doctor via secure video call
@@ -110,7 +126,11 @@ $contact_info = freshdew_get_contact_info();
                 
                 <div style="background: white; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center; display: flex; flex-direction: column; justify-content: space-between; align-items: center; height: 100%; min-height: 320px;">
                     <div>
-                        <div style="font-size: 3rem; margin-bottom: 1rem;">📞</div>
+                        <div style="width: 80px; height: 80px; margin: 0 auto 1rem; color: #2563eb;">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                            </svg>
+                        </div>
                         <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #1f2937;">Voice Call</h3>
                         <p style="color: #6b7280; margin-bottom: 1.5rem; line-height: 1.6;">
                             Speak with your doctor over a secure phone call
@@ -146,7 +166,11 @@ $contact_info = freshdew_get_contact_info();
                     <video id="local-video" autoplay muted style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;"></video>
                     <video id="remote-video" autoplay style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; display: none;"></video>
                     <div id="voice-only-indicator" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 1.5rem; text-align: center;">
-                        <div style="font-size: 4rem; margin-bottom: 1rem;">📞</div>
+                        <div style="width: 80px; height: 80px; margin: 0 auto 1rem; color: white;">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                            </svg>
+                        </div>
                         <div>Voice Call Active</div>
                     </div>
                 </div>
