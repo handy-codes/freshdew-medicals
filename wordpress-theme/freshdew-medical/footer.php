@@ -6,10 +6,33 @@ $contact_info = freshdew_get_contact_info();
     <div class="container">
         <div class="footer-content">
             <div class="footer-section">
-                <h3><?php echo esc_html($contact_info['name']); ?></h3>
-                <p>
+                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                    <?php
+                    // Use same logo logic as header
+                    $custom_logo_id = get_theme_mod('custom_logo');
+                    if ($custom_logo_id) {
+                        $logo_src = wp_get_attachment_image_url($custom_logo_id, 'full');
+                        if ($logo_src) {
+                            echo '<img src="' . esc_url($logo_src) . '" alt="' . esc_attr(get_bloginfo('name')) . '" style="height: 44px; width: 44px; border-radius: 9999px; object-fit: contain;">';
+                        }
+                    } else {
+                        $logo = get_theme_mod('freshdew_logo');
+                        if ($logo) {
+                            echo '<img src="' . esc_url($logo) . '" alt="' . esc_attr(get_bloginfo('name')) . '" style="height: 44px; width: 44px; border-radius: 9999px; object-fit: contain;">';
+                        } else {
+                            echo '<span style="display:inline-flex;align-items:center;justify-content:center;height:44px;width:44px;background:#e0f2fe;color:#2563eb;font-weight:900;border-radius:9999px;">FD</span>';
+                        }
+                    }
+                    ?>
+                    <div class="footer-brand-text">
+                        <h3 class="footer-brand-name">FreshDew</h3>
+                        <p class="footer-brand-tagline">Medical Clinic</p>
+                    </div>
+                </div>
+                <p class="footer-description">
                     Providing world-class healthcare services in Canada.
                 </p>
+                <div class="footer-description-border"></div>
             </div>
             
             <div class="footer-section">
