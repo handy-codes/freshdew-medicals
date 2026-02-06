@@ -611,17 +611,36 @@ add_action('phpmailer_init', 'freshdew_configure_smtp');
 function freshdew_ai_settings_page() {
     if (isset($_POST['submit'])) {
         check_admin_referer('freshdew_ai_settings');
-        update_option('freshdew_groq_api_key', sanitize_text_field($_POST['groq_api_key']));
         
-        // Save SMTP settings
-        update_option('freshdew_smtp_enabled', isset($_POST['smtp_enabled']) ? 1 : 0);
-        update_option('freshdew_smtp_host', sanitize_text_field($_POST['smtp_host']));
-        update_option('freshdew_smtp_port', sanitize_text_field($_POST['smtp_port']));
-        update_option('freshdew_smtp_encryption', sanitize_text_field($_POST['smtp_encryption']));
-        update_option('freshdew_smtp_username', sanitize_text_field($_POST['smtp_username']));
-        update_option('freshdew_smtp_password', sanitize_text_field($_POST['smtp_password']));
-        update_option('freshdew_smtp_from_email', sanitize_email($_POST['smtp_from_email']));
-        update_option('freshdew_smtp_from_name', sanitize_text_field($_POST['smtp_from_name']));
+        // Determine which form was submitted based on which fields are present
+        $is_ai_form = isset($_POST['groq_api_key']);
+        $is_smtp_form = isset($_POST['smtp_host']) || isset($_POST['smtp_enabled']);
+        
+        // Only save AI Chat settings if AI form was submitted
+        if ($is_ai_form) {
+            // Update Groq API key from POST data (will be in POST if AI form was submitted)
+            update_option('freshdew_groq_api_key', sanitize_text_field($_POST['groq_api_key'] ?? ''));
+        }
+        
+        // Only save SMTP settings if SMTP form was submitted
+        if ($is_smtp_form) {
+            // Always update smtp_enabled (checkbox - 0 or 1)
+            update_option('freshdew_smtp_enabled', isset($_POST['smtp_enabled']) ? 1 : 0);
+            
+            // Update all SMTP fields from POST data (they will be in POST if SMTP form was submitted)
+            update_option('freshdew_smtp_host', sanitize_text_field($_POST['smtp_host'] ?? ''));
+            update_option('freshdew_smtp_port', sanitize_text_field($_POST['smtp_port'] ?? '587'));
+            update_option('freshdew_smtp_encryption', sanitize_text_field($_POST['smtp_encryption'] ?? 'tls'));
+            update_option('freshdew_smtp_username', sanitize_text_field($_POST['smtp_username'] ?? ''));
+            
+            // Password: only update if a new one was provided (don't clear if field is empty)
+            if (isset($_POST['smtp_password']) && !empty(trim($_POST['smtp_password']))) {
+                update_option('freshdew_smtp_password', sanitize_text_field($_POST['smtp_password']));
+            }
+            
+            update_option('freshdew_smtp_from_email', sanitize_email($_POST['smtp_from_email'] ?? ''));
+            update_option('freshdew_smtp_from_name', sanitize_text_field($_POST['smtp_from_name'] ?? 'FreshDew Medical Clinic'));
+        }
         
         echo '<div class="notice notice-success"><p>Settings saved!</p></div>';
     }
@@ -725,7 +744,10 @@ function freshdew_ai_settings_page() {
                             <label for="smtp_password">SMTP Password</label>
                         </th>
                         <td>
-                            <input type="password" id="smtp_password" name="smtp_password" value="<?php echo esc_attr($smtp_password); ?>" class="regular-text" />
+                            <input type="password" id="smtp_password" name="smtp_password" value="" class="regular-text" placeholder="<?php echo !empty($smtp_password) ? '••••••••' : ''; ?>" />
+                            <?php if (!empty($smtp_password)): ?>
+                                <p class="description" style="color: #666; font-style: italic;">Password is saved. Leave blank to keep current password, or enter a new password to change it.</p>
+                            <?php endif; ?>
                             <p class="description">
                                 For Hostinger: Use your email account password<br>
                                 For Gmail: Use an <a href="https://support.google.com/accounts/answer/185833" target="_blank">App Password</a> (not your regular password)<br>
