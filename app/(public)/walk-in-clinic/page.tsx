@@ -72,6 +72,31 @@ export default function WalkInClinicPage() {
             <span className="font-semibold">Emergency: 911</span>
           </div>
         </div>
+
+        {/* Image Upload Section */}
+        <div className="mt-12 space-y-6">
+          <h2 className="text-2xl font-semibold mb-6">Upload Images</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6">
+              <label className="block text-lg font-semibold mb-4 text-gray-700">GH</label>
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6">
+              <label className="block text-lg font-semibold mb-4 text-gray-700">OC</label>
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

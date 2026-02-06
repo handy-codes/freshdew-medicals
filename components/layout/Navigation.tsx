@@ -34,7 +34,7 @@ export default function Navigation() {
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className={`sticky top-0 z-50 w-full transition-all duration-300 ${
+      className={`sticky top-0 z-[9999] w-full transition-all duration-300 ${
         scrolled
           ? 'bg-white/95 backdrop-blur-md shadow-lg'
           : 'bg-white/80 backdrop-blur-sm'
@@ -52,8 +52,8 @@ export default function Navigation() {
               <Stethoscope className="w-6 h-6 text-white" />
             </motion.div>
             <div>
-              <h1 className="text-2xl font-extrabold bg-gradient-to-r from-blue-600 to-teal-500 bg-clip-text text-transparent">
-               FreshDew 
+              <h1 className="text-3xl font-extrabold bg-gradient-to-r from-blue-600 to-teal-500 bg-clip-text text-transparent">
+               FreshDew Medical Clinic
               </h1>
               <p className="text-xs text-gray-500">Advanced Healthcare</p>
             </div>
@@ -68,7 +68,7 @@ export default function Navigation() {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
+                  className={`relative px-4 py-2 rounded-lg text-base font-medium transition-all duration-300 ${
                     isActive
                       ? 'text-blue-600 bg-blue-50'
                       : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
