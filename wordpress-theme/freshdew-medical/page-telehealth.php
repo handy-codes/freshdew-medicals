@@ -27,34 +27,48 @@ $contact_info = freshdew_get_contact_info();
                 Perfect for follow-up appointments, prescription renewals, and non-urgent medical consultations.
             </p>
             
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin: 3rem 0;">
-                <div style="padding: 2rem; background: white; border-radius: 0.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                    <div style="width: 64px; height: 64px; margin-bottom: 1rem; color: #2563eb;">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                        </svg>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem; margin: 3rem 0;">
+                <?php
+                $telehealth_services = array(
+                    array(
+                        'title' => 'Video Consultations',
+                        'description' => 'Secure video calls with your doctor from your computer or mobile device.',
+                        'image' => 'video-consultations.jpg',
+                        'initials' => 'VC',
+                    ),
+                    array(
+                        'title' => 'Phone Consultations',
+                        'description' => 'Speak with a healthcare professional over the phone.',
+                        'image' => 'phone-consultations.jpg',
+                        'initials' => 'PC',
+                    ),
+                    array(
+                        'title' => 'Follow-up Care',
+                        'description' => 'Convenient follow-up appointments without leaving home.',
+                        'image' => 'follow-up-care.jpg',
+                        'initials' => 'FC',
+                    ),
+                );
+                foreach ($telehealth_services as $service) :
+                ?>
+                <div style="background: white; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 12px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)';">
+                    <div style="width: 100%; height: 300px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); position: relative; overflow: hidden;">
+                        <?php
+                        $service_image = get_template_directory_uri() . '/assets/images/services/' . $service['image'];
+                        $service_image_path = get_template_directory() . '/assets/images/services/' . $service['image'];
+                        if (file_exists($service_image_path)) {
+                            echo '<img src="' . esc_url($service_image) . '" alt="' . esc_attr($service['title']) . '" style="width: 100%; height: 100%; object-fit: cover;">';
+                        } else {
+                            echo '<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: 600;">' . esc_html($service['initials']) . '</div>';
+                        }
+                        ?>
                     </div>
-                    <h3 style="font-size: 1.25rem; margin-bottom: 1rem; color: #1f2937;">Video Consultations</h3>
-                    <p style="color: #6b7280; line-height: 1.6;">Secure video calls with your doctor from your computer or mobile device.</p>
-                </div>
-                <div style="padding: 2rem; background: white; border-radius: 0.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                    <div style="width: 64px; height: 64px; margin-bottom: 1rem; color: #2563eb;">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                        </svg>
+                    <div style="padding: 2rem;">
+                        <h3 style="font-size: 1.5rem; font-weight: 700; color: #2563eb; margin-bottom: 0.5rem;"><?php echo esc_html($service['title']); ?></h3>
+                        <p style="color: #1f2937; line-height: 1.7; margin-bottom: 1.5rem; font-size: 0.95rem;"><?php echo esc_html($service['description']); ?></p>
                     </div>
-                    <h3 style="font-size: 1.25rem; margin-bottom: 1rem; color: #1f2937;">Phone Consultations</h3>
-                    <p style="color: #6b7280; line-height: 1.6;">Speak with a healthcare professional over the phone.</p>
                 </div>
-                <div style="padding: 2rem; background: white; border-radius: 0.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                    <div style="width: 64px; height: 64px; margin-bottom: 1rem; color: #2563eb;">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                    </div>
-                    <h3 style="font-size: 1.25rem; margin-bottom: 1rem; color: #1f2937;">Follow-up Care</h3>
-                    <p style="color: #6b7280; line-height: 1.6;">Convenient follow-up appointments without leaving home.</p>
-                </div>
+                <?php endforeach; ?>
             </div>
             
             <h2 style="font-size: 2.5rem; margin: 3rem 0 2rem; color: #1f2937;">When to Use Telehealth</h2>

@@ -54,7 +54,7 @@ body {
     box-shadow: 0 2px 12px rgba(0,0,0,0.08) !important;
     position: sticky !important;
     top: 0 !important;
-    z-index: 1000 !important;
+    z-index: 9999 !important;
     padding: 0 !important;
     backdrop-filter: blur(10px) !important;
     -webkit-backdrop-filter: blur(10px) !important;
@@ -146,7 +146,7 @@ html body .site-header {
 
 .site-logo .brand-name {
     /* Bigger to match new logo */
-    font-size: 1.6rem;
+    font-size: 1.875rem;
     font-weight: 800;
     color: #2563eb;
     letter-spacing: -0.4px;
@@ -244,7 +244,7 @@ html body .site-header {
 
 .main-navigation a {
     text-decoration: none;
-    color: #6b7280;
+    color: #000000 !important;
     font-weight: 600;
     font-size: 1.125rem !important;
     transition: all 0.3s;

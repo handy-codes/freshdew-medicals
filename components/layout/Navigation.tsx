@@ -34,7 +34,8 @@ export default function Navigation() {
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className={`sticky top-0 z-[9999] w-full transition-all duration-300 ${
+      style={{ position: 'sticky', top: 0, zIndex: 9999 }}
+      className={`w-full transition-all duration-300 ${
         scrolled
           ? 'bg-white/95 backdrop-blur-md shadow-lg'
           : 'bg-white/80 backdrop-blur-sm'
@@ -71,7 +72,7 @@ export default function Navigation() {
                   className={`relative px-4 py-2 rounded-lg text-base font-medium transition-all duration-300 ${
                     isActive
                       ? 'text-blue-600 bg-blue-50'
-                      : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
+                      : 'text-black hover:text-blue-600 hover:bg-blue-50'
                   }`}
                 >
                   <span>{item.name}</span>

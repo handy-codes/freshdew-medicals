@@ -27,34 +27,48 @@ $contact_info = freshdew_get_contact_info();
             </div>
             
             <h2 style="font-size: 2.5rem; margin-bottom: 2rem; color: #1f2937;">What We Offer</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
-                <div style="padding: 2rem; background: white; border-radius: 0.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                    <div style="width: 64px; height: 64px; margin-bottom: 1rem; color: #2563eb;">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                        </svg>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem; margin-bottom: 3rem;">
+                <?php
+                $walkin_services = array(
+                    array(
+                        'title' => 'General Medical Care',
+                        'description' => 'Treatment for common illnesses and minor injuries.',
+                        'image' => 'general-medical-care.jpg',
+                        'initials' => 'GM',
+                    ),
+                    array(
+                        'title' => 'Prescriptions',
+                        'description' => 'Prescription renewals and new prescriptions as needed.',
+                        'image' => 'prescriptions.jpg',
+                        'initials' => 'PR',
+                    ),
+                    array(
+                        'title' => 'Health Assessments',
+                        'description' => 'Basic health check-ups and assessments.',
+                        'image' => 'health-assessments.jpg',
+                        'initials' => 'HA',
+                    ),
+                );
+                foreach ($walkin_services as $service) :
+                ?>
+                <div style="background: white; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 12px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)';">
+                    <div style="width: 100%; height: 300px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); position: relative; overflow: hidden;">
+                        <?php
+                        $service_image = get_template_directory_uri() . '/assets/images/services/' . $service['image'];
+                        $service_image_path = get_template_directory() . '/assets/images/services/' . $service['image'];
+                        if (file_exists($service_image_path)) {
+                            echo '<img src="' . esc_url($service_image) . '" alt="' . esc_attr($service['title']) . '" style="width: 100%; height: 100%; object-fit: cover;">';
+                        } else {
+                            echo '<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: 600;">' . esc_html($service['initials']) . '</div>';
+                        }
+                        ?>
                     </div>
-                    <h3 style="font-size: 1.25rem; margin-bottom: 1rem; color: #1f2937;">General Medical Care</h3>
-                    <p style="color: #6b7280; line-height: 1.6;">Treatment for common illnesses and minor injuries.</p>
-                </div>
-                <div style="padding: 2rem; background: white; border-radius: 0.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                    <div style="width: 64px; height: 64px; margin-bottom: 1rem; color: #2563eb;">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-                        </svg>
+                    <div style="padding: 2rem;">
+                        <h3 style="font-size: 1.5rem; font-weight: 700; color: #2563eb; margin-bottom: 0.5rem;"><?php echo esc_html($service['title']); ?></h3>
+                        <p style="color: #1f2937; line-height: 1.7; margin-bottom: 1.5rem; font-size: 0.95rem;"><?php echo esc_html($service['description']); ?></p>
                     </div>
-                    <h3 style="font-size: 1.25rem; margin-bottom: 1rem; color: #1f2937;">Prescriptions</h3>
-                    <p style="color: #6b7280; line-height: 1.6;">Prescription renewals and new prescriptions as needed.</p>
                 </div>
-                <div style="padding: 2rem; background: white; border-radius: 0.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                    <div style="width: 64px; height: 64px; margin-bottom: 1rem; color: #2563eb;">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                    </div>
-                    <h3 style="font-size: 1.25rem; margin-bottom: 1rem; color: #1f2937;">Health Assessments</h3>
-                    <p style="color: #6b7280; line-height: 1.6;">Basic health check-ups and assessments.</p>
-                </div>
+                <?php endforeach; ?>
             </div>
             
             <h2 style="font-size: 2.5rem; margin: 3rem 0 2rem; color: #1f2937;">Hours of Operation</h2>

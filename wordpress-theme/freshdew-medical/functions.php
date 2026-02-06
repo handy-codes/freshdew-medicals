@@ -432,9 +432,13 @@ function freshdew_ai_chat_handler($request) {
     if (!empty($groq_api_key)) {
         // Use Groq API
         $response = freshdew_call_groq_api($message, $groq_api_key, $contact_info);
-        if ($response) {
+        if ($response && !empty($response)) {
             return rest_ensure_response(array('response' => $response));
         }
+        // If API call failed, log it and fall through to rule-based responses
+        error_log('Groq API call failed or returned empty response. Falling back to rule-based responses.');
+    } else {
+        error_log('Groq API key not configured. Using rule-based responses.');
     }
     
     // Fallback to rule-based responses
@@ -507,16 +511,30 @@ Be concise, friendly, and professional. Always remind users that for medical eme
     $response = wp_remote_post($url, $args);
     
     if (is_wp_error($response)) {
+        error_log('Groq API Error: ' . $response->get_error_message());
         return false;
     }
     
+    $response_code = wp_remote_retrieve_response_code($response);
     $body = wp_remote_retrieve_body($response);
     $data = json_decode($body, true);
+    
+    // Log API errors for debugging
+    if ($response_code !== 200) {
+        error_log('Groq API Response Code: ' . $response_code);
+        error_log('Groq API Response Body: ' . $body);
+        if (isset($data['error'])) {
+            error_log('Groq API Error: ' . print_r($data['error'], true));
+        }
+        return false;
+    }
     
     if (isset($data['choices'][0]['message']['content'])) {
         return trim($data['choices'][0]['message']['content']);
     }
     
+    // Log if response structure is unexpected
+    error_log('Groq API Unexpected Response: ' . print_r($data, true));
     return false;
 }
 
