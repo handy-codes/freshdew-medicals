@@ -6,7 +6,7 @@ $contact_info = freshdew_get_contact_info();
     <div class="container">
         <div class="footer-content">
             <div class="footer-section">
-                <div class="footer-brand-text" style="margin-bottom: 1rem;">
+                <a href="<?php echo esc_url(home_url('/')); ?>" class="footer-brand-text" style="margin-bottom: 1rem; text-decoration: none;">
                     <?php
                     // Use same logo logic as header
                     $custom_logo_id = get_theme_mod('custom_logo');
@@ -24,11 +24,11 @@ $contact_info = freshdew_get_contact_info();
                         }
                     }
                     ?>
-                    <div>
+                    <div style="display: flex; flex-direction: column;">
                         <h3 class="footer-brand-name">FreshDew</h3>
                         <p class="footer-brand-tagline">Medical Clinic</p>
                     </div>
-                </div>
+                </a>
                 <p class="footer-description">
                     Providing world-class healthcare services in Canada.
                 </p>
