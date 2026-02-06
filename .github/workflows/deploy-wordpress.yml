@@ -33,7 +33,7 @@ jobs:
           password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
           server-dir: /public_html/wp-content/themes/freshdew-medical/
           local-dir: ./wordpress-theme/freshdew-medical/
-          protocol: ftp
+          protocol: ftps
           dangerous-clean-slate: false
           dry-run: false
           exclude: |
@@ -42,7 +42,7 @@ jobs:
             **/README.md
             **/*.md
           log-level: verbose
-        timeout-minutes: 10
+        timeout-minutes: 15
       
       - name: Deploy Plugins to WordPress
         uses: SamKirkland/FTP-Deploy-Action@4.3.0
@@ -52,7 +52,7 @@ jobs:
           password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
           server-dir: /public_html/wp-content/plugins/
           local-dir: ./wordpress-plugins/
-          protocol: ftp
+          protocol: ftps
           dangerous-clean-slate: false
           dry-run: false
           exclude: |
@@ -61,7 +61,7 @@ jobs:
             **/README.md
             **/*.md
           log-level: verbose
-        timeout-minutes: 10
+        timeout-minutes: 15
       
       - name: Deployment Success
         run: |

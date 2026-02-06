@@ -273,7 +273,7 @@ function freshdew_get_contact_info() {
         'phone_formatted' => '(613) 288-0183',
         'fax' => '6132880321',
         'fax_formatted' => '(613) 288-0321',
-        'email' => 'admin@freshdewmedicalclinic.com',
+        'email' => 'info@freshdewmedicalclinic.com',
         'website' => 'www.freshdewmedicalclinic.com',
         'latitude' => 44.1628,
         'longitude' => -77.3831,

@@ -154,3 +154,5 @@ After configuring SMTP:
 
 **Next Step:** Go to WordPress Admin → Settings → FreshDew AI → Email SMTP Settings tab and configure!
 
+
+

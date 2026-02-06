@@ -193,3 +193,5 @@ After fixing:
 
 **For a medical website, instant access is crucial. Remove the "Checking browser" page for better user experience!** 🏥
 
+
+

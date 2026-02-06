@@ -183,3 +183,5 @@ Once deployment works:
 
 **Most likely issue:** Hostinger requires SFTP, not FTP. Check with Hostinger support or try enabling SSH access.
 
+
+

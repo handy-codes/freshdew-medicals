@@ -166,3 +166,5 @@ All changes maintain the WordPress theme's color scheme:
 
 The About page now showcases your medical team, and the appointments booking page is ready for patients to schedule visits!
 
+
+
