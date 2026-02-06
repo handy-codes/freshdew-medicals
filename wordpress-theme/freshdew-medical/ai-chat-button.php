@@ -23,8 +23,8 @@ $contact_info = freshdew_get_contact_info();
         <!-- Chat Header (Sticky) -->
         <div id="chat-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; position: sticky; top: 0; z-index: 1;">
             <div>
-                <h3 style="margin: 0; font-size: 1.125rem; font-weight: 600;">AI Assistant</h3>
-                <p style="margin: 0.25rem 0 0; font-size: 0.875rem; opacity: 0.9;">FreshDew Medical Clinic</p>
+                <h3 style="margin: 0; font-size: 1.125rem; font-weight: 600; color: white;">AI Assistant</h3>
+                <p style="margin: 0.25rem 0 0; font-size: 0.875rem; opacity: 0.9; color: white;">FreshDew Medical Clinic</p>
             </div>
             <button id="chat-close-btn" style="background: rgba(255,255,255,0.2); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 20px; font-weight: bold; display: flex; align-items: center; justify-content: center; transition: background 0.3s;">×</button>
         </div>
