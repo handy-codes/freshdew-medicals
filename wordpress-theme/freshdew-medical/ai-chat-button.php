@@ -401,18 +401,36 @@ console.log('Chat button script loading...');
             
             const assistantMsg = document.createElement('div');
             assistantMsg.className = 'message assistant';
-            assistantMsg.innerHTML = '<p style="margin: 0; color: #1f2937; line-height: 1.6;">' + escapeHtml(data.response || 'I apologize, but I could not process your request. Please try again.') + '</p>';
+            const messageText = data.response || 'I apologize, but I could not process your request. Please try again.';
+            const messageParagraph = document.createElement('p');
+            messageParagraph.style.margin = '0';
+            messageParagraph.style.color = '#1f2937';
+            messageParagraph.style.lineHeight = '1.6';
+            assistantMsg.appendChild(messageParagraph);
             chatMessages.appendChild(assistantMsg);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // Type out the message with natural reading pace
+            typeMessage(messageParagraph, messageText, function() {
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            });
         })
         .catch(error => {
             typingIndicator.style.display = 'none';
             
             const errorMsg = document.createElement('div');
             errorMsg.className = 'message assistant';
-            errorMsg.innerHTML = '<p style="margin: 0; color: #1f2937; line-height: 1.6;">I apologize, but I\'m having trouble processing your request. Please try again or contact us at <?php echo esc_js($contact_info['phone_formatted']); ?>.</p>';
+            const errorParagraph = document.createElement('p');
+            errorParagraph.style.margin = '0';
+            errorParagraph.style.color = '#1f2937';
+            errorParagraph.style.lineHeight = '1.6';
+            const errorText = 'I apologize, but I\'m having trouble processing your request. Please try again or contact us at <?php echo esc_js($contact_info['phone_formatted']); ?>.';
+            errorMsg.appendChild(errorParagraph);
             chatMessages.appendChild(errorMsg);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // Type out the error message
+            typeMessage(errorParagraph, errorText, function() {
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            });
         });
     }
     
@@ -456,6 +474,38 @@ console.log('Chat button script loading...');
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
+        }
+        
+        // Type message with natural reading pace animation
+        function typeMessage(element, text, callback) {
+            const escapedText = escapeHtml(text);
+            let index = 0;
+            const typingSpeed = 20; // milliseconds per character (adjust for speed: lower = faster)
+            const pauseOnPunctuation = 100; // extra pause after punctuation
+            
+            function typeChar() {
+                if (index < escapedText.length) {
+                    const char = escapedText[index];
+                    element.innerHTML += char;
+                    index++;
+                    
+                    // Add extra pause after punctuation for natural reading
+                    const delay = (char === '.' || char === '!' || char === '?' || char === ',') 
+                        ? typingSpeed + pauseOnPunctuation 
+                        : typingSpeed;
+                    
+                    // Scroll to bottom as we type
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                    
+                    setTimeout(typeChar, delay);
+                } else {
+                    // Finished typing
+                    if (callback) callback();
+                }
+            }
+            
+            // Start typing
+            typeChar();
         }
     }
     
