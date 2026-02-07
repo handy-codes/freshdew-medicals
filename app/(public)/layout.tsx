@@ -11,9 +11,9 @@ import AIChatButton from '@/components/features/AIChatButton';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'FreshDew Medical Clini - Advanced Healthcare in Canada',
+  title: 'FreshDew Medical Clini - Quality Healthcare accross Belleville',
   // title: 'HealthPlus Hospital - Advanced Healthcare in Canada',
-  description: 'World-class hospital providing innovative healthcare services across Canada with cutting-edge technology and compassionate care.',
+  description: 'World-class hospital providing innovative healthcare services across Belleville with cutting-edge technology and compassionate care.',
   keywords: ['hospital', 'healthcare', 'Canada', 'medical', 'telehealth', 'doctor'],
 };
 

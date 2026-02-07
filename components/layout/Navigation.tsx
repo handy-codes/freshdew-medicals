@@ -56,7 +56,7 @@ export default function Navigation() {
               <h1 className="text-3xl font-extrabold bg-gradient-to-r from-blue-600 to-teal-500 bg-clip-text text-transparent">
                FreshDew Medical Clinic
               </h1>
-              <p className="text-xs text-gray-500">Advanced Healthcare</p>
+              <p className="text-xs text-gray-500">Quality Healthcare</p>
             </div>
           </Link>
 

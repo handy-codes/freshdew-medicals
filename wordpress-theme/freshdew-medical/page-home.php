@@ -25,9 +25,9 @@ $contact_info = freshdew_get_contact_info();
             </div>
             
             <h1 class="hero-title" style="color: white;">
-                Advanced Healthcare
+                Quality Healthcare
                 <span style="display: block; background: linear-gradient(to right, #67e8f9, #93c5fd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
-                    For All Canadians
+                    For residents of Belleville and surrounding areas
                 </span>
             </h1>
             

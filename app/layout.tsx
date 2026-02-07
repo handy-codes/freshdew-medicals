@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "FreshDew Hospital - Advanced Healthcare in Canada",
+  title: "FreshDew Hospital - Quality Healthcare across Belleville",
   // title: "HealthPlus Hospital - Advanced Healthcare in Canada",
   description: "World-class hospital providing innovative healthcare services across Canada",
 };
