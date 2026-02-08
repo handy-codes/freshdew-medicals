@@ -32,7 +32,7 @@ $contact_info = freshdew_get_contact_info();
             </h1>
             
             <p class="hero-subtitle">
-                Experience world-class medical care with cutting-edge technology, 
+                Experience premium medical care with cutting-edge technology, 
                 compassionate professionals, and innovative telehealth solutions—all from the comfort of your home.
             </p>
             
