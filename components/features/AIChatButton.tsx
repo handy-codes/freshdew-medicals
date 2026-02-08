@@ -124,8 +124,7 @@ export default function AIChatButton() {
             <path d="M12 2L14 8L20 6L14 10L22 12L14 14L20 18L14 16L12 22L10 16L4 18L10 14L2 12L10 10L4 6L10 8L12 2Z" />
             <circle cx="12" cy="12" r="2" fill="currentColor" />
           </svg>
-          <span className="hidden sm:inline">Ask Dew</span>
-          <span className="sm:hidden">Dew</span>
+          <span>Ask Dew</span>
         </Button>
       </motion.div>
 

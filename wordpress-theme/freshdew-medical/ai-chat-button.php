@@ -8,9 +8,12 @@ $contact_info = freshdew_get_contact_info();
 ?>
 
 <!-- Chat Button - Separate from widget container, like Next.js -->
-<button id="ai-chat-toggle" style="position: fixed !important; bottom: 16px !important; right: 16px !important; z-index: 9999 !important; width: auto !important; min-width: 100px !important; height: 44px !important; border-radius: 22px !important; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; border: none !important; color: white !important; font-size: 14px !important; font-weight: 600 !important; cursor: pointer !important; box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important; transition: transform 0.3s !important; display: flex !important; align-items: center !important; justify-content: center !important; padding: 0 16px !important; gap: 6px !important; pointer-events: auto !important;">
-    <span id="chat-icon">💬</span>
-    <span id="chat-text-full" style="display: none;">Ask Dew</span>
+<button id="ai-chat-toggle" style="position: fixed !important; bottom: 16px !important; right: 16px !important; z-index: 9999 !important; width: auto !important; min-width: 100px !important; height: 44px !important; border-radius: 22px !important; background: #9333EA !important; border: none !important; color: white !important; font-size: 14px !important; font-weight: 600 !important; cursor: pointer !important; box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important; transition: transform 0.3s, background-color 0.3s !important; display: flex !important; align-items: center !important; justify-content: center !important; padding: 0 16px !important; gap: 6px !important; pointer-events: auto !important;" onmouseover="this.style.backgroundColor='#7E22CE'" onmouseout="this.style.backgroundColor='#9333EA'">
+    <svg id="chat-icon-svg" style="width: 16px; height: 16px; fill: currentColor;" viewBox="0 0 24 24">
+        <path d="M12 2L14 8L20 6L14 10L22 12L14 14L20 18L14 16L12 22L10 16L4 18L10 14L2 12L10 10L4 6L10 8L12 2Z" />
+        <circle cx="12" cy="12" r="2" fill="currentColor" />
+    </svg>
+    <span id="chat-text-full">Ask Dew</span>
     <span id="chat-text-short" style="display: none;">Ask Dew</span>
     <span id="close-icon" style="display: none;">×</span>
 </button>
@@ -134,6 +137,15 @@ $contact_info = freshdew_get_contact_info();
     padding: 0 16px !important;
 }
 
+/* Always show "Ask Dew" text at all screen sizes */
+#chat-text-full {
+    display: inline !important;
+}
+
+#chat-text-short {
+    display: none !important;
+}
+
 /* Chat window container - separate from button */
 #ai-chat-widget-root {
     position: fixed !important;
@@ -200,12 +212,11 @@ $contact_info = freshdew_get_contact_info();
     }
     
     #chat-text-full {
-        display: none !important;
+        display: inline !important;
     }
     
     #chat-text-short {
-        display: inline !important;
-        font-size: 12px !important;
+        display: none !important;
     }
     
     #ai-chat-window {
@@ -251,7 +262,7 @@ console.log('Chat button script loading...');
         console.log('Initializing chat...');
         const chatToggle = document.getElementById('ai-chat-toggle');
         const chatWindow = document.getElementById('ai-chat-window');
-        const chatIcon = document.getElementById('chat-icon');
+        const chatIconSvg = document.getElementById('chat-icon-svg');
         const chatTextFull = document.getElementById('chat-text-full');
         const chatTextShort = document.getElementById('chat-text-short');
         const closeIcon = document.getElementById('close-icon');
@@ -267,7 +278,7 @@ console.log('Chat button script loading...');
         console.log('Chat elements found:', {
             chatToggle: !!chatToggle,
             chatWindow: !!chatWindow,
-            chatIcon: !!chatIcon,
+            chatIconSvg: !!chatIconSvg,
             chatTextFull: !!chatTextFull,
             chatTextShort: !!chatTextShort
         });
@@ -290,13 +301,13 @@ console.log('Chat button script loading...');
             isOpen = false;
             chatWindow.style.display = 'none';
             if (chatOverlay) chatOverlay.style.display = 'none';
-            if (chatIcon) chatIcon.style.display = 'inline';
+            const chatIconSvg = document.getElementById('chat-icon-svg');
+            if (chatIconSvg) chatIconSvg.style.display = 'inline-block';
             const chatTextFull = document.getElementById('chat-text-full');
             const chatTextShort = document.getElementById('chat-text-short');
-            if (chatTextFull) chatTextFull.style.display = window.innerWidth >= 640 ? 'inline' : 'none';
+            if (chatTextFull) chatTextFull.style.display = 'inline';
             if (chatTextShort) {
-                chatTextShort.style.display = window.innerWidth < 640 ? 'inline' : 'none';
-                chatTextShort.textContent = 'Ask Dew';
+                chatTextShort.style.display = 'none';
             }
             if (closeIcon) closeIcon.style.display = 'none';
             document.body.style.overflow = '';
@@ -312,7 +323,8 @@ console.log('Chat button script loading...');
                 if (chatOverlay) chatOverlay.style.display = 'block';
                 document.body.style.overflow = 'hidden';
             }
-            if (chatIcon) chatIcon.style.display = 'none';
+            const chatIconSvg = document.getElementById('chat-icon-svg');
+            if (chatIconSvg) chatIconSvg.style.display = 'none';
             const chatTextFull = document.getElementById('chat-text-full');
             const chatTextShort = document.getElementById('chat-text-short');
             if (chatTextFull) chatTextFull.style.display = 'none';
@@ -559,14 +571,9 @@ console.log('Chat button script loading...');
         function updateChatButtonText() {
             if (!isOpen) {
                 if (chatTextFull && chatTextShort) {
-                    if (window.innerWidth >= 640) {
-                        chatTextFull.style.display = 'inline';
-                        chatTextShort.style.display = 'none';
-                    } else {
-                        chatTextFull.style.display = 'none';
-                        chatTextShort.style.display = 'inline';
-                        chatTextShort.textContent = 'Ask Dew';
-                    }
+                    // Always show "Ask Dew" on both mobile and desktop
+                    chatTextFull.style.display = 'inline';
+                    chatTextShort.style.display = 'none';
                 }
             }
         }

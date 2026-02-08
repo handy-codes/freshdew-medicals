@@ -305,6 +305,23 @@ html body .site-header {
     width: 60%;
 }
 
+/* Register button styling */
+.main-navigation a[href*="register"] {
+    background: #F69710 !important;
+    color: white !important;
+    padding: 0.5rem !important;
+    border-radius: 6px;
+}
+
+.main-navigation a[href*="register"]:hover {
+    background: #E0870F !important;
+    color: white !important;
+}
+
+.main-navigation a[href*="register"]::after {
+    display: none !important;
+}
+
 .main-navigation .current-menu-item > a,
 .main-navigation .current_page_item > a,
 .main-navigation a.current,
