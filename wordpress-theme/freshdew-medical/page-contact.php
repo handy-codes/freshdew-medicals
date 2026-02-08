@@ -17,6 +17,35 @@ $contact_info = freshdew_get_contact_info();
             <!-- Contact Form -->
             <div style="background: #f9fafb; padding: 2rem; border-radius: 0.5rem;">
                 <h2 style="margin-bottom: 1.5rem;">Get in Touch</h2>
+                
+                <?php
+                // Display success/error messages
+                if (isset($_GET['contact'])) {
+                    $status = sanitize_text_field($_GET['contact']);
+                    if ($status === 'success') {
+                        echo '<div style="background: #d1fae5; border: 1px solid #10b981; color: #065f46; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem;">';
+                        echo '<strong>✓ Success!</strong> Your message has been sent. We will get back to you soon.';
+                        echo '</div>';
+                    } elseif ($status === 'error') {
+                        echo '<div style="background: #fee2e2; border: 1px solid #ef4444; color: #991b1b; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem;">';
+                        echo '<strong>Error:</strong> Security verification failed. Please try again.';
+                        echo '</div>';
+                    } elseif ($status === 'missing') {
+                        echo '<div style="background: #fee2e2; border: 1px solid #ef4444; color: #991b1b; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem;">';
+                        echo '<strong>Error:</strong> Please fill in all required fields.';
+                        echo '</div>';
+                    } elseif ($status === 'invalid_email') {
+                        echo '<div style="background: #fee2e2; border: 1px solid #ef4444; color: #991b1b; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem;">';
+                        echo '<strong>Error:</strong> Please enter a valid email address.';
+                        echo '</div>';
+                    } elseif ($status === 'error_send') {
+                        echo '<div style="background: #fef3c7; border: 1px solid #f59e0b; color: #92400e; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem;">';
+                        echo '<strong>Notice:</strong> There was an issue sending your message. Please try again or contact us directly at <a href="mailto:' . esc_attr($contact_info['email']) . '" style="color: #92400e; text-decoration: underline;">' . esc_html($contact_info['email']) . '</a>.';
+                        echo '</div>';
+                    }
+                }
+                ?>
+                
                 <?php
                 // Use Contact Form 7 if available, otherwise show basic form
                 if (function_exists('wpcf7_contact_form')) {

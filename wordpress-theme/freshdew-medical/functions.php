@@ -417,6 +417,95 @@ function freshdew_book_appointment_handler($request) {
     ));
 }
 
+/**
+ * Handle Contact Form Submission
+ */
+function freshdew_handle_contact_form() {
+    // Verify nonce
+    if (!isset($_POST['freshdew_contact_nonce']) || !wp_verify_nonce($_POST['freshdew_contact_nonce'], 'freshdew_contact_form')) {
+        wp_redirect(add_query_arg('contact', 'error', home_url('/contact')));
+        exit;
+    }
+    
+    // Sanitize input
+    $name = isset($_POST['name']) ? sanitize_text_field($_POST['name']) : '';
+    $email = isset($_POST['email']) ? sanitize_email($_POST['email']) : '';
+    $message = isset($_POST['message']) ? sanitize_textarea_field($_POST['message']) : '';
+    
+    // Validate required fields
+    if (empty($name) || empty($email) || empty($message)) {
+        wp_redirect(add_query_arg('contact', 'missing', home_url('/contact')));
+        exit;
+    }
+    
+    // Validate email format
+    if (!is_email($email)) {
+        wp_redirect(add_query_arg('contact', 'invalid_email', home_url('/contact')));
+        exit;
+    }
+    
+    $contact_info = freshdew_get_contact_info();
+    $to = $contact_info['email'];
+    $subject = 'New Contact Form Message from ' . get_bloginfo('name');
+    
+    // Create HTML email
+    $message_html = '<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; background: #f4f4f4; padding: 20px;">';
+    $message_html .= '<div style="max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">';
+    $message_html .= '<h2 style="color: #667eea; margin-bottom: 20px;">New Contact Form Message</h2>';
+    $message_html .= '<div style="background: #f9fafb; padding: 20px; border-radius: 6px; margin-bottom: 20px;">';
+    $message_html .= '<p><strong>Name:</strong> ' . esc_html($name) . '</p>';
+    $message_html .= '<p><strong>Email:</strong> <a href="mailto:' . esc_attr($email) . '">' . esc_html($email) . '</a></p>';
+    $message_html .= '<p><strong>Message:</strong></p>';
+    $message_html .= '<div style="background: white; padding: 15px; border-left: 3px solid #667eea; margin-top: 10px;">' . nl2br(esc_html($message)) . '</div>';
+    $message_html .= '</div>';
+    $message_html .= '<p style="margin-top: 20px; font-size: 12px; color: #666;">';
+    $message_html .= 'Submitted: ' . current_time('mysql') . '<br>';
+    $message_html .= 'IP Address: ' . (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : 'Unknown');
+    $message_html .= '</p>';
+    $message_html .= '</div></body></html>';
+    
+    // Plain text version
+    $message_text = "New contact form message received:\n\n";
+    $message_text .= "Name: $name\n";
+    $message_text .= "Email: $email\n";
+    $message_text .= "Message:\n$message\n\n";
+    $message_text .= "---\n";
+    $message_text .= "Submitted: " . current_time('mysql') . "\n";
+    $message_text .= "IP Address: " . (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : 'Unknown') . "\n";
+    
+    // Check if SMTP is enabled
+    $smtp_enabled = get_option('freshdew_smtp_enabled', 0);
+    
+    $headers = array(
+        'Content-Type: text/html; charset=UTF-8',
+        'From: FreshDew Medical Clinic <' . $contact_info['email'] . '>',
+        'Reply-To: ' . $email,
+        'X-Mailer: WordPress',
+        'MIME-Version: 1.0',
+    );
+    
+    if (!$smtp_enabled) {
+        $headers[] = 'X-Priority: 1';
+        $headers[] = 'Importance: High';
+    }
+    
+    // Send email
+    $email_sent = wp_mail($to, $subject, $message_html, $headers);
+    
+    // Log for debugging
+    error_log('Contact Form: ' . $name . ' (' . $email . ') - Email sent: ' . ($email_sent ? 'Yes' : 'No'));
+    
+    // Redirect with success message
+    if ($email_sent) {
+        wp_redirect(add_query_arg('contact', 'success', home_url('/contact')));
+    } else {
+        wp_redirect(add_query_arg('contact', 'error_send', home_url('/contact')));
+    }
+    exit;
+}
+add_action('admin_post_freshdew_contact_form', 'freshdew_handle_contact_form');
+add_action('admin_post_nopriv_freshdew_contact_form', 'freshdew_handle_contact_form');
+
 function freshdew_ai_chat_handler($request) {
     $message = $request->get_param('message');
     
