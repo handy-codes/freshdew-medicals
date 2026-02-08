@@ -25,8 +25,26 @@ jobs:
           echo "${GITHUB_SHA}" > wordpress-theme/freshdew-medical/assets/deploy-version.txt
           echo "deploy-version: ${GITHUB_SHA}"
       
-      # Theme Deployment - FTP Attempt 1
-      - name: Deploy Theme (FTP Attempt 1)
+      - name: Validate FTP Secrets
+        run: |
+          if [ -z "${{ secrets.HOSTINGER_FTP_SERVER }}" ]; then
+            echo "❌ HOSTINGER_FTP_SERVER secret is missing"
+            exit 1
+          fi
+          if [ -z "${{ secrets.HOSTINGER_FTP_USERNAME }}" ]; then
+            echo "❌ HOSTINGER_FTP_USERNAME secret is missing"
+            exit 1
+          fi
+          if [ -z "${{ secrets.HOSTINGER_FTP_PASSWORD }}" ]; then
+            echo "❌ HOSTINGER_FTP_PASSWORD secret is missing"
+            exit 1
+          fi
+          echo "✅ All FTP secrets are present"
+          echo "Server: ${{ secrets.HOSTINGER_FTP_SERVER }}"
+          echo "Username: ${{ secrets.HOSTINGER_FTP_USERNAME }}"
+      
+      # Theme Deployment - FTP Attempt 1 (with leading slash)
+      - name: Deploy Theme (FTP Attempt 1 - Standard Path)
         id: theme-ftp-1
         continue-on-error: true
         uses: SamKirkland/FTP-Deploy-Action@4.3.0
@@ -47,8 +65,8 @@ jobs:
           log-level: verbose
         timeout-minutes: 20
       
-      # Theme Deployment - FTP Attempt 2
-      - name: Deploy Theme (FTP Attempt 2)
+      # Theme Deployment - FTP Attempt 2 (without leading slash)
+      - name: Deploy Theme (FTP Attempt 2 - Alternative Path)
         if: steps.theme-ftp-1.outcome == 'failure'
         id: theme-ftp-2
         continue-on-error: true
@@ -57,7 +75,7 @@ jobs:
           server: ${{ secrets.HOSTINGER_FTP_SERVER }}
           username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
           password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
-          server-dir: /public_html/wp-content/themes/freshdew-medical/
+          server-dir: public_html/wp-content/themes/freshdew-medical/
           local-dir: ./wordpress-theme/freshdew-medical/
           protocol: ftp
           dangerous-clean-slate: false
@@ -70,8 +88,8 @@ jobs:
           log-level: verbose
         timeout-minutes: 20
       
-      # Theme Deployment - FTP Attempt 3
-      - name: Deploy Theme (FTP Attempt 3)
+      # Theme Deployment - FTP Attempt 3 (root path)
+      - name: Deploy Theme (FTP Attempt 3 - Root Path)
         if: steps.theme-ftp-2.outcome == 'failure'
         id: theme-ftp-3
         continue-on-error: true
@@ -80,7 +98,7 @@ jobs:
           server: ${{ secrets.HOSTINGER_FTP_SERVER }}
           username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
           password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
-          server-dir: /public_html/wp-content/themes/freshdew-medical/
+          server-dir: /wp-content/themes/freshdew-medical/
           local-dir: ./wordpress-theme/freshdew-medical/
           protocol: ftp
           dangerous-clean-slate: false
@@ -93,8 +111,8 @@ jobs:
           log-level: verbose
         timeout-minutes: 20
       
-      # Theme Deployment - FTPS Fallback Attempt 1
-      - name: Deploy Theme (FTPS Fallback Attempt 1)
+      # Theme Deployment - FTPS Fallback Attempt 1 (with leading slash)
+      - name: Deploy Theme (FTPS Fallback Attempt 1 - Standard Path)
         if: steps.theme-ftp-3.outcome == 'failure'
         id: theme-ftps-1
         continue-on-error: true
@@ -116,8 +134,8 @@ jobs:
           log-level: verbose
         timeout-minutes: 20
       
-      # Theme Deployment - FTPS Fallback Attempt 2
-      - name: Deploy Theme (FTPS Fallback Attempt 2)
+      # Theme Deployment - FTPS Fallback Attempt 2 (without leading slash)
+      - name: Deploy Theme (FTPS Fallback Attempt 2 - Alternative Path)
         if: steps.theme-ftps-1.outcome == 'failure'
         id: theme-ftps-2
         continue-on-error: true
@@ -126,7 +144,7 @@ jobs:
           server: ${{ secrets.HOSTINGER_FTP_SERVER }}
           username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
           password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
-          server-dir: /public_html/wp-content/themes/freshdew-medical/
+          server-dir: public_html/wp-content/themes/freshdew-medical/
           local-dir: ./wordpress-theme/freshdew-medical/
           protocol: ftps
           dangerous-clean-slate: false
@@ -139,8 +157,8 @@ jobs:
           log-level: verbose
         timeout-minutes: 20
       
-      # Theme Deployment - FTPS Fallback Attempt 3
-      - name: Deploy Theme (FTPS Fallback Attempt 3)
+      # Theme Deployment - FTPS Fallback Attempt 3 (root path)
+      - name: Deploy Theme (FTPS Fallback Attempt 3 - Root Path)
         if: steps.theme-ftps-2.outcome == 'failure'
         id: theme-ftps-3
         continue-on-error: true
@@ -149,7 +167,7 @@ jobs:
           server: ${{ secrets.HOSTINGER_FTP_SERVER }}
           username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
           password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
-          server-dir: /public_html/wp-content/themes/freshdew-medical/
+          server-dir: /wp-content/themes/freshdew-medical/
           local-dir: ./wordpress-theme/freshdew-medical/
           protocol: ftps
           dangerous-clean-slate: false
@@ -174,19 +192,54 @@ jobs:
         run: |
           echo "❌ Theme deployment failed after 6 attempts (3 FTP + 3 FTPS)"
           echo ""
-          echo "Please verify:"
-          echo "1. GitHub Secrets are correct:"
-          echo "   - HOSTINGER_FTP_SERVER"
-          echo "   - HOSTINGER_FTP_USERNAME"
-          echo "   - HOSTINGER_FTP_PASSWORD"
+          echo "📋 Attempted configurations:"
+          echo "   FTP Attempt 1: /public_html/wp-content/themes/freshdew-medical/"
+          echo "   FTP Attempt 2: public_html/wp-content/themes/freshdew-medical/"
+          echo "   FTP Attempt 3: /wp-content/themes/freshdew-medical/"
+          echo "   FTPS Attempt 1: /public_html/wp-content/themes/freshdew-medical/"
+          echo "   FTPS Attempt 2: public_html/wp-content/themes/freshdew-medical/"
+          echo "   FTPS Attempt 3: /wp-content/themes/freshdew-medical/"
           echo ""
-          echo "2. Test FTP connection locally with FileZilla"
-          echo "3. Check Hostinger FTP account status"
-          echo "4. Verify server address format"
+          echo "🔍 Troubleshooting Steps:"
+          echo ""
+          echo "1. Verify GitHub Secrets:"
+          echo "   - Go to: Repository → Settings → Secrets and variables → Actions"
+          echo "   - Check these secrets exist and are correct:"
+          echo "     • HOSTINGER_FTP_SERVER (e.g., ftp.yourdomain.com or IP address)"
+          echo "     • HOSTINGER_FTP_USERNAME"
+          echo "     • HOSTINGER_FTP_PASSWORD"
+          echo ""
+          echo "2. Test FTP connection locally:"
+          echo "   - Download FileZilla: https://filezilla-project.org/"
+          echo "   - Connect using your FTP credentials"
+          echo "   - If FileZilla works → Credentials are correct"
+          echo "   - Note the exact path you see in FileZilla (this is the correct server-dir)"
+          echo ""
+          echo "3. Check Hostinger FTP settings:"
+          echo "   - Log in to Hostinger hPanel"
+          echo "   - Go to: Files → FTP Accounts"
+          echo "   - Verify:"
+          echo "     • FTP is enabled"
+          echo "     • Server address format (should be like ftp.yourdomain.com)"
+          echo "     • Port number (21 for FTP, 990 for FTPS)"
+          echo "     • No IP restrictions blocking GitHub Actions"
+          echo ""
+          echo "4. Common server address formats to try:"
+          echo "   - ftp.yourdomain.com"
+          echo "   - ftp.yourdomain.com:21 (for FTP)"
+          echo "   - ftp.yourdomain.com:990 (for FTPS)"
+          echo "   - Your server IP address"
+          echo ""
+          echo "5. Check if Hostinger requires SFTP instead:"
+          echo "   - Some Hostinger plans only support SFTP (not FTP/FTPS)"
+          echo "   - SFTP requires SSH access and uses different credentials"
+          echo "   - Contact Hostinger support to enable SFTP if needed"
+          echo ""
+          echo "6. Review verbose logs above for specific error messages"
           exit 1
       
-      # Plugins Deployment - FTP Attempt 1
-      - name: Deploy Plugins (FTP Attempt 1)
+      # Plugins Deployment - FTP Attempt 1 (with leading slash)
+      - name: Deploy Plugins (FTP Attempt 1 - Standard Path)
         id: plugins-ftp-1
         continue-on-error: true
         uses: SamKirkland/FTP-Deploy-Action@4.3.0
@@ -207,8 +260,8 @@ jobs:
           log-level: verbose
         timeout-minutes: 20
       
-      # Plugins Deployment - FTP Attempt 2
-      - name: Deploy Plugins (FTP Attempt 2)
+      # Plugins Deployment - FTP Attempt 2 (without leading slash)
+      - name: Deploy Plugins (FTP Attempt 2 - Alternative Path)
         if: steps.plugins-ftp-1.outcome == 'failure'
         id: plugins-ftp-2
         continue-on-error: true
@@ -217,7 +270,7 @@ jobs:
           server: ${{ secrets.HOSTINGER_FTP_SERVER }}
           username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
           password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
-          server-dir: /public_html/wp-content/plugins/
+          server-dir: public_html/wp-content/plugins/
           local-dir: ./wordpress-plugins/
           protocol: ftp
           dangerous-clean-slate: false
@@ -230,8 +283,8 @@ jobs:
           log-level: verbose
         timeout-minutes: 20
       
-      # Plugins Deployment - FTP Attempt 3
-      - name: Deploy Plugins (FTP Attempt 3)
+      # Plugins Deployment - FTP Attempt 3 (root path)
+      - name: Deploy Plugins (FTP Attempt 3 - Root Path)
         if: steps.plugins-ftp-2.outcome == 'failure'
         id: plugins-ftp-3
         continue-on-error: true
@@ -240,7 +293,7 @@ jobs:
           server: ${{ secrets.HOSTINGER_FTP_SERVER }}
           username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
           password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
-          server-dir: /public_html/wp-content/plugins/
+          server-dir: /wp-content/plugins/
           local-dir: ./wordpress-plugins/
           protocol: ftp
           dangerous-clean-slate: false
@@ -253,8 +306,8 @@ jobs:
           log-level: verbose
         timeout-minutes: 20
       
-      # Plugins Deployment - FTPS Fallback Attempt 1
-      - name: Deploy Plugins (FTPS Fallback Attempt 1)
+      # Plugins Deployment - FTPS Fallback Attempt 1 (with leading slash)
+      - name: Deploy Plugins (FTPS Fallback Attempt 1 - Standard Path)
         if: steps.plugins-ftp-3.outcome == 'failure'
         id: plugins-ftps-1
         continue-on-error: true
@@ -276,8 +329,8 @@ jobs:
           log-level: verbose
         timeout-minutes: 20
       
-      # Plugins Deployment - FTPS Fallback Attempt 2
-      - name: Deploy Plugins (FTPS Fallback Attempt 2)
+      # Plugins Deployment - FTPS Fallback Attempt 2 (without leading slash)
+      - name: Deploy Plugins (FTPS Fallback Attempt 2 - Alternative Path)
         if: steps.plugins-ftps-1.outcome == 'failure'
         id: plugins-ftps-2
         continue-on-error: true
@@ -286,7 +339,7 @@ jobs:
           server: ${{ secrets.HOSTINGER_FTP_SERVER }}
           username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
           password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
-          server-dir: /public_html/wp-content/plugins/
+          server-dir: public_html/wp-content/plugins/
           local-dir: ./wordpress-plugins/
           protocol: ftps
           dangerous-clean-slate: false
@@ -299,8 +352,8 @@ jobs:
           log-level: verbose
         timeout-minutes: 20
       
-      # Plugins Deployment - FTPS Fallback Attempt 3
-      - name: Deploy Plugins (FTPS Fallback Attempt 3)
+      # Plugins Deployment - FTPS Fallback Attempt 3 (root path)
+      - name: Deploy Plugins (FTPS Fallback Attempt 3 - Root Path)
         if: steps.plugins-ftps-2.outcome == 'failure'
         id: plugins-ftps-3
         continue-on-error: true
@@ -309,7 +362,7 @@ jobs:
           server: ${{ secrets.HOSTINGER_FTP_SERVER }}
           username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
           password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
-          server-dir: /public_html/wp-content/plugins/
+          server-dir: /wp-content/plugins/
           local-dir: ./wordpress-plugins/
           protocol: ftps
           dangerous-clean-slate: false
@@ -334,10 +387,15 @@ jobs:
         run: |
           echo "❌ Plugins deployment failed after 6 attempts (3 FTP + 3 FTPS)"
           echo ""
-          echo "Please verify:"
-          echo "1. GitHub Secrets are correct"
-          echo "2. Test FTP connection locally with FileZilla"
-          echo "3. Check Hostinger FTP account status"
+          echo "📋 Attempted configurations:"
+          echo "   FTP Attempt 1: /public_html/wp-content/plugins/"
+          echo "   FTP Attempt 2: public_html/wp-content/plugins/"
+          echo "   FTP Attempt 3: /wp-content/plugins/"
+          echo "   FTPS Attempt 1: /public_html/wp-content/plugins/"
+          echo "   FTPS Attempt 2: public_html/wp-content/plugins/"
+          echo "   FTPS Attempt 3: /wp-content/plugins/"
+          echo ""
+          echo "🔍 See theme deployment troubleshooting steps above for detailed instructions"
           exit 1
       
       - name: Deployment Success
