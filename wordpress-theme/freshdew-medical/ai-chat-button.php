@@ -15,11 +15,7 @@ $contact_info = freshdew_get_contact_info();
     <span id="close-icon" style="display: none;">×</span>
 </button>
 
-<!-- Audio elements for sound effects -->
-<audio id="chat-popup-sound" preload="auto" style="display: none;">
-    <source src="<?php echo esc_url(get_template_directory_uri() . '/assets/audio/chat-popup.mp3'); ?>" type="audio/mpeg">
-    <source src="<?php echo esc_url(home_url('/chat-popup.mp3')); ?>" type="audio/mpeg">
-</audio>
+<!-- Audio element for reply sound effect -->
 <audio id="chat-reply-sound" preload="auto" style="display: none;">
     <source src="<?php echo esc_url(get_template_directory_uri() . '/assets/audio/chat-reply.mp3'); ?>" type="audio/mpeg">
     <source src="<?php echo esc_url(home_url('/chat-reply.mp3')); ?>" type="audio/mpeg">
@@ -214,18 +210,19 @@ $contact_info = freshdew_get_contact_info();
     
     #ai-chat-window {
         bottom: 80px !important;
-        right: 16px !important;
-        left: 16px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        right: auto !important;
         width: calc(100vw - 48px) !important;
         max-width: 320px !important;
-        height: min(400px, calc(100vh - 140px)) !important;
-        max-height: min(400px, calc(100vh - 140px)) !important;
+        height: min(460px, calc(100vh - 140px)) !important;
+        max-height: min(460px, calc(100vh - 140px)) !important;
         position: fixed !important;
         z-index: 2147483647 !important;
     }
     
     #chat-messages {
-        max-height: calc(100vh - 280px) !important;
+        max-height: calc(100vh - 340px) !important;
     }
     
     /* Ensure widget is visible even when menu is open - MAXIMUM PRIORITY */
@@ -310,13 +307,6 @@ console.log('Chat button script loading...');
             isOpen = true;
             chatWindow.style.display = 'flex';
             console.log('Chat window display set to flex');
-            
-            // Play popup sound
-            const popupSound = document.getElementById('chat-popup-sound');
-            if (popupSound) {
-                popupSound.currentTime = 0;
-                popupSound.play().catch(e => console.log('Could not play popup sound:', e));
-            }
             
             if (window.innerWidth <= 768) {
                 if (chatOverlay) chatOverlay.style.display = 'block';
