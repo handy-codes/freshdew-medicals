@@ -110,7 +110,7 @@ $contact_info = freshdew_get_contact_info();
                     $service_image = get_template_directory_uri() . '/assets/images/services/' . $service['image'];
                     $service_image_path = get_template_directory() . '/assets/images/services/' . $service['image'];
                     if (file_exists($service_image_path)) {
-                        echo '<img src="' . esc_url($service_image) . '" alt="' . esc_attr($service['title']) . '" style="width: 100%; height: 100%; object-fit: cover;">';
+                        echo '<img src="' . esc_url($service_image) . '" alt="' . esc_attr($service['title']) . '" style="width: 100%; height: 100%; object-fit: cover; display: block; margin: 0; padding: 0;">';
                     } else {
                         echo '<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: 600;">' . esc_html($service['initials']) . '</div>';
                     }

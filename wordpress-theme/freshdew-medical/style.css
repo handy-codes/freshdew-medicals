@@ -747,6 +747,25 @@ html body .site-header {
         height: auto !important;
     }
     
+    /* Service card images should fill their containers on mobile */
+    .services-grid img,
+    [style*="height: 300px"] img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        display: block !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        vertical-align: top !important;
+    }
+    
+    /* Ensure service card image containers maintain height on mobile */
+    [style*="height: 300px"][style*="overflow: hidden"] {
+        height: 300px !important;
+        min-height: 300px !important;
+        max-height: 300px !important;
+    }
+    
     .mobile-menu-toggle {
         display: flex !important;
         visibility: visible !important;
