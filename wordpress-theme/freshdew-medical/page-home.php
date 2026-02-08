@@ -9,36 +9,38 @@ get_header();
 $contact_info = freshdew_get_contact_info();
 ?>
 
-<!-- Hero Section with Leaf Image -->
+<!-- Hero Section with Medical Team Image -->
 <section class="hero-section">
-    <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/fresh-leaf-hero.jpg'); ?>" 
-         alt="Fresh Healthcare" 
+    <img src="https://media.istockphoto.com/id/2218491828/photo/medical-team-smiling-at-camera-in-hospital-corridor.webp?a=1&b=1&s=612x612&w=0&k=20&c=lnb7UnuwBPXinOObvP5XCAslVTvmQj0j2UzyXF8Oe-M=" 
+         alt="Medical Team" 
          class="hero-background"
          onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
     <div class="hero-background" style="display: none; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+    <!-- Dark overlay for better text contrast -->
+    <div class="hero-overlay"></div>
     
     <div class="container">
         <div class="hero-content">
-            <div style="display: inline-flex; align-items: center; padding: 0.5rem 1rem; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 9999px; margin-bottom: 1.5rem; border: 1px solid rgba(255,255,255,0.2);">
+            <div style="display: inline-flex; align-items: center; padding: 0.5rem 1rem; background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border-radius: 9999px; margin-bottom: 1.5rem; border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
                 <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; margin-right: 0.5rem; animation: pulse 2s infinite;"></span>
-                <span style="color: rgba(255,255,255,0.9); font-size: 0.875rem; font-weight: 500;">Accepting New Patients</span>
+                <span style="color: #ffffff; font-size: 0.875rem; font-weight: 600; text-shadow: 0 1px 2px rgba(0,0,0,0.3);">Accepting New Patients</span>
             </div>
             
-            <h1 class="hero-title" style="color: white;">
+            <h1 class="hero-title" style="color: #ffffff; text-shadow: 0 2px 8px rgba(0,0,0,0.5);">
                 Quality Healthcare
-                <span style="display: block; background: linear-gradient(to right, #67e8f9, #93c5fd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                <span style="display: block; color: #ffffff; text-shadow: 0 2px 8px rgba(0,0,0,0.5);">
                     For residents of Belleville and surrounding areas
                 </span>
             </h1>
             
-            <p class="hero-subtitle">
+            <p class="hero-subtitle" style="color: #ffffff; text-shadow: 0 1px 4px rgba(0,0,0,0.4);">
                 Experience premium medical care with cutting-edge technology, 
                 compassionate professionals, and innovative telehealth solutions—all from the comfort of your home.
             </p>
             
             <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 3rem;">
-                <a href="<?php echo esc_url(home_url('/appointments/book')); ?>" class="btn" style="background: white; color: #1e40af;">
-                    Find a Doctor
+                <a href="<?php echo esc_url(home_url('/register')); ?>" class="btn" style="background: white; color: #1e40af;">
+                    Register as Patient
                 </a>
                 <a href="<?php echo esc_url(home_url('/appointments/book')); ?>" class="btn btn-outline">
                     Book Appointment
@@ -59,11 +61,11 @@ $contact_info = freshdew_get_contact_info();
                 );
                 foreach ($stats as $stat) :
                 ?>
-                <div style="text-align: center; padding: 1.5rem; border-radius: 1rem; backdrop-filter: blur(10px); background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">
-                    <div style="font-size: 2rem; font-weight: bold; color: white; margin-bottom: 0.5rem;">
+                <div style="text-align: center; padding: 1.5rem; border-radius: 1rem; backdrop-filter: blur(10px); background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+                    <div style="font-size: 2rem; font-weight: bold; color: #ffffff; margin-bottom: 0.5rem; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
                         <?php echo esc_html($stat['value']); ?>
                     </div>
-                    <div style="font-size: 0.875rem; color: rgba(255,255,255,0.7);">
+                    <div style="font-size: 0.875rem; color: #ffffff; text-shadow: 0 1px 2px rgba(0,0,0,0.3); font-weight: 500;">
                         <?php echo esc_html($stat['label']); ?>
                     </div>
                 </div>
