@@ -15,6 +15,16 @@ $contact_info = freshdew_get_contact_info();
     <span id="close-icon" style="display: none;">×</span>
 </button>
 
+<!-- Audio elements for sound effects -->
+<audio id="chat-popup-sound" preload="auto" style="display: none;">
+    <source src="<?php echo esc_url(get_template_directory_uri() . '/assets/audio/chat-popup.mp3'); ?>" type="audio/mpeg">
+    <source src="<?php echo esc_url(home_url('/chat-popup.mp3')); ?>" type="audio/mpeg">
+</audio>
+<audio id="chat-reply-sound" preload="auto" style="display: none;">
+    <source src="<?php echo esc_url(get_template_directory_uri() . '/assets/audio/chat-reply.mp3'); ?>" type="audio/mpeg">
+    <source src="<?php echo esc_url(home_url('/chat-reply.mp3')); ?>" type="audio/mpeg">
+</audio>
+
 <!-- Chat Window Container - Separate wrapper, no width/height causing overflow -->
 <div id="ai-chat-widget-root" style="position: fixed; top: 0; left: 0; width: 0; height: 0; z-index: 9998; pointer-events: none;">
 <div id="ai-chat-widget" style="position: fixed !important; bottom: 80px !important; right: 16px !important; z-index: 9998 !important; pointer-events: auto !important;">
@@ -189,8 +199,8 @@ $contact_info = freshdew_get_contact_info();
     #ai-chat-widget {
         bottom: 80px !important;
         right: 16px !important;
-        left: 16px !important;
-        width: calc(100vw - 32px) !important;
+        left: auto !important;
+        width: auto !important;
     }
     
     #chat-text-full {
@@ -206,15 +216,16 @@ $contact_info = freshdew_get_contact_info();
         bottom: 80px !important;
         right: 16px !important;
         left: 16px !important;
-        width: calc(100vw - 32px) !important;
-        height: min(520px, calc(100vh - 120px)) !important;
-        max-height: min(520px, calc(100vh - 120px)) !important;
+        width: calc(100vw - 48px) !important;
+        max-width: 320px !important;
+        height: min(400px, calc(100vh - 140px)) !important;
+        max-height: min(400px, calc(100vh - 140px)) !important;
         position: fixed !important;
         z-index: 2147483647 !important;
     }
     
     #chat-messages {
-        max-height: calc(100vh - 200px) !important;
+        max-height: calc(100vh - 280px) !important;
     }
     
     /* Ensure widget is visible even when menu is open - MAXIMUM PRIORITY */
@@ -299,6 +310,14 @@ console.log('Chat button script loading...');
             isOpen = true;
             chatWindow.style.display = 'flex';
             console.log('Chat window display set to flex');
+            
+            // Play popup sound
+            const popupSound = document.getElementById('chat-popup-sound');
+            if (popupSound) {
+                popupSound.currentTime = 0;
+                popupSound.play().catch(e => console.log('Could not play popup sound:', e));
+            }
+            
             if (window.innerWidth <= 768) {
                 if (chatOverlay) chatOverlay.style.display = 'block';
                 document.body.style.overflow = 'hidden';
@@ -370,6 +389,78 @@ console.log('Chat button script loading...');
         }
     });
     
+    // Save messages to localStorage
+    function saveMessagesToStorage() {
+        try {
+            const messages = [];
+            const messageElements = chatMessages.querySelectorAll('.message');
+            messageElements.forEach(msg => {
+                const isUser = msg.classList.contains('user');
+                const text = msg.querySelector('p')?.textContent || '';
+                if (text.trim()) {
+                    messages.push({
+                        type: isUser ? 'user' : 'assistant',
+                        text: text
+                    });
+                }
+            });
+            localStorage.setItem('freshdew_chat_messages', JSON.stringify(messages));
+        } catch (e) {
+            console.log('Could not save messages to localStorage:', e);
+        }
+    }
+    
+    // Load messages from localStorage
+    function loadMessagesFromStorage() {
+        try {
+            const saved = localStorage.getItem('freshdew_chat_messages');
+            if (saved) {
+                const messages = JSON.parse(saved);
+                // Only load if we have saved messages
+                if (messages.length > 0) {
+                    // Clear any existing messages
+                    chatMessages.innerHTML = '';
+                    
+                    messages.forEach(msg => {
+                        const msgDiv = document.createElement('div');
+                        msgDiv.className = 'message ' + msg.type;
+                        const p = document.createElement('p');
+                        p.style.margin = '0';
+                        p.style.lineHeight = '1.6';
+                        if (msg.type === 'user') {
+                            p.textContent = msg.text;
+                        } else {
+                            p.style.color = '#1f2937';
+                            p.textContent = msg.text;
+                        }
+                        msgDiv.appendChild(p);
+                        chatMessages.appendChild(msgDiv);
+                    });
+                    
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                } else {
+                    // No saved messages, show welcome message
+                    showWelcomeMessage();
+                }
+            } else {
+                // No saved data, show welcome message
+                showWelcomeMessage();
+            }
+        } catch (e) {
+            console.log('Could not load messages from localStorage:', e);
+            showWelcomeMessage();
+        }
+    }
+    
+    // Show welcome message
+    function showWelcomeMessage() {
+        const welcomeMsg = document.createElement('div');
+        welcomeMsg.className = 'message assistant';
+        welcomeMsg.style.cssText = 'background: white; padding: 0.75rem 1rem; border-radius: 12px; margin-bottom: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); max-width: 85%;';
+        welcomeMsg.innerHTML = '<p style="margin: 0; color: #1f2937; line-height: 1.6;">Hello! I\'m FreshDew Medical Clinic AI Assistant. How can I help you today? You can ask about symptoms, book appointments, find doctors, or get health information.</p>';
+        chatMessages.appendChild(welcomeMsg);
+    }
+    
     // Send message
     function sendMessage(message) {
         if (!message.trim()) return;
@@ -379,6 +470,9 @@ console.log('Chat button script loading...');
         userMsg.className = 'message user';
         userMsg.innerHTML = '<p style="margin: 0; line-height: 1.6;">' + escapeHtml(message) + '</p>';
         chatMessages.appendChild(userMsg);
+        
+        // Save to localStorage
+        saveMessagesToStorage();
         
         // Show typing indicator
         typingIndicator.style.display = 'block';
@@ -412,6 +506,16 @@ console.log('Chat button script loading...');
             // Type out the message with natural reading pace
             typeMessage(messageParagraph, messageText, function() {
                 chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                // Play reply sound after message is typed
+                const replySound = document.getElementById('chat-reply-sound');
+                if (replySound) {
+                    replySound.currentTime = 0;
+                    replySound.play().catch(e => console.log('Could not play reply sound:', e));
+                }
+                
+                // Save messages to localStorage
+                saveMessagesToStorage();
             });
         })
         .catch(error => {
@@ -430,6 +534,16 @@ console.log('Chat button script loading...');
             // Type out the error message
             typeMessage(errorParagraph, errorText, function() {
                 chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                // Play reply sound after error message is typed
+                const replySound = document.getElementById('chat-reply-sound');
+                if (replySound) {
+                    replySound.currentTime = 0;
+                    replySound.play().catch(e => console.log('Could not play reply sound:', e));
+                }
+                
+                // Save messages to localStorage
+                saveMessagesToStorage();
             });
         });
     }
@@ -509,11 +623,20 @@ console.log('Chat button script loading...');
         }
     }
     
-    // Initialize when DOM is ready  
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initChat);
-    } else {
-        initChat();
-    }
+        // Initialize when DOM is ready  
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initChat);
+        } else {
+            initChat();
+        }
+        
+        // Load saved messages on page load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                setTimeout(loadMessagesFromStorage, 100);
+            });
+        } else {
+            setTimeout(loadMessagesFromStorage, 100);
+        }
 })();
 </script>
