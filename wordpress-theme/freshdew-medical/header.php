@@ -72,6 +72,7 @@ function freshdew_default_menu() {
     echo '<li><a href="' . esc_url(home_url('/walk-in-clinic')) . '">Walk-in Clinic</a></li>';
     echo '<li><a href="' . esc_url(home_url('/family-practice')) . '">Family Practice</a></li>';
     echo '<li><a href="' . esc_url(home_url('/telehealth')) . '">Telehealth</a></li>';
+    echo '<li><a href="' . esc_url(home_url('/register')) . '">Register</a></li>';
     echo '<li><a href="' . esc_url(home_url('/contact')) . '">Contact</a></li>';
     echo '</ul>';
 }

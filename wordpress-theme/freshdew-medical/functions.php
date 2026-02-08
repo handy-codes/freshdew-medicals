@@ -506,6 +506,147 @@ function freshdew_handle_contact_form() {
 add_action('admin_post_freshdew_contact_form', 'freshdew_handle_contact_form');
 add_action('admin_post_nopriv_freshdew_contact_form', 'freshdew_handle_contact_form');
 
+/**
+ * Handle Register Form Submission
+ */
+function freshdew_handle_register_form() {
+    // Verify nonce
+    if (!isset($_POST['freshdew_register_nonce']) || !wp_verify_nonce($_POST['freshdew_register_nonce'], 'freshdew_register_form')) {
+        wp_redirect(add_query_arg('register', 'error', home_url('/register')));
+        exit;
+    }
+    
+    // Sanitize input
+    $full_name = isset($_POST['full_name']) ? sanitize_text_field($_POST['full_name']) : '';
+    $date_of_birth = isset($_POST['date_of_birth']) ? sanitize_text_field($_POST['date_of_birth']) : '';
+    $phone_number = isset($_POST['phone_number']) ? sanitize_text_field($_POST['phone_number']) : '';
+    $email_address = isset($_POST['email_address']) ? sanitize_email($_POST['email_address']) : '';
+    $family_history = isset($_POST['family_history']) ? sanitize_textarea_field($_POST['family_history']) : '';
+    $drug_history = isset($_POST['drug_history']) ? sanitize_textarea_field($_POST['drug_history']) : '';
+    $allergy_history = isset($_POST['allergy_history']) ? sanitize_textarea_field($_POST['allergy_history']) : '';
+    $pap_smear = isset($_POST['pap_smear']) ? sanitize_text_field($_POST['pap_smear']) : '';
+    $last_mammogram = isset($_POST['last_mammogram']) ? sanitize_text_field($_POST['last_mammogram']) : '';
+    $gyn_other_info = isset($_POST['gyn_other_info']) ? sanitize_textarea_field($_POST['gyn_other_info']) : '';
+    
+    // Validate required fields
+    if (empty($full_name) || empty($date_of_birth) || empty($phone_number) || empty($email_address)) {
+        wp_redirect(add_query_arg('register', 'missing', home_url('/register')));
+        exit;
+    }
+    
+    // Validate email format
+    if (!is_email($email_address)) {
+        wp_redirect(add_query_arg('register', 'invalid_email', home_url('/register')));
+        exit;
+    }
+    
+    $contact_info = freshdew_get_contact_info();
+    $to = $contact_info['email'];
+    $subject = 'New Waitlist Registration - ' . $full_name;
+    
+    // Create HTML email
+    $message_html = '<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; background: #f4f4f4; padding: 20px;">';
+    $message_html .= '<div style="max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">';
+    $message_html .= '<h2 style="color: #FF6B35; margin-bottom: 20px;">New Waitlist Registration</h2>';
+    $message_html .= '<div style="background: #f9fafb; padding: 20px; border-radius: 6px; margin-bottom: 20px;">';
+    
+    // Personal Information
+    $message_html .= '<h3 style="color: #1f2937; margin-top: 0; margin-bottom: 15px; border-bottom: 2px solid #FF6B35; padding-bottom: 10px;">Personal Information</h3>';
+    $message_html .= '<p><strong>Full Name:</strong> ' . esc_html($full_name) . '</p>';
+    $message_html .= '<p><strong>Date of Birth:</strong> ' . esc_html($date_of_birth) . '</p>';
+    $message_html .= '<p><strong>Phone Number:</strong> <a href="tel:' . esc_attr($phone_number) . '">' . esc_html($phone_number) . '</a></p>';
+    $message_html .= '<p><strong>Email Address:</strong> <a href="mailto:' . esc_attr($email_address) . '">' . esc_html($email_address) . '</a></p>';
+    
+    // Medical History
+    $message_html .= '<h3 style="color: #1f2937; margin-top: 25px; margin-bottom: 15px; border-bottom: 2px solid #FF6B35; padding-bottom: 10px;">Medical History</h3>';
+    
+    if (!empty($family_history)) {
+        $message_html .= '<p><strong>Family History:</strong></p>';
+        $message_html .= '<div style="background: white; padding: 15px; border-left: 3px solid #FF6B35; margin-top: 5px; margin-bottom: 15px;">' . nl2br(esc_html($family_history)) . '</div>';
+    } else {
+        $message_html .= '<p><strong>Family History:</strong> Not provided</p>';
+    }
+    
+    if (!empty($drug_history)) {
+        $message_html .= '<p><strong>Drug History:</strong></p>';
+        $message_html .= '<div style="background: white; padding: 15px; border-left: 3px solid #FF6B35; margin-top: 5px; margin-bottom: 15px;">' . nl2br(esc_html($drug_history)) . '</div>';
+    } else {
+        $message_html .= '<p><strong>Drug History:</strong> Not provided</p>';
+    }
+    
+    if (!empty($allergy_history)) {
+        $message_html .= '<p><strong>Allergy History:</strong></p>';
+        $message_html .= '<div style="background: white; padding: 15px; border-left: 3px solid #FF6B35; margin-top: 5px; margin-bottom: 15px;">' . nl2br(esc_html($allergy_history)) . '</div>';
+    } else {
+        $message_html .= '<p><strong>Allergy History:</strong> Not provided</p>';
+    }
+    
+    // Gynaecology History
+    $message_html .= '<h3 style="color: #1f2937; margin-top: 25px; margin-bottom: 15px; border-bottom: 2px solid #FF6B35; padding-bottom: 10px;">Gynaecology History</h3>';
+    
+    $pap_smear_text = '';
+    if ($pap_smear === 'yes') {
+        $pap_smear_text = 'Yes';
+    } elseif ($pap_smear === 'no') {
+        $pap_smear_text = 'No';
+    } elseif ($pap_smear === 'not_applicable') {
+        $pap_smear_text = 'Not Applicable';
+    } else {
+        $pap_smear_text = 'Not provided';
+    }
+    $message_html .= '<p><strong>Pap Smear (Up to date):</strong> ' . esc_html($pap_smear_text) . '</p>';
+    
+    if (!empty($last_mammogram)) {
+        $message_html .= '<p><strong>Last Mammogram:</strong> ' . esc_html($last_mammogram) . '</p>';
+    } else {
+        $message_html .= '<p><strong>Last Mammogram:</strong> Not provided</p>';
+    }
+    
+    if (!empty($gyn_other_info)) {
+        $message_html .= '<p><strong>Other Information:</strong></p>';
+        $message_html .= '<div style="background: white; padding: 15px; border-left: 3px solid #FF6B35; margin-top: 5px;">' . nl2br(esc_html($gyn_other_info)) . '</div>';
+    }
+    
+    $message_html .= '</div>';
+    $message_html .= '<p style="margin-top: 20px; font-size: 12px; color: #666;">';
+    $message_html .= 'Submitted: ' . current_time('mysql') . '<br>';
+    $message_html .= 'IP Address: ' . (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : 'Unknown');
+    $message_html .= '</p>';
+    $message_html .= '</div></body></html>';
+    
+    // Check if SMTP is enabled
+    $smtp_enabled = get_option('freshdew_smtp_enabled', 0);
+    
+    $headers = array(
+        'Content-Type: text/html; charset=UTF-8',
+        'From: FreshDew Medical Clinic <' . $contact_info['email'] . '>',
+        'Reply-To: ' . $email_address,
+        'X-Mailer: WordPress',
+        'MIME-Version: 1.0',
+    );
+    
+    if (!$smtp_enabled) {
+        $headers[] = 'X-Priority: 1';
+        $headers[] = 'Importance: High';
+    }
+    
+    // Send email
+    $email_sent = wp_mail($to, $subject, $message_html, $headers);
+    
+    // Log for debugging
+    error_log('Register Form: ' . $full_name . ' (' . $email_address . ') - Email sent: ' . ($email_sent ? 'Yes' : 'No'));
+    
+    // Redirect with success message
+    if ($email_sent) {
+        wp_redirect(add_query_arg('register', 'success', home_url('/register')));
+    } else {
+        wp_redirect(add_query_arg('register', 'email_failed', home_url('/register')));
+    }
+    exit;
+}
+add_action('admin_post_freshdew_register_form', 'freshdew_handle_register_form');
+add_action('admin_post_nopriv_freshdew_register_form', 'freshdew_handle_register_form');
+
 function freshdew_ai_chat_handler($request) {
     $message = $request->get_param('message');
     
