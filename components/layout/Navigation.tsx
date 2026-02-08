@@ -98,6 +98,15 @@ export default function Navigation() {
 
             <Button
               asChild
+              className="bg-[#F69710] hover:bg-[#E0870F] text-white px-2"
+            >
+              <Link href="/register">
+                Register
+              </Link>
+            </Button>
+
+            <Button
+              asChild
               className="bg-gradient-to-r from-blue-600 to-teal-500 hover:from-blue-700 hover:to-teal-600 text-white"
             >
               <a href="/contact">
@@ -160,6 +169,15 @@ export default function Navigation() {
                       <Link href="/appointments/book">
                         <Calendar className="w-4 h-4 mr-2" />
                         Book Appointment
+                      </Link>
+                    </Button>
+                    <Button
+                      asChild
+                      className="w-full justify-center bg-[#F69710] hover:bg-[#E0870F] text-white px-2"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      <Link href="/register">
+                        Register
                       </Link>
                     </Button>
                     <Button

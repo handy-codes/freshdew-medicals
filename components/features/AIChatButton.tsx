@@ -115,9 +115,15 @@ export default function AIChatButton() {
       >
         <Button
           onClick={() => setIsOpen(true)}
-          className="rounded-full px-3 py-2 md:px-5 md:py-3 shadow-2xl bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold flex items-center gap-1.5 md:gap-2 text-sm md:text-base"
+          className="rounded-full px-3 py-2 md:px-5 md:py-3 shadow-2xl text-white font-semibold flex items-center gap-1.5 md:gap-2 text-sm md:text-base"
+          style={{ backgroundColor: '#9333EA' }}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#7E22CE'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#9333EA'}
         >
-          <Sparkles className="w-4 h-4 md:w-5 md:h-5" />
+          <svg className="w-4 h-4 md:w-5 md:h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2L14 8L20 6L14 10L22 12L14 14L20 18L14 16L12 22L10 16L4 18L10 14L2 12L10 10L4 6L10 8L12 2Z" />
+            <circle cx="12" cy="12" r="2" fill="currentColor" />
+          </svg>
           <span className="hidden sm:inline">Ask Dew</span>
           <span className="sm:hidden">Dew</span>
         </Button>

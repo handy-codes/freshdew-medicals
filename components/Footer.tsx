@@ -3,7 +3,7 @@ export default function Footer() {
       <footer className="bg-gray-900 text-white">
         <div className="container mx-auto px-4 py-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
+            <div className="py-1">
               <h3 className="text-2xl font-bold mb-4">FreshDew Medical Clinic</h3>
               <p className="text-gray-400">
                 Providing world-class healthcare services in Canada.
