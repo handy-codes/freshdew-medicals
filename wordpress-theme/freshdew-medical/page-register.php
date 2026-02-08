@@ -128,7 +128,7 @@ $contact_info = freshdew_get_contact_info();
                 </div>
                 
                 <!-- Submit Button -->
-                <button type="submit" id="register-submit-btn" style="width: 100%; padding: 1rem; background: #003B65; color: #EFFFFF; border: none; border-radius: 0.5rem; font-size: 1.125rem; font-weight: 500; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; margin-top: 1rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(0,59,101,0.4)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                <button type="submit" id="register-submit-btn" style="width: 100%; padding: 1rem; background: #1E3FAA; color: white; border: none; border-radius: 0.5rem; font-size: 1.125rem; font-weight: 500; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; margin-top: 1rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(30,63,170,0.4)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
                     <span id="register-btn-text">Register to Join the Waitlist</span>
                     <span id="register-btn-spinner" style="display: none;">
                         <svg style="width: 20px; height: 20px; animation: spin 1s linear infinite;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

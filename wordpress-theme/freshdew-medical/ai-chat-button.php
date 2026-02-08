@@ -10,8 +10,8 @@ $contact_info = freshdew_get_contact_info();
 <!-- Chat Button - Separate from widget container, like Next.js -->
 <button id="ai-chat-toggle" style="position: fixed !important; bottom: 16px !important; right: 16px !important; z-index: 9999 !important; width: auto !important; min-width: 100px !important; height: 44px !important; border-radius: 22px !important; background: #9333EA !important; border: none !important; color: white !important; font-size: 14px !important; font-weight: 600 !important; cursor: pointer !important; box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important; transition: transform 0.3s, background-color 0.3s !important; display: flex !important; align-items: center !important; justify-content: center !important; padding: 0 16px !important; gap: 6px !important; pointer-events: auto !important;" onmouseover="this.style.backgroundColor='#7E22CE'" onmouseout="this.style.backgroundColor='#9333EA'">
     <svg id="chat-icon-svg" style="width: 16px; height: 16px; fill: currentColor;" viewBox="0 0 24 24">
+        <!-- Three radiating arrowhead elements -->
         <path d="M12 2L14 8L20 6L14 10L22 12L14 14L20 18L14 16L12 22L10 16L4 18L10 14L2 12L10 10L4 6L10 8L12 2Z" />
-        <circle cx="12" cy="12" r="2" fill="currentColor" />
     </svg>
     <span id="chat-text-full">Ask Dew</span>
     <span id="chat-text-short" style="display: none;">Ask Dew</span>
