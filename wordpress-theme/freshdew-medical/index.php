@@ -35,7 +35,9 @@ get_header();
                 </p>
                 <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
                     <a href="<?php echo esc_url(home_url('/about')); ?>" class="btn">Learn About Us</a>
-                    <a href="https://www.myhealthaccess.ca/branded/freshdew-medical-centre" target="_blank" rel="noopener noreferrer" class="btn">Book Appointment</a>
+                    <a href="https://www.myhealthaccess.ca/branded/freshdew-medical-centre" target="_blank" rel="noopener noreferrer" style="display: inline-block;">
+                        <img src="https://www.myhealthaccess.ca/build/branded_signup/book_appt_online_big.png" alt="Book Appointment Online" style="max-width: 100%; height: auto; display: block;">
+                    </a>
                     <a href="<?php echo esc_url(home_url('/contact')); ?>" class="btn btn-outline" style="background: transparent; border: 2px solid #2563eb; color: #2563eb;">Contact Us</a>
                 </div>
             </section>

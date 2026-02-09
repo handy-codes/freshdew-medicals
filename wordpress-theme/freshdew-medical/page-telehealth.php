@@ -103,8 +103,8 @@ $contact_info = freshdew_get_contact_info();
             </div>
             
             <div style="text-align: center; margin-top: 3rem;">
-                <a href="https://www.myhealthaccess.ca/branded/freshdew-medical-centre" target="_blank" rel="noopener noreferrer" class="btn" style="font-size: 1.125rem; padding: 1rem 2.5rem;">
-                    Schedule a Virtual Consultation
+                <a href="https://www.myhealthaccess.ca/branded/freshdew-medical-centre" target="_blank" rel="noopener noreferrer" style="display: inline-block;">
+                    <img src="https://www.myhealthaccess.ca/build/branded_signup/book_appt_online_big.png" alt="Book Appointment Online" style="max-width: 100%; height: auto; display: block;">
                 </a>
             </div>
         </div>
