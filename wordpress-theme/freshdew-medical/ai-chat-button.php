@@ -505,8 +505,26 @@ console.log('Chat button script loading...');
             assistantMsg.appendChild(messageParagraph);
             chatMessages.appendChild(assistantMsg);
             
-            // Type out the message with natural reading pace
-            typeMessage(messageParagraph, messageText, function() {
+            // Check if message contains HTML (like links)
+            const hasHtml = /<[a-z][\s\S]*>/i.test(messageText);
+            
+            if (hasHtml) {
+                // If message contains HTML, set it directly (don't type it out)
+                messageParagraph.innerHTML = messageText;
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                // Play reply sound
+                const replySound = document.getElementById('chat-reply-sound');
+                if (replySound) {
+                    replySound.currentTime = 0;
+                    replySound.play().catch(e => console.log('Could not play reply sound:', e));
+                }
+                
+                // Save messages to localStorage
+                saveMessagesToStorage();
+            } else {
+                // Type out the message with natural reading pace (for plain text)
+                typeMessage(messageParagraph, messageText, function() {
                 chatMessages.scrollTop = chatMessages.scrollHeight;
                 
                 // Play reply sound after message is typed
@@ -518,7 +536,8 @@ console.log('Chat button script loading...');
                 
                 // Save messages to localStorage
                 saveMessagesToStorage();
-            });
+                });
+            }
         })
         .catch(error => {
             typingIndicator.style.display = 'none';

@@ -663,10 +663,11 @@ function freshdew_ai_chat_handler($request) {
     
     // Rule-based responses for common queries
     $emr_link = 'https://www.myhealthaccess.ca/branded/freshdew-medical-centre';
+    $emr_link_html = '<a href="' . esc_url($emr_link) . '" target="_blank" rel="noopener noreferrer" style="color: #667eea; text-decoration: underline; font-weight: 600;">Book Appointment Online</a>';
     $responses = array(
-        'book appointment' => 'To book an appointment, please visit our online booking system at ' . $emr_link . ' or call us at ' . $contact_info['phone_formatted'] . '.',
+        'book appointment' => 'To book an appointment, please visit our online booking system: ' . $emr_link_html . ' or call us at ' . $contact_info['phone_formatted'] . '.',
         'find doctor' => 'You can find our doctors by visiting the family practice page or contacting our office at ' . $contact_info['phone_formatted'] . '.',
-        'symptoms' => 'If you are experiencing symptoms, please book an appointment online at ' . $emr_link . ' or call us. For emergencies, call 911.',
+        'symptoms' => 'If you are experiencing symptoms, please book an appointment online: ' . $emr_link_html . ' or call us. For emergencies, call 911.',
         'hours' => 'Our hours are: Monday-Friday 8AM-8PM, Saturday 9AM-5PM, Sunday 10AM-4PM.',
         'emergency' => 'For life-threatening emergencies, please call 911 immediately.',
         'location' => 'We are located at ' . $contact_info['address'] . ', ' . $contact_info['city'] . ', ' . $contact_info['province'] . '.',
@@ -703,7 +704,9 @@ function freshdew_ai_chat_handler($request) {
     }
     
     // Default response only if both rule-based and Groq fail
-    $response = 'I can help you with booking appointments, finding doctors, and general health information. How can I assist you today?';
+    $emr_link = 'https://www.myhealthaccess.ca/branded/freshdew-medical-centre';
+    $emr_link_html = '<a href="' . esc_url($emr_link) . '" target="_blank" rel="noopener noreferrer" style="color: #667eea; text-decoration: underline; font-weight: 600;">Book Appointment Online</a>';
+    $response = 'I can help you with booking appointments (' . $emr_link_html . '), finding doctors, and general health information. How can I assist you today?';
     return rest_ensure_response(array('response' => $response));
 }
 
