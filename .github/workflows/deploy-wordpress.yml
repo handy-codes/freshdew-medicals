@@ -114,7 +114,7 @@ jobs:
             **/*.md
             **/.DS_Store
           log-level: verbose
-        timeout-minutes: 20
+        timeout-minutes: 15
       
       # Theme Deployment - Alternative paths (fallback)
       - name: Deploy Theme (Alternative Path 1)
@@ -138,7 +138,7 @@ jobs:
             **/*.md
             **/.DS_Store
           log-level: verbose
-        timeout-minutes: 20
+        timeout-minutes: 15
       
       - name: Deploy Theme (Alternative Path 2)
         id: theme-alt2
@@ -161,7 +161,7 @@ jobs:
             **/*.md
             **/.DS_Store
           log-level: verbose
-        timeout-minutes: 20
+        timeout-minutes: 15
       
       # Plugins Deployment - Try SFTP first
       - name: Deploy Plugins (SFTP - Recommended)
@@ -199,7 +199,7 @@ jobs:
             **/*.md
             **/.DS_Store
           log-level: verbose
-        timeout-minutes: 20
+        timeout-minutes: 15
       
       - name: Deploy Plugins (Alternative Path 1)
         id: plugins-alt1
@@ -222,7 +222,7 @@ jobs:
             **/*.md
             **/.DS_Store
           log-level: verbose
-        timeout-minutes: 20
+        timeout-minutes: 15
       
       - name: Deploy Plugins (Alternative Path 2)
         id: plugins-alt2
@@ -245,7 +245,7 @@ jobs:
             **/*.md
             **/.DS_Store
           log-level: verbose
-        timeout-minutes: 20
+        timeout-minutes: 15
       
       # Final check and error reporting
       - name: Check Deployment Status
