@@ -42,7 +42,7 @@ $contact_info = freshdew_get_contact_info();
                 <a href="<?php echo esc_url(home_url('/register')); ?>" class="btn btn-primary-hero">
                     Register as Patient
                 </a>
-                <a href="https://www.myhealthaccess.ca/branded/freshdew-medical-centre" target="_blank" rel="noopener noreferrer">
+                <a href="https://www.myhealthaccess.ca/branded/freshdew-medical-centre" target="_blank" rel="noopener noreferrer" style="display: inline-block;">
                     <img src="https://www.myhealthaccess.ca/build/branded_signup/book_appt_online_big.png" alt="Book Appointment Online" style="max-width: 100%; height: auto; display: block;">
                 </a>
                 <a href="<?php echo esc_url(home_url('/telehealth')); ?>" class="btn btn-ghost-hero">
