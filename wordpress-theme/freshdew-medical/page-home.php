@@ -11,41 +11,41 @@ $contact_info = freshdew_get_contact_info();
 
 <!-- Hero Section with Medical Team Image -->
 <section class="hero-section">
-    <img src="https://media.istockphoto.com/id/2218491828/photo/medical-team-smiling-at-camera-in-hospital-corridor.webp?a=1&b=1&s=612x612&w=0&k=20&c=lnb7UnuwBPXinOObvP5XCAslVTvmQj0j2UzyXF8Oe-M=" 
-         alt="Medical Team" 
-         class="hero-background"
-         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-    <div class="hero-background" style="display: none; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
-    <!-- Dark overlay for better text contrast -->
-    <div class="hero-overlay"></div>
+    <div class="hero-background-wrapper">
+        <img src="https://media.istockphoto.com/id/2218491828/photo/medical-team-smiling-at-camera-in-hospital-corridor.webp?a=1&b=1&s=612x612&w=0&k=20&c=lnb7UnuwBPXinOObvP5XCAslVTvmQj0j2UzyXF8Oe-M=" 
+             alt="Medical Team" 
+             class="hero-background"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+        <div class="hero-background" style="display: none; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+        <!-- Gradient overlay matching TSX version -->
+        <div class="hero-overlay"></div>
+    </div>
     
     <div class="container">
         <div class="hero-content">
-            <div style="display: inline-flex; align-items: center; padding: 0.5rem 1rem; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 9999px; margin-bottom: 1.5rem; border: 1px solid rgba(255,255,255,0.2);">
-                <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; margin-right: 0.5rem; animation: pulse 2s infinite;"></span>
-                <span style="color: rgba(255,255,255,0.9); font-size: 0.875rem; font-weight: 500;">Accepting New Patients</span>
+            <div class="hero-badge">
+                <span class="badge-dot"></span>
+                <span class="badge-text">Accepting New Patients</span>
             </div>
             
-            <h1 class="hero-title" style="color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
+            <h1 class="hero-title">
                 Quality Healthcare
-                <span style="display: block; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
-                    For residents of Belleville and surrounding areas
-                </span>
+                <span class="hero-title-gradient">For residents of Belleville and surrounding areas</span>
             </h1>
             
-            <p class="hero-subtitle" style="color: rgba(255,255,255,0.9); text-shadow: 0 1px 2px rgba(0,0,0,0.2);">
+            <p class="hero-subtitle">
                 Experience premium medical care with cutting-edge technology, 
                 compassionate professionals, and innovative telehealth solutions—all from the comfort of your home.
             </p>
             
-            <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 3rem;">
-                <a href="<?php echo esc_url(home_url('/register')); ?>" class="btn" style="background: white; color: #1e40af;">
+            <div class="hero-buttons">
+                <a href="<?php echo esc_url(home_url('/register')); ?>" class="btn btn-primary-hero">
                     Register as Patient
                 </a>
-                <a href="<?php echo esc_url(home_url('/appointments/book')); ?>" class="btn btn-outline">
+                <a href="<?php echo esc_url(home_url('/appointments/book')); ?>" class="btn btn-outline-hero">
                     Book Appointment
                 </a>
-                <a href="<?php echo esc_url(home_url('/telehealth')); ?>" class="btn btn-outline">
+                <a href="<?php echo esc_url(home_url('/telehealth')); ?>" class="btn btn-ghost-hero">
                     Virtual Consultation
                 </a>
             </div>
