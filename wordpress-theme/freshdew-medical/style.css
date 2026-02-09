@@ -362,12 +362,17 @@ html body .site-header {
     height: 100%;
     object-fit: cover;
     z-index: 1;
-    filter: none !important;
-    -webkit-filter: none !important;
+    filter: brightness(1.1) !important;
+    -webkit-filter: brightness(1.1) !important;
 }
 
 .hero-overlay {
-    display: none;
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(30, 58, 138, 0.5), rgba(30, 58, 138, 0.25), transparent);
+    z-index: 10;
+    filter: none !important;
+    -webkit-filter: none !important;
 }
 
 .hero-content {
