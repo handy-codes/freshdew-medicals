@@ -82,7 +82,6 @@ jobs:
       - name: Deploy Theme (SFTP - Recommended)
         id: theme-sftp
         continue-on-error: true
-        if: secrets.HOSTINGER_SSH_PRIVATE_KEY != ''
         uses: easingthemes/ssh-deploy@v4.1.5
         env:
           SSH_PRIVATE_KEY: ${{ secrets.HOSTINGER_SSH_PRIVATE_KEY }}
@@ -168,7 +167,6 @@ jobs:
       - name: Deploy Plugins (SFTP - Recommended)
         id: plugins-sftp
         continue-on-error: true
-        if: secrets.HOSTINGER_SSH_PRIVATE_KEY != ''
         uses: easingthemes/ssh-deploy@v4.1.5
         env:
           SSH_PRIVATE_KEY: ${{ secrets.HOSTINGER_SSH_PRIVATE_KEY }}
