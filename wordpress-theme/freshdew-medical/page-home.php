@@ -21,19 +21,19 @@ $contact_info = freshdew_get_contact_info();
     
     <div class="container">
         <div class="hero-content">
-            <div style="display: inline-flex; align-items: center; padding: 0.5rem 1rem; background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border-radius: 9999px; margin-bottom: 1.5rem; border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+            <div style="display: inline-flex; align-items: center; padding: 0.5rem 1rem; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 9999px; margin-bottom: 1.5rem; border: 1px solid rgba(255,255,255,0.2);">
                 <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; margin-right: 0.5rem; animation: pulse 2s infinite;"></span>
-                <span style="color: #ffffff; font-size: 0.875rem; font-weight: 600; text-shadow: 0 1px 2px rgba(0,0,0,0.3);">Accepting New Patients</span>
+                <span style="color: rgba(255,255,255,0.9); font-size: 0.875rem; font-weight: 500;">Accepting New Patients</span>
             </div>
             
-            <h1 class="hero-title" style="color: #ffffff; text-shadow: 0 2px 8px rgba(0,0,0,0.5);">
+            <h1 class="hero-title" style="color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
                 Quality Healthcare
-                <span style="display: block; color: #ffffff; text-shadow: 0 2px 8px rgba(0,0,0,0.5);">
+                <span style="display: block; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
                     For residents of Belleville and surrounding areas
                 </span>
             </h1>
             
-            <p class="hero-subtitle" style="color: #ffffff; text-shadow: 0 1px 4px rgba(0,0,0,0.4);">
+            <p class="hero-subtitle" style="color: rgba(255,255,255,0.9); text-shadow: 0 1px 2px rgba(0,0,0,0.2);">
                 Experience premium medical care with cutting-edge technology, 
                 compassionate professionals, and innovative telehealth solutions—all from the comfort of your home.
             </p>
@@ -61,11 +61,11 @@ $contact_info = freshdew_get_contact_info();
                 );
                 foreach ($stats as $stat) :
                 ?>
-                <div style="text-align: center; padding: 1.5rem; border-radius: 1rem; backdrop-filter: blur(10px); background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
-                    <div style="font-size: 2rem; font-weight: bold; color: #ffffff; margin-bottom: 0.5rem; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
+                <div style="text-align: center; padding: 1.5rem; border-radius: 1rem; backdrop-filter: blur(10px); background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">
+                    <div style="font-size: 2rem; font-weight: bold; color: #ffffff; margin-bottom: 0.5rem;">
                         <?php echo esc_html($stat['value']); ?>
                     </div>
-                    <div style="font-size: 0.875rem; color: #ffffff; text-shadow: 0 1px 2px rgba(0,0,0,0.3); font-weight: 500;">
+                    <div style="font-size: 0.875rem; color: rgba(255,255,255,0.7); font-weight: 500;">
                         <?php echo esc_html($stat['label']); ?>
                     </div>
                 </div>
