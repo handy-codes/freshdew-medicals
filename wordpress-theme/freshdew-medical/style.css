@@ -367,12 +367,7 @@ html body .site-header {
 }
 
 .hero-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to right, rgba(30, 58, 138, 0.35), rgba(30, 58, 138, 0.15), transparent);
-    z-index: 10;
-    filter: none !important;
-    -webkit-filter: none !important;
+    display: none;
 }
 
 .hero-content {
