@@ -17,6 +17,8 @@ $contact_info = freshdew_get_contact_info();
              class="hero-background"
              onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
         <div class="hero-background" style="display: none; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+        <!-- Professional gradient overlay matching TSX version -->
+        <div class="hero-overlay" style="position: absolute; inset: 0; background: linear-gradient(to right, rgba(30, 58, 138, 0.7), rgba(30, 58, 138, 0.4), transparent); z-index: 10;"></div>
     </div>
     
     <div class="container">
