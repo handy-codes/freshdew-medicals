@@ -52,7 +52,7 @@ $contact_info = freshdew_get_contact_info();
                             He specializes in preventive care, chronic disease management, and men's health. Dr. Chen completed his medical 
                             degree at the University of Toronto and is committed to providing compassionate, patient-centered care.
                         </p>
-                        <a href="<?php echo esc_url(home_url('/appointments/book')); ?>" class="btn" style="display: inline-block; width: 100%; text-align: center; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 0.5rem; font-weight: 600; transition: opacity 0.3s;" onmouseover="this.style.opacity='0.9';" onmouseout="this.style.opacity='1';">
+                        <a href="https://www.myhealthaccess.ca/branded/freshdew-medical-centre" target="_blank" rel="noopener noreferrer" class="btn" style="display: inline-block; width: 100%; text-align: center; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 0.5rem; font-weight: 600; transition: opacity 0.3s;" onmouseover="this.style.opacity='0.9';" onmouseout="this.style.opacity='1';">
                             Book Appointment
                         </a>
                     </div>
@@ -78,7 +78,7 @@ $contact_info = freshdew_get_contact_info();
                             She received her medical degree from McMaster University and has been practicing in Ontario for over 12 years. 
                             Dr. Johnson is passionate about building long-term relationships with her patients and their families.
                         </p>
-                        <a href="<?php echo esc_url(home_url('/appointments/book')); ?>" class="btn" style="display: inline-block; width: 100%; text-align: center; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 0.5rem; font-weight: 600; transition: opacity 0.3s;" onmouseover="this.style.opacity='0.9';" onmouseout="this.style.opacity='1';">
+                        <a href="https://www.myhealthaccess.ca/branded/freshdew-medical-centre" target="_blank" rel="noopener noreferrer" class="btn" style="display: inline-block; width: 100%; text-align: center; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 0.5rem; font-weight: 600; transition: opacity 0.3s;" onmouseover="this.style.opacity='0.9';" onmouseout="this.style.opacity='1';">
                             Book Appointment
                         </a>
                     </div>
@@ -104,7 +104,7 @@ $contact_info = freshdew_get_contact_info();
                             He completed his medical training at Queen's University and holds a Diploma in Sport Medicine. 
                             With over 10 years of experience, Dr. Wilson helps patients of all ages maintain active, healthy lifestyles.
                         </p>
-                        <a href="<?php echo esc_url(home_url('/appointments/book')); ?>" class="btn" style="display: inline-block; width: 100%; text-align: center; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 0.5rem; font-weight: 600; transition: opacity 0.3s;" onmouseover="this.style.opacity='0.9';" onmouseout="this.style.opacity='1';">
+                        <a href="https://www.myhealthaccess.ca/branded/freshdew-medical-centre" target="_blank" rel="noopener noreferrer" class="btn" style="display: inline-block; width: 100%; text-align: center; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 0.5rem; font-weight: 600; transition: opacity 0.3s;" onmouseover="this.style.opacity='0.9';" onmouseout="this.style.opacity='1';">
                             Book Appointment
                         </a>
                     </div>
@@ -131,7 +131,7 @@ $contact_info = freshdew_get_contact_info();
                             in managing complex chronic conditions. Dr. Rodriguez is committed to providing culturally sensitive care 
                             to diverse communities in Belleville.
                         </p>
-                        <a href="<?php echo esc_url(home_url('/appointments/book')); ?>" class="btn" style="display: inline-block; width: 100%; text-align: center; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 0.5rem; font-weight: 600; transition: opacity 0.3s;" onmouseover="this.style.opacity='0.9';" onmouseout="this.style.opacity='1';">
+                        <a href="https://www.myhealthaccess.ca/branded/freshdew-medical-centre" target="_blank" rel="noopener noreferrer" class="btn" style="display: inline-block; width: 100%; text-align: center; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 0.5rem; font-weight: 600; transition: opacity 0.3s;" onmouseover="this.style.opacity='0.9';" onmouseout="this.style.opacity='1';">
                             Book Appointment
                         </a>
                     </div>

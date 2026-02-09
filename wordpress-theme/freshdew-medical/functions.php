@@ -310,6 +310,8 @@ add_action('rest_api_init', 'freshdew_ai_chat_endpoint');
 
 /**
  * Book Appointment API Endpoint
+ * DISABLED: Appointment booking now uses government EMR system
+ * To re-enable: Uncomment the add_action line below
  */
 function freshdew_book_appointment_endpoint() {
     register_rest_route('freshdew/v1', '/book-appointment', array(
@@ -318,7 +320,7 @@ function freshdew_book_appointment_endpoint() {
         'permission_callback' => '__return_true',
     ));
 }
-add_action('rest_api_init', 'freshdew_book_appointment_endpoint');
+// add_action('rest_api_init', 'freshdew_book_appointment_endpoint'); // Disabled - using EMR system
 
 function freshdew_book_appointment_handler($request) {
     $fullName = sanitize_text_field($request->get_param('fullName'));
@@ -660,10 +662,11 @@ function freshdew_ai_chat_handler($request) {
     $groq_api_key = get_option('freshdew_groq_api_key', '');
     
     // Rule-based responses for common queries
+    $emr_link = 'https://www.myhealthaccess.ca/branded/freshdew-medical-centre';
     $responses = array(
-        'book appointment' => 'To book an appointment, please visit our appointments page or call us at ' . $contact_info['phone_formatted'] . '.',
+        'book appointment' => 'To book an appointment, please visit our online booking system at ' . $emr_link . ' or call us at ' . $contact_info['phone_formatted'] . '.',
         'find doctor' => 'You can find our doctors by visiting the family practice page or contacting our office at ' . $contact_info['phone_formatted'] . '.',
-        'symptoms' => 'If you are experiencing symptoms, please book an appointment with one of our doctors. For emergencies, call 911.',
+        'symptoms' => 'If you are experiencing symptoms, please book an appointment online at ' . $emr_link . ' or call us. For emergencies, call 911.',
         'hours' => 'Our hours are: Monday-Friday 8AM-8PM, Saturday 9AM-5PM, Sunday 10AM-4PM.',
         'emergency' => 'For life-threatening emergencies, please call 911 immediately.',
         'location' => 'We are located at ' . $contact_info['address'] . ', ' . $contact_info['city'] . ', ' . $contact_info['province'] . '.',
@@ -708,8 +711,9 @@ function freshdew_ai_chat_handler($request) {
  * Call Groq API
  */
 function freshdew_call_groq_api($message, $api_key, $contact_info) {
+    $emr_link = 'https://www.myhealthaccess.ca/branded/freshdew-medical-centre';
     $system_prompt = "You are a helpful AI assistant for FreshDew Medical Clinic in Belleville, Ontario, Canada. You help patients with:
-- Booking appointments
+- Booking appointments (use online booking at {$emr_link})
 - Finding doctors and services
 - General health information
 - Hospital hours and contact information
@@ -720,8 +724,9 @@ Contact Information:
 - Phone: {$contact_info['phone_formatted']}
 - Email: {$contact_info['email']}
 - Hours: Monday-Friday 8AM-8PM, Saturday 9AM-5PM, Sunday 10AM-4PM
+- Online Booking: {$emr_link}
 
-Be concise, friendly, and professional. Always remind users that for medical emergencies, they should call 911.";
+Be concise, friendly, and professional. Always remind users that for medical emergencies, they should call 911. For appointment booking, direct users to the online booking system at {$emr_link}.";
 
     $url = 'https://api.groq.com/openai/v1/chat/completions';
     
