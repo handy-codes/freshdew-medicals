@@ -14,8 +14,8 @@
 /* Mobile: Ensure full viewport height */
 @media (max-width: 768px) {
     .hero-section {
-        height: 100vh;
-        height: 100dvh; /* Dynamic viewport height for mobile */
+        height: 100dvh !important; /* Dynamic viewport height for mobile */
+        min-height: 100vh; /* Fallback for older browsers */
     }
 }
 

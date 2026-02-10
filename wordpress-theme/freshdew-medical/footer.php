@@ -30,7 +30,7 @@ $contact_info = freshdew_get_contact_info();
                     </span>
                 </a>
                 <p class="footer-description">
-                    Providinr quality health care in the Bay of Quinte.
+                    Providing quality health care in the Bay of Quinte.
                 </p>
                 <div class="footer-description-border"></div>
             </div>
