@@ -141,22 +141,22 @@ $contact_info = freshdew_get_contact_info();
             
             <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 2rem; border-radius: 0.75rem; border: 1px solid rgba(255, 255, 255, 0.2);">
                 <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: white; font-weight: 600;">Safety of Staff and Patient</h3>
-                <p style="color: rgba(255, 255, 255, 0.95); line-height: 1.8; font-size: 1.05rem;">
+                <p style="color: white; line-height: 1.8; font-size: 1.05rem;">
                     We aim to provide high standards of care and work under incredible pressure. We understand you may be experiencing stress coming into the clinic. We have a zero Tolerance policy and strictly prohibit abusive, violent, threatening or any form of assault towards staff and patients. Violators will be immediately removed from the Practice and Police may be contacted.
                 </p>
             </div>
             
             <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 2rem; border-radius: 0.75rem; border: 1px solid rgba(255, 255, 255, 0.2);">
                 <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: white; font-weight: 600;">No Show</h3>
-                <p style="color: rgba(255, 255, 255, 0.95); line-height: 1.8; font-size: 1.05rem;">
+                <p style="color: white; line-height: 1.8; font-size: 1.05rem;">
                     We understand circumstances change, so we provide a free 24hour cancellation notice, otherwise there will be a $50 no show fee.
                 </p>
             </div>
             
             <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 2rem; border-radius: 0.75rem; border: 1px solid rgba(255, 255, 255, 0.2);">
                 <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: white; font-weight: 600;">Medical Visit</h3>
-                <p style="color: rgba(255, 255, 255, 0.95); line-height: 1.8; font-size: 1.05rem;">
-                    To ensure effective treatment, only ONE medical issue will be discussed per appointment. Feel free to book as many appointments as needed.
+                <p style="color: white; line-height: 1.8; font-size: 1.05rem;">
+                    To ensure effective treatment, only ONE medical issue will be discussed per appointment. Feel free to book as many appointments as needed!
                 </p>
             </div>
             

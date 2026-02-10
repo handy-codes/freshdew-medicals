@@ -70,7 +70,7 @@ $contact_info = freshdew_get_contact_info();
                 <!-- Email Address -->
                 <div>
                     <label for="email_address" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #000000;">Email Address <span style="color: #ef4444;">*</span></label>
-                    <input type="email" id="email_address" name="email_address" required style="width: 100%; padding: 0.75rem; border: 1px solid #f59e0b; border-radius: 0.5rem; font-size: 1rem; outline: none; transition: border-color 0.3s; background: #fef3c7; color: #000000;" onfocus="this.style.borderColor='#FF6B35'; this.style.background='white';" onblur="this.style.borderColor='#f59e0b'; this.style.background='#fef3c7';">
+                    <input type="email" id="email_address" name="email_address" required style="width: 100%; padding: 0.75rem; border: 1px solid #f59e0b; border-radius: 0.5rem; font-size: 1rem; outline: none; transition: border-color 0.3s; background: white; color: #000000;" onfocus="this.style.borderColor='#FF6B35'; this.style.background='white';" onblur="this.style.borderColor='#f59e0b'; this.style.background='white';">
                 </div>
                 
                 <!-- Family History -->
