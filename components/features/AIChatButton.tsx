@@ -128,7 +128,7 @@ export default function AIChatButton() {
         </Button>
       </motion.div>
 
-      {/* Chat Window */}ich
+      {/* Chat Window */}ichfix
       <AnimatePresence>
         {isOpen && (
           <>

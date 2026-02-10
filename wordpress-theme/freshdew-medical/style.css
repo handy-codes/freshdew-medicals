@@ -437,6 +437,21 @@ html body .site-header {
     margin-bottom: 3rem;
 }
 
+/* Hide stats/metrics section in hero - ensure it's completely hidden */
+.hero-content > div[style*="grid-template-columns"],
+.hero-content > div:has(> div[style*="backdrop-filter: blur(10px)"][style*="rgba(255,255,255,0.05)"]),
+.hero-section .stats,
+.hero-section [style*="24/7"],
+.hero-section [style*="98%"],
+.hero-section [style*="50+"],
+.hero-section [style*="15min"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+}
+
 .btn-primary-hero {
     background: white;
     color: #1e3a8a;
