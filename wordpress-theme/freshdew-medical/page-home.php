@@ -149,14 +149,14 @@ $contact_info = freshdew_get_contact_info();
             <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 2rem; border-radius: 0.75rem; border: 1px solid rgba(255, 255, 255, 0.2);">
                 <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: white; font-weight: 600;">No Show</h3>
                 <p style="color: rgba(255, 255, 255, 0.95); line-height: 1.8; font-size: 1.05rem;">
-                    We understand circumstances changed so we provide a free 24hour cancellation notice, otherwise there will be a $50 no show fee.
+                    We understand circumstances change, so we provide a free 24hour cancellation notice, otherwise there will be a $50 no show fee.
                 </p>
             </div>
             
             <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 2rem; border-radius: 0.75rem; border: 1px solid rgba(255, 255, 255, 0.2);">
                 <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: white; font-weight: 600;">Medical Visit</h3>
                 <p style="color: rgba(255, 255, 255, 0.95); line-height: 1.8; font-size: 1.05rem;">
-                    To ensure effective treatment, only ONE medical issue will be discussed. You are welcome to book other appointments.
+                    To ensure effective treatment, only ONE medical issue will be discussed per appointment. Feel free to book as many appointments as needed.
                 </p>
             </div>
             

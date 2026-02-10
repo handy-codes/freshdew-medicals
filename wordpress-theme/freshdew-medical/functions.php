@@ -526,12 +526,13 @@ function freshdew_handle_register_form() {
     $family_history = isset($_POST['family_history']) ? sanitize_textarea_field($_POST['family_history']) : '';
     $drug_history = isset($_POST['drug_history']) ? sanitize_textarea_field($_POST['drug_history']) : '';
     $allergy_history = isset($_POST['allergy_history']) ? sanitize_textarea_field($_POST['allergy_history']) : '';
+    $medical_surgical_history = isset($_POST['medical_surgical_history']) ? sanitize_textarea_field($_POST['medical_surgical_history']) : '';
     $pap_smear = isset($_POST['pap_smear']) ? sanitize_text_field($_POST['pap_smear']) : '';
     $last_mammogram = isset($_POST['last_mammogram']) ? sanitize_text_field($_POST['last_mammogram']) : '';
     $gyn_other_info = isset($_POST['gyn_other_info']) ? sanitize_textarea_field($_POST['gyn_other_info']) : '';
     
     // Validate required fields
-    if (empty($full_name) || empty($date_of_birth) || empty($phone_number) || empty($email_address)) {
+    if (empty($full_name) || empty($date_of_birth) || empty($phone_number) || empty($email_address) || empty($medical_surgical_history)) {
         wp_redirect(add_query_arg('register', 'missing', home_url('/register')));
         exit;
     }
@@ -581,6 +582,13 @@ function freshdew_handle_register_form() {
         $message_html .= '<div style="background: white; padding: 15px; border-left: 3px solid #FF6B35; margin-top: 5px; margin-bottom: 15px;">' . nl2br(esc_html($allergy_history)) . '</div>';
     } else {
         $message_html .= '<p><strong>Allergy History:</strong> Not provided</p>';
+    }
+    
+    if (!empty($medical_surgical_history)) {
+        $message_html .= '<p><strong>Current and Past Medical and Surgical History:</strong></p>';
+        $message_html .= '<div style="background: white; padding: 15px; border-left: 3px solid #FF6B35; margin-top: 5px; margin-bottom: 15px;">' . nl2br(esc_html($medical_surgical_history)) . '</div>';
+    } else {
+        $message_html .= '<p><strong>Current and Past Medical and Surgical History:</strong> Not provided</p>';
     }
     
     // Gynaecology History

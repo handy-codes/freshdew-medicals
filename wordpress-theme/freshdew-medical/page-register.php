@@ -91,6 +91,12 @@ $contact_info = freshdew_get_contact_info();
                     <textarea id="allergy_history" name="allergy_history" rows="4" required style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem; outline: none; transition: border-color 0.3s; resize: vertical; color: #000000;" onfocus="this.style.borderColor='#FF6B35';" onblur="this.style.borderColor='#d1d5db';" placeholder="Please list any known allergies..."></textarea>
                 </div>
                 
+                <!-- Current and Past Medical and Surgical History -->
+                <div>
+                    <label for="medical_surgical_history" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #000000;">Current and Past Medical and Surgical History <span style="color: #ef4444;">*</span></label>
+                    <textarea id="medical_surgical_history" name="medical_surgical_history" rows="4" required style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem; outline: none; transition: border-color 0.3s; resize: vertical; color: #000000;" onfocus="this.style.borderColor='#FF6B35';" onblur="this.style.borderColor='#d1d5db';" placeholder="Please provide details of any current or past medical conditions and surgical procedures..."></textarea>
+                </div>
+                
                 <!-- Gynaecology History Section -->
                 <div style="border-top: 2px solid #f3f4f6; padding-top: 1.5rem; margin-top: 0.5rem;">
                     <h3 style="font-size: 1.25rem; font-weight: 700; color: #000000; margin-bottom: 1.5rem;">Gynaecology History</h3>
