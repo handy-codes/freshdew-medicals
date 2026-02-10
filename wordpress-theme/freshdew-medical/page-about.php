@@ -23,9 +23,10 @@ $contact_info = freshdew_get_contact_info();
         <div style="max-width: 1200px; margin: 0 auto;">
             <h2 style="font-size: 2.5rem; margin-bottom: 2rem; color: #1f2937;">Our Mission</h2>
             <p style="color: #4b5563; line-height: 1.8; margin-bottom: 1.5rem; font-size: 1.125rem;">
-                FreshDew Medical Clinic is committed to delivering premium medical care with cutting-edge technology, 
-                compassionate professionals, and innovative telehealth solutions. We believe that quality healthcare should 
-                be accessible to all Canadians.
+            Freshdew medical clinic is committed to delivering exceptional patient care to persons of all ages in a warm, welcoming environment.
+            </p>
+            <p style="color: #4b5563; line-height: 1.8; margin-bottom: 1.5rem; font-size: 1.125rem;">
+             Our Mission is to provide excellent comprehensive medical care in a timely, compassionate, and patient centred manner.
             </p>
             
             <!-- Meet Our Team Section -->
