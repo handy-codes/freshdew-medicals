@@ -12,8 +12,8 @@ $contact_info = freshdew_get_contact_info();
 <!-- Hero Section with Medical Team Image -->
 <section class="hero-section">
     <div class="hero-background-wrapper">
+        <!-- Previous image: https://media.istockphoto.com/id/2218491828/photo/medical-team-smiling-at-camera-in-hospital-corridor.webp -->
         <img src="https://images.unsplash.com/photo-1725870953863-4ad4db0acfc2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cGF0aWVudCUyMGNhcmV8ZW58MHx8MHx8fDA%3D" 
-        <!-- <img src="https://media.istockphoto.com/id/2218491828/photo/medical-team-smiling-at-camera-in-hospital-corridor.webp?a=1&b=1&s=612x612&w=0&k=20&c=lnb7UnuwBPXinOObvP5XCAslVTvmQj0j2UzyXF8Oe-M="  -->
              alt="Medical Team" 
              class="hero-background"
              onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
