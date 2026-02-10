@@ -22,10 +22,10 @@ $contact_info = freshdew_get_contact_info();
     <div class="container">
         <div style="max-width: 1200px; margin: 0 auto;">
             <h2 style="font-size: 2.5rem; margin-bottom: 2rem; color: #1f2937;">Our Mission</h2>
-            <p style="color: #4b5563; line-height: 1.8; margin-bottom: 1.5rem; font-size: 1.125rem;">
+            <p style="color: #000000; line-height: 1.8; margin-bottom: 1.5rem; font-size: 1.125rem;">
             Freshdew medical clinic is committed to delivering exceptional patient care to persons of all ages in a warm, welcoming environment.
             </p>
-            <p style="color: #4b5563; line-height: 1.8; margin-bottom: 1.5rem; font-size: 1.125rem;">
+            <p style="color: #000000; line-height: 1.8; margin-bottom: 1.5rem; font-size: 1.125rem;">
              Our Mission is to provide excellent comprehensive medical care in a timely, compassionate, and patient centred manner.
             </p>
             
@@ -47,8 +47,8 @@ $contact_info = freshdew_get_contact_info();
                     </div>
                     <div style="padding: 2rem;">
                         <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem;">Dr. Joy Kinze</h3>
-                        <p style="color: #667eea; font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem;">MD, CCFP, FRCPC</p>
-                        <p style="color: #6b7280; line-height: 1.7; margin-bottom: 1.5rem; font-size: 0.95rem;">
+                        <p style="color: #667eea; font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem;">MBBS, MRCGP, CCFP</p>
+                        <p style="color: #000000; line-height: 1.7; margin-bottom: 1.5rem; font-size: 0.95rem;">
                          Joy Kinze is a UK trained seasoned family physician with over 15 years of robust clinical experience and practice. She has worked in low and middle income countries and spent the majority of her practice in rural English town.
                          Her areas of interest are lifestyle medicine and women's health. She is very passionate about healthcare administration having seen the catastrophic consequences when standards are not met in developing countries.
                          She is best described as a compassionate and excellent physician.
@@ -65,7 +65,7 @@ $contact_info = freshdew_get_contact_info();
                         <?php
                         $doctor2_image = get_template_directory_uri() . '/assets/images/doctors/dr-sarah-johnson.jpg';
                         if (file_exists(get_template_directory() . '/assets/images/doctors/dr-sarah-johnson.jpg')) {
-                            echo '<img src="' . esc_url($doctor2_image) . '" alt="Dr. Sarah Johnson" style="width: 200px; height: 200px; border-radius: 50%; object-fit: cover; border: 4px solid rgba(255,255,255,0.3);">';
+                            echo '<img src="' . esc_url($doctor2_image) . '" alt="Dr. Jamal Doe" style="width: 200px; height: 200px; border-radius: 50%; object-fit: cover; border: 4px solid rgba(255,255,255,0.3);">';
                         } else {
                             echo '<div style="width: 200px; height: 200px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: 600;">SJ</div>';
                         }
@@ -74,7 +74,7 @@ $contact_info = freshdew_get_contact_info();
                     <div style="padding: 2rem;">
                         <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem;">Dr. Sarah Johnson</h3>
                         <p style="color: #667eea; font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem;">MD, CCFP, FCFP</p>
-                        <p style="color: #6b7280; line-height: 1.7; margin-bottom: 1.5rem; font-size: 0.95rem;">
+                        <p style="color: #000000; line-height: 1.7; margin-bottom: 1.5rem; font-size: 0.95rem;">
                             Dr. Johnson is a dedicated Family Physician with expertise in women's health, pediatrics, and preventive medicine. 
                             She received her medical degree from McMaster University and has been practicing in Ontario for over 12 years. 
                             Dr. Johnson is passionate about building long-term relationships with her patients and their families.
@@ -100,7 +100,7 @@ $contact_info = freshdew_get_contact_info();
                     <div style="padding: 2rem;">
                         <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem;">Dr. James Wilson</h3>
                         <p style="color: #667eea; font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem;">MD, CCFP, Dip Sport Med</p>
-                        <p style="color: #6b7280; line-height: 1.7; margin-bottom: 1.5rem; font-size: 0.95rem;">
+                        <p style="color: #000000; line-height: 1.7; margin-bottom: 1.5rem; font-size: 0.95rem;">
                             Dr. Wilson is a Family Physician with a special interest in sports medicine and musculoskeletal health. 
                             He completed his medical training at Queen's University and holds a Diploma in Sport Medicine. 
                             With over 10 years of experience, Dr. Wilson helps patients of all ages maintain active, healthy lifestyles.
@@ -126,7 +126,7 @@ $contact_info = freshdew_get_contact_info();
                     <div style="padding: 2rem;">
                         <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem;">Dr. Emily Rodriguez</h3>
                         <p style="color: #667eea; font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem;">MD, CCFP, MRCGP</p>
-                        <p style="color: #6b7280; line-height: 1.7; margin-bottom: 1.5rem; font-size: 0.95rem;">
+                        <p style="color: #000000; line-height: 1.7; margin-bottom: 1.5rem; font-size: 0.95rem;">
                             Dr. Rodriguez is a bilingual Family Physician fluent in English and Spanish, specializing in family medicine 
                             and geriatric care. She completed her medical degree at the University of Ottawa and has extensive experience 
                             in managing complex chronic conditions. Dr. Rodriguez is committed to providing culturally sensitive care 
@@ -141,7 +141,7 @@ $contact_info = freshdew_get_contact_info();
             </div>
             
             <h2 style="font-size: 2.5rem; margin: 3rem 0 2rem; color: #1f2937;">Our Services</h2>
-            <ul style="color: #4b5563; line-height: 2; font-size: 1.125rem; list-style: none; padding: 0;">
+            <ul style="color: #000000; line-height: 2; font-size: 1.125rem; list-style: none; padding: 0;">
                 <li style="margin-bottom: 1rem; padding-left: 2rem; position: relative;">
                     <span style="position: absolute; left: 0; color: #2563eb;">✓</span>
                     <strong>Walk-in Clinic:</strong> No appointment needed. Quality medical care when you need it.
@@ -153,10 +153,6 @@ $contact_info = freshdew_get_contact_info();
                 <li style="margin-bottom: 1rem; padding-left: 2rem; position: relative;">
                     <span style="position: absolute; left: 0; color: #2563eb;">✓</span>
                     <strong>Telehealth:</strong> Virtual consultations from the comfort of your home.
-                </li>
-                <li style="margin-bottom: 1rem; padding-left: 2rem; position: relative;">
-                    <span style="position: absolute; left: 0; color: #2563eb;">✓</span>
-                    <strong>Emergency Care:</strong> 24/7 emergency medical services.
                 </li>
             </ul>
         </div>
