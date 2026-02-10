@@ -3,7 +3,7 @@
 /* Hero Section Enhancements */
 .hero-section {
     position: relative;
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
     align-items: center;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -14,8 +14,8 @@
 /* Mobile: Ensure full viewport height */
 @media (max-width: 768px) {
     .hero-section {
-        min-height: 100vh;
-        min-height: 100dvh; /* Dynamic viewport height for mobile */
+        height: 100vh;
+        height: 100dvh; /* Dynamic viewport height for mobile */
     }
 }
 

@@ -362,8 +362,8 @@ html body .site-header {
     height: 100%;
     object-fit: cover;
     z-index: 1;
-    filter: none !important;
-    -webkit-filter: none !important;
+    filter: brightness(1.1) contrast(1.05) saturate(1.05) !important;
+    -webkit-filter: brightness(1.1) contrast(1.05) saturate(1.05) !important;
 }
 
 .hero-content {

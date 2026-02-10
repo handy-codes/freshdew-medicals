@@ -17,8 +17,8 @@ $contact_info = freshdew_get_contact_info();
              class="hero-background"
              onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
         <div class="hero-background" style="display: none; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
-        <!-- Professional gradient overlay matching TSX version -->
-        <div class="hero-overlay" style="position: absolute; inset: 0; background: linear-gradient(to right, rgba(30, 58, 138, 0.7), rgba(30, 58, 138, 0.4), transparent); z-index: 10;"></div>
+        <!-- Professional gradient overlay matching TSX version - lighter for better clarity -->
+        <div class="hero-overlay" style="position: absolute; inset: 0; background: linear-gradient(to right, rgba(30, 58, 138, 0.5), rgba(30, 58, 138, 0.25), transparent); z-index: 10;"></div>
     </div>
     
     <div class="container">
@@ -48,28 +48,6 @@ $contact_info = freshdew_get_contact_info();
                 <a href="<?php echo esc_url(home_url('/telehealth')); ?>" class="btn btn-ghost-hero">
                     Virtual Consultation
                 </a>
-            </div>
-            
-            <!-- Stats -->
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.5rem;">
-                <?php
-                $stats = array(
-                    array('value' => '24/7', 'label' => 'Emergency Care'),
-                    array('value' => '98%', 'label' => 'Patient Satisfaction'),
-                    array('value' => '50+', 'label' => 'Specialists'),
-                    array('value' => '15min', 'label' => 'Avg Wait Time'),
-                );
-                foreach ($stats as $stat) :
-                ?>
-                <div style="text-align: center; padding: 1.5rem; border-radius: 1rem; backdrop-filter: blur(10px); background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">
-                    <div style="font-size: 2rem; font-weight: bold; color: #ffffff; margin-bottom: 0.5rem;">
-                        <?php echo esc_html($stat['value']); ?>
-                    </div>
-                    <div style="font-size: 0.875rem; color: rgba(255,255,255,0.7); font-weight: 500;">
-                        <?php echo esc_html($stat['label']); ?>
-                    </div>
-                </div>
-                <?php endforeach; ?>
             </div>
         </div>
     </div>
