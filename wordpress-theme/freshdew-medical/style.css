@@ -341,6 +341,7 @@ html body .site-header {
 .hero-section {
     position: relative;
     height: 100vh;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -399,7 +400,6 @@ html body .site-header {
     color: #ffffff;
     font-size: 0.875rem;
     font-weight: 500;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .hero-title {
@@ -408,7 +408,6 @@ html body .site-header {
     color: #ffffff;
     margin-bottom: 1.5rem;
     line-height: 1.1;
-    text-shadow: 0 3px 12px rgba(0, 0, 0, 0.6), 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 @media (min-width: 768px) {
@@ -420,7 +419,6 @@ html body .site-header {
 .hero-title-gradient {
     display: block;
     color: #6DDDFF;
-    text-shadow: 0 3px 10px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 .hero-subtitle {
@@ -429,7 +427,6 @@ html body .site-header {
     margin-bottom: 2rem;
     max-width: 42rem;
     line-height: 1.6;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 .hero-buttons {
@@ -455,20 +452,21 @@ html body .site-header {
 }
 
 .btn-primary-hero {
-    background: white;
-    color: #1e3a8a;
+    background: rgba(255, 255, 255, 0.95);
+    color: #2563eb;
     padding: 0.875rem 2rem;
     border-radius: 9999px;
     font-size: 1.125rem;
     font-weight: 600;
     text-decoration: none;
-    transition: background-color 0.3s;
+    transition: all 0.3s;
     border: none;
 }
 
 .btn-primary-hero:hover {
-    background: #f3f4f6;
-    color: #1e3a8a;
+    background: white;
+    color: #2563eb;
+    transform: translateY(-2px);
 }
 
 .btn-outline-hero {
@@ -489,20 +487,21 @@ html body .site-header {
 }
 
 .btn-ghost-hero {
-    background: transparent;
+    background: rgba(255, 255, 255, 0.15);
     color: white;
     padding: 0.875rem 2rem;
     border-radius: 9999px;
     font-size: 1.125rem;
     font-weight: 600;
     text-decoration: none;
-    transition: background-color 0.3s;
-    border: none;
+    transition: all 0.3s;
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .btn-ghost-hero:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.25);
     color: white;
+    transform: translateY(-2px);
 }
 
 /* Buttons */
@@ -997,10 +996,16 @@ html body .site-header {
     }
     
     .hero-section {
-        height: 100vh !important;
         height: 100dvh !important; /* Dynamic viewport height for mobile */
+        min-height: 100vh !important;
         display: flex !important;
         align-items: center !important;
+    }
+    
+    .hero-background-wrapper,
+    .hero-background {
+        height: 100dvh !important;
+        min-height: 100vh !important;
     }
     
     .hero-content {
