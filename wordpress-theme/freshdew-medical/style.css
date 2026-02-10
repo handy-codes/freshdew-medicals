@@ -394,9 +394,10 @@ html body .site-header {
 }
 
 .badge-text {
-    color: rgba(255, 255, 255, 0.9);
+    color: #ffffff;
     font-size: 0.875rem;
     font-weight: 500;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .hero-title {
@@ -405,6 +406,7 @@ html body .site-header {
     color: #ffffff;
     margin-bottom: 1.5rem;
     line-height: 1.1;
+    text-shadow: 0 3px 12px rgba(0, 0, 0, 0.6), 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 @media (min-width: 768px) {
@@ -415,18 +417,17 @@ html body .site-header {
 
 .hero-title-gradient {
     display: block;
-    background: linear-gradient(to right, #67e8f9, #93c5fd);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #6DDDFF;
+    text-shadow: 0 3px 10px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 .hero-subtitle {
     font-size: 1.25rem;
-    color: rgba(255, 255, 255, 0.8);
+    color: #ffffff;
     margin-bottom: 2rem;
     max-width: 42rem;
     line-height: 1.6;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 .hero-buttons {
@@ -978,8 +979,32 @@ html body .site-header {
         z-index: 999;
     }
     
+    .hero-section {
+        min-height: 100vh !important;
+        min-height: 100dvh !important; /* Dynamic viewport height for mobile */
+        display: flex !important;
+        align-items: center !important;
+    }
+    
+    .hero-content {
+        padding: 2rem 1rem !important;
+        width: 100% !important;
+    }
+    
     .hero-title {
         font-size: 2.5rem;
+        text-shadow: 0 3px 12px rgba(0, 0, 0, 0.6) !important;
+    }
+    
+    .hero-subtitle {
+        color: #ffffff !important;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5) !important;
+        font-size: 1.125rem !important;
+    }
+    
+    .hero-title-gradient {
+        color: #6DDDFF !important;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5) !important;
     }
     
     .header-content {
