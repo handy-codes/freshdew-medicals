@@ -81,7 +81,7 @@ export default function HeroSection() {
             <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
               Quality Healthcare
               <span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-300">
-                For residents of Belleville and surrounding areas
+                You Can Trust!
               </span>
             </h1>
 
