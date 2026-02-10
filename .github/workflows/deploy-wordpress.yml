@@ -15,6 +15,10 @@ jobs:
   deploy:
     name: Deploy to Hostinger
     runs-on: ubuntu-latest
+    timeout-minutes: 35
+    concurrency:
+      group: deploy-wordpress-to-hostinger
+      cancel-in-progress: true
     
     steps:
       - name: Checkout code
@@ -47,6 +51,7 @@ jobs:
         id: test-ftp
         continue-on-error: true
         run: |
+          set -o pipefail
           echo "🔍 Testing FTP connection..."
           SERVER="${{ secrets.HOSTINGER_FTP_SERVER }}"
           USER="${{ secrets.HOSTINGER_FTP_USERNAME }}"
@@ -77,16 +82,39 @@ jobs:
           echo "❌ Both FTP and FTPS connection tests failed"
           echo "protocol=failed" >> $GITHUB_OUTPUT
           exit 1
+
+      - name: Detect SFTP configuration
+        id: sftp-config
+        run: |
+          HAS_KEY=false
+          HAS_HOST=false
+          HAS_USER=false
+          if [ -n "${SSH_PRIVATE_KEY}" ]; then HAS_KEY=true; fi
+          if [ -n "${SSH_HOST}" ]; then HAS_HOST=true; fi
+          if [ -n "${SSH_USER}" ]; then HAS_USER=true; fi
+
+          if [ "$HAS_KEY" = true ] && [ "$HAS_HOST" = true ] && [ "$HAS_USER" = true ]; then
+            echo "enabled=true" >> $GITHUB_OUTPUT
+            echo "✅ SFTP secrets detected (will attempt SFTP deploy)."
+          else
+            echo "enabled=false" >> $GITHUB_OUTPUT
+            echo "ℹ️ SFTP secrets not fully configured (skipping SFTP deploy; will use FTP/FTPS)."
+          fi
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.HOSTINGER_SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.HOSTINGER_SSH_HOST }}
+          SSH_USER: ${{ secrets.HOSTINGER_SSH_USER }}
       
       # Theme Deployment - Try SFTP first (most reliable)
       - name: Deploy Theme (SFTP - Recommended)
         id: theme-sftp
+        if: steps.sftp-config.outputs.enabled == 'true'
         continue-on-error: true
         uses: easingthemes/ssh-deploy@v4.1.5
         env:
           SSH_PRIVATE_KEY: ${{ secrets.HOSTINGER_SSH_PRIVATE_KEY }}
-          REMOTE_HOST: ${{ secrets.HOSTINGER_SSH_HOST || secrets.HOSTINGER_FTP_SERVER }}
-          REMOTE_USER: ${{ secrets.HOSTINGER_SSH_USER || secrets.HOSTINGER_FTP_USERNAME }}
+          REMOTE_HOST: ${{ secrets.HOSTINGER_SSH_HOST }}
+          REMOTE_USER: ${{ secrets.HOSTINGER_SSH_USER }}
           REMOTE_PORT: ${{ secrets.HOSTINGER_SSH_PORT || '22' }}
           SOURCE: "wordpress-theme/freshdew-medical/"
           TARGET: "/public_html/wp-content/themes/freshdew-medical/"
@@ -166,12 +194,13 @@ jobs:
       # Plugins Deployment - Try SFTP first
       - name: Deploy Plugins (SFTP - Recommended)
         id: plugins-sftp
+        if: steps.sftp-config.outputs.enabled == 'true'
         continue-on-error: true
         uses: easingthemes/ssh-deploy@v4.1.5
         env:
           SSH_PRIVATE_KEY: ${{ secrets.HOSTINGER_SSH_PRIVATE_KEY }}
-          REMOTE_HOST: ${{ secrets.HOSTINGER_SSH_HOST || secrets.HOSTINGER_FTP_SERVER }}
-          REMOTE_USER: ${{ secrets.HOSTINGER_SSH_USER || secrets.HOSTINGER_FTP_USERNAME }}
+          REMOTE_HOST: ${{ secrets.HOSTINGER_SSH_HOST }}
+          REMOTE_USER: ${{ secrets.HOSTINGER_SSH_USER }}
           REMOTE_PORT: ${{ secrets.HOSTINGER_SSH_PORT || '22' }}
           SOURCE: "wordpress-plugins/"
           TARGET: "/public_html/wp-content/plugins/"
