@@ -30,7 +30,7 @@ $contact_info = freshdew_get_contact_info();
             
             <h1 class="hero-title">
                 Quality Healthcare
-                <span class="hero-title-gradient">For residents of Belleville and surrounding areas</span>
+                <span class="hero-title-gradient">You Can Trust</span>
             </h1>
             
             <p class="hero-subtitle">
