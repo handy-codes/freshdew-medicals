@@ -49,7 +49,7 @@ $contact_info = freshdew_get_contact_info();
                         <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem;">Dr. Joy Kinze</h3>
                         <p style="color: #667eea; font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem;">MBBS, MRCGP, CCFP</p>
                         <p style="color: #000000; line-height: 1.7; margin-bottom: 1.5rem; font-size: 0.95rem;">
-                         Joy Kinze is a UK trained seasoned family physician with over 15 years of robust clinical experience and practice. She has worked in low and middle income countries and spent the majority of her practice in rural English town.
+                         Dr. Joy Kinze is a UK trained seasoned family physician with over 15 years of robust clinical experience and practice. She has worked in low and middle income countries and spent the majority of her practice in rural English town.
                          Her areas of interest are lifestyle medicine and women's health. She is very passionate about healthcare administration having seen the catastrophic consequences when standards are not met in developing countries.
                          She is best described as a compassionate and excellent physician.
                         </p>
@@ -72,65 +72,12 @@ $contact_info = freshdew_get_contact_info();
                         ?>
                     </div>
                     <div style="padding: 2rem;">
-                        <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem;">Dr. Sarah Johnson</h3>
-                        <p style="color: #667eea; font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem;">MD, CCFP, FCFP</p>
+                        <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem;">Dr. Jamal Doe</h3>
+                        <p style="color: #667eea; font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem;">MBBS, MPH, MRCSeD, Cert.Med.Edu MRCGP, CCFP</p>
                         <p style="color: #000000; line-height: 1.7; margin-bottom: 1.5rem; font-size: 0.95rem;">
-                            Dr. Johnson is a dedicated Family Physician with expertise in women's health, pediatrics, and preventive medicine. 
-                            She received her medical degree from McMaster University and has been practicing in Ontario for over 12 years. 
-                            Dr. Johnson is passionate about building long-term relationships with her patients and their families.
-                        </p>
-                        <a href="https://www.myhealthaccess.ca/branded/freshdew-medical-centre" target="_blank" rel="noopener noreferrer" style="display: block; width: 100%;">
-                            <img src="https://www.myhealthaccess.ca/build/branded_signup/book_appt_online_big.png" alt="Book Appointment Online" style="max-width: 100%; height: auto; display: block; width: 100%;">
-                        </a>
-                    </div>
-                </div>
-                
-                <!-- Doctor 3 - Male -->
-                <div style="background: white; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 12px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)';">
-                    <div style="width: 100%; height: 300px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
-                        <?php
-                        $doctor3_image = get_template_directory_uri() . '/assets/images/doctors/dr-james-wilson.jpg';
-                        if (file_exists(get_template_directory() . '/assets/images/doctors/dr-james-wilson.jpg')) {
-                            echo '<img src="' . esc_url($doctor3_image) . '" alt="Dr. James Wilson" style="width: 200px; height: 200px; border-radius: 50%; object-fit: cover; border: 4px solid rgba(255,255,255,0.3);">';
-                        } else {
-                            echo '<div style="width: 200px; height: 200px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: 600;">JW</div>';
-                        }
-                        ?>
-                    </div>
-                    <div style="padding: 2rem;">
-                        <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem;">Dr. James Wilson</h3>
-                        <p style="color: #667eea; font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem;">MD, CCFP, Dip Sport Med</p>
-                        <p style="color: #000000; line-height: 1.7; margin-bottom: 1.5rem; font-size: 0.95rem;">
-                            Dr. Wilson is a Family Physician with a special interest in sports medicine and musculoskeletal health. 
-                            He completed his medical training at Queen's University and holds a Diploma in Sport Medicine. 
-                            With over 10 years of experience, Dr. Wilson helps patients of all ages maintain active, healthy lifestyles.
-                        </p>
-                        <a href="https://www.myhealthaccess.ca/branded/freshdew-medical-centre" target="_blank" rel="noopener noreferrer" style="display: block; width: 100%;">
-                            <img src="https://www.myhealthaccess.ca/build/branded_signup/book_appt_online_big.png" alt="Book Appointment Online" style="max-width: 100%; height: auto; display: block; width: 100%;">
-                        </a>
-                    </div>
-                </div>
-                
-                <!-- Doctor 4 - Female -->
-                <div style="background: white; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 12px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)';">
-                    <div style="width: 100%; height: 300px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
-                        <?php
-                        $doctor4_image = get_template_directory_uri() . '/assets/images/doctors/dr-emily-rodriguez.jpg';
-                        if (file_exists(get_template_directory() . '/assets/images/doctors/dr-emily-rodriguez.jpg')) {
-                            echo '<img src="' . esc_url($doctor4_image) . '" alt="Dr. Emily Rodriguez" style="width: 200px; height: 200px; border-radius: 50%; object-fit: cover; border: 4px solid rgba(255,255,255,0.3);">';
-                        } else {
-                            echo '<div style="width: 200px; height: 200px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: 600;">ER</div>';
-                        }
-                        ?>
-                    </div>
-                    <div style="padding: 2rem;">
-                        <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem;">Dr. Emily Rodriguez</h3>
-                        <p style="color: #667eea; font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem;">MD, CCFP, MRCGP</p>
-                        <p style="color: #000000; line-height: 1.7; margin-bottom: 1.5rem; font-size: 0.95rem;">
-                            Dr. Rodriguez is a bilingual Family Physician fluent in English and Spanish, specializing in family medicine 
-                            and geriatric care. She completed her medical degree at the University of Ottawa and has extensive experience 
-                            in managing complex chronic conditions. Dr. Rodriguez is committed to providing culturally sensitive care 
-                            to diverse communities in Belleville.
+                         Dr Jamal is a surgeon turned family physician. As an associate specialist in Trauma and Orthopaedic surgery, he has performed major  arthroplasties during his surgical training before venturing into family practice where he has been in the last 6 years-and loving it.
+                         He holds a Licentiate of the Medical Council of Canada and  Certification in the College of Family Physicians of Canada. He is a Member of the Royal College of Surgeon, Edinburgh, United kingdom, holds Public Health Masters (with merit) from the University of Birmingham and did his Family Practice postgraduate training/residency in the Durham and Tees Valley being among the top 2% of his cohort in the Applied Knowledge Test.
+                         He is passionate about Mens health, Public Health Protection, Musculoskeletal Health, Undergraduate and Postgraduate medical education having a Pgcert in Medical Education from the Sunderland University. He is on a pathway to his PhD at the Teesside University, United kingdom.</p>
                         </p>
                         <a href="https://www.myhealthaccess.ca/branded/freshdew-medical-centre" target="_blank" rel="noopener noreferrer" style="display: block; width: 100%;">
                             <img src="https://www.myhealthaccess.ca/build/branded_signup/book_appt_online_big.png" alt="Book Appointment Online" style="max-width: 100%; height: auto; display: block; width: 100%;">
