@@ -46,12 +46,12 @@ $contact_info = freshdew_get_contact_info();
                         ?>
                     </div>
                     <div style="padding: 2rem;">
-                        <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem;">Dr. Michael Chen</h3>
+                        <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem;">Dr. Joy Kinze</h3>
                         <p style="color: #667eea; font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem;">MD, CCFP, FRCPC</p>
                         <p style="color: #6b7280; line-height: 1.7; margin-bottom: 1.5rem; font-size: 0.95rem;">
-                            Dr. Chen is a board-certified Family Physician with over 15 years of experience serving the Belleville community. 
-                            He specializes in preventive care, chronic disease management, and men's health. Dr. Chen completed his medical 
-                            degree at the University of Toronto and is committed to providing compassionate, patient-centered care.
+                         Joy Kinze is a UK trained seasoned family physician with over 15 years of robust clinical experience and practice. She has worked in low and middle income countries and spent the majority of her practice in rural English town.
+                         Her areas of interest are lifestyle medicine and women's health. She is very passionate about healthcare administration having seen the catastrophic consequences when standards are not met in developing countries.
+                         She is best described as a compassionate and excellent physician.
                         </p>
                         <a href="https://www.myhealthaccess.ca/branded/freshdew-medical-centre" target="_blank" rel="noopener noreferrer" style="display: block; width: 100%;">
                             <img src="https://www.myhealthaccess.ca/build/branded_signup/book_appt_online_big.png" alt="Book Appointment Online" style="max-width: 100%; height: auto; display: block; width: 100%;">
