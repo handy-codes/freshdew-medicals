@@ -173,6 +173,27 @@ $contact_info = freshdew_get_contact_info();
             Conveniently located in Belleville, Ontario
         </p>
         
+        <!-- Hours of Operation -->
+        <div style="max-width: 600px; margin: 0 auto 3rem;">
+            <h3 style="text-align: center; font-size: 2rem; margin-bottom: 1.5rem; color: #1f2937;">Hours of Operation</h3>
+            <div style="background: white; padding: 2rem; border-radius: 0.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr style="border-bottom: 1px solid #e5e7eb;">
+                        <td style="padding: 1rem 0; font-weight: 600; color: #1f2937;">Monday - Friday</td>
+                        <td style="padding: 1rem 0; text-align: right; color: #4b5563;">8:00 AM - 8:00 PM</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #e5e7eb;">
+                        <td style="padding: 1rem 0; font-weight: 600; color: #1f2937;">Saturday</td>
+                        <td style="padding: 1rem 0; text-align: right; color: #4b5563;">9:00 AM - 5:00 PM</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 1rem 0; font-weight: 600; color: #1f2937;">Sunday</td>
+                        <td style="padding: 1rem 0; text-align: right; color: #4b5563;">10:00 AM - 4:00 PM</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem; align-items: start;">
             <div>
                 <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem; color: #1f2937;">Location Details</h3>

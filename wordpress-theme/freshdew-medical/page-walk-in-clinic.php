@@ -71,24 +71,6 @@ $contact_info = freshdew_get_contact_info();
                 <?php endforeach; ?>
             </div>
             
-            <h2 style="font-size: 2.5rem; margin: 3rem 0 2rem; color: #1f2937;">Hours of Operation</h2>
-            <div style="background: #f9fafb; padding: 2rem; border-radius: 0.5rem; margin-bottom: 3rem;">
-                <table style="width: 100%; border-collapse: collapse;">
-                    <tr style="border-bottom: 1px solid #e5e7eb;">
-                        <td style="padding: 1rem 0; font-weight: 600; color: #1f2937;">Monday - Friday</td>
-                        <td style="padding: 1rem 0; text-align: right; color: #4b5563;">8:00 AM - 8:00 PM</td>
-                    </tr>
-                    <tr style="border-bottom: 1px solid #e5e7eb;">
-                        <td style="padding: 1rem 0; font-weight: 600; color: #1f2937;">Saturday</td>
-                        <td style="padding: 1rem 0; text-align: right; color: #4b5563;">9:00 AM - 5:00 PM</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 1rem 0; font-weight: 600; color: #1f2937;">Sunday</td>
-                        <td style="padding: 1rem 0; text-align: right; color: #4b5563;">10:00 AM - 4:00 PM</td>
-                    </tr>
-                </table>
-            </div>
-            
             <div style="text-align: center; margin-top: 3rem;">
                 <a href="https://www.myhealthaccess.ca/branded/freshdew-medical-centre" target="_blank" rel="noopener noreferrer" style="display: inline-block;">
                     <img src="https://www.myhealthaccess.ca/build/branded_signup/book_appt_online_big.png" alt="Book Appointment Online" style="max-width: 100%; height: auto; display: block;">

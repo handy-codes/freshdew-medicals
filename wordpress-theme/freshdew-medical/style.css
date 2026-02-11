@@ -923,7 +923,7 @@ html body .site-header {
         height: 65vh;
         background: #fafafa;
         box-shadow: -2px 0 10px rgba(0,0,0,0.1);
-        transition: right 0.3s ease;
+        transition: right 0.5s ease;
         z-index: 1000;
         padding: 0;
         overflow-y: auto;
@@ -985,7 +985,7 @@ html body .site-header {
         overflow: hidden;
     }
     
-    body.menu-open::before {
+    body::before {
         content: '';
         position: fixed;
         top: 0;
@@ -994,6 +994,14 @@ html body .site-header {
         height: 100%;
         background: rgba(0,0,0,0.5);
         z-index: 999;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.5s ease;
+    }
+    
+    body.menu-open::before {
+        opacity: 1;
+        pointer-events: auto;
     }
     
     .hero-section {
