@@ -414,6 +414,26 @@ html body .site-header {
     .hero-title {
         font-size: 4.5rem;
     }
+    
+    /* Team cards - flex row on desktop */
+    .team-card {
+        flex-direction: row !important;
+        align-items: stretch;
+    }
+    
+    .team-card .team-card-image {
+        width: 40% !important;
+        min-width: 300px;
+        height: auto !important;
+        flex-shrink: 0;
+    }
+    
+    .team-card > div:not(.team-card-image) {
+        width: 60% !important;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
 }
 
 .hero-title-gradient {

@@ -133,8 +133,12 @@ $contact_info = freshdew_get_contact_info();
                         <span style="font-size: 1.25rem;">🕐</span> Hours
                     </h3>
                     <div style="color: #4b5563; line-height: 1.8;">
-                        <p>Monday - Friday: 8:00 AM - 8:00 PM</p>
-                        <p>Saturday - Sunday: Closed</p>
+                        <p>Monday - Friday: 09:00 - 1700</p>
+                        <p>Saturday: 10:00 -  16:00</p>
+                        <p>Sunday: Closed</p>
+                    </div>
+                    <div style="color: #4b5563; line-height: 1.8;">
+                        <p>Please check our website and clinic notice for any updates to working hours.</p>
                     </div>
                 </div>
             </div>

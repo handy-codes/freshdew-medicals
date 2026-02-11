@@ -140,23 +140,23 @@ $contact_info = freshdew_get_contact_info();
         <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: white; font-weight: 700;">Clinic Policies</h2>
         <div style="max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 2rem;">
             
-            <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 2rem; border-radius: 0.75rem; border: 1px solid rgba(255, 255, 255, 0.2);">
-                <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: white; font-weight: 600;">Safety of Staff and Patient</h3>
-                <p style="color: white; line-height: 1.8; font-size: 1.05rem;">
+            <div style="background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(10px); padding: 2.5rem; border-radius: 0.75rem; border: 1px solid rgba(255, 255, 255, 0.4); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
+                <h3 style="font-size: 1.75rem; margin-bottom: 1.25rem; color: #ffffff; font-weight: 700; text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);">Safety of Staff and Patient</h3>
+                <p style="color: #ffffff; line-height: 1.8; font-size: 1.125rem; text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);">
                     We aim to provide high standards of care and work under incredible pressure. We understand you may be experiencing stress coming into the clinic. We have a Zero Tolerance Practice Policy and strictly prohibit abusive, violent, threatening or any form of assault towards staff and patients. Violators will be immediately removed from the Practice and Police may be contacted.
                 </p>
             </div>
             
-            <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 2rem; border-radius: 0.75rem; border: 1px solid rgba(255, 255, 255, 0.2);">
-                <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: white; font-weight: 600;">No Show</h3>
-                <p style="color: white; line-height: 1.8; font-size: 1.05rem;">
+            <div style="background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(10px); padding: 2.5rem; border-radius: 0.75rem; border: 1px solid rgba(255, 255, 255, 0.4); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
+                <h3 style="font-size: 1.75rem; margin-bottom: 1.25rem; color: #ffffff; font-weight: 700; text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);">No Show</h3>
+                <p style="color: #ffffff; line-height: 1.8; font-size: 1.125rem; text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);">
                     We understand circumstances change, so we provide a free 24hour cancellation notice, otherwise there will be a $50 no show fee.
                 </p>
             </div>
             
-            <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 2rem; border-radius: 0.75rem; border: 1px solid rgba(255, 255, 255, 0.2);">
-                <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: white; font-weight: 600;">Medical Visit</h3>
-                <p style="color: white; line-height: 1.8; font-size: 1.05rem;">
+            <div style="background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(10px); padding: 2.5rem; border-radius: 0.75rem; border: 1px solid rgba(255, 255, 255, 0.4); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
+                <h3 style="font-size: 1.75rem; margin-bottom: 1.25rem; color: #ffffff; font-weight: 700; text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);">Medical Visit</h3>
+                <p style="color: #ffffff; line-height: 1.8; font-size: 1.125rem; text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);">
                     To ensure effective treatment, only ONE medical issue will be discussed per appointment. Please feel free to book as many appointments as needed.
                 </p>
             </div>
@@ -180,15 +180,15 @@ $contact_info = freshdew_get_contact_info();
                 <table style="width: 100%; border-collapse: collapse;">
                     <tr style="border-bottom: 1px solid #e5e7eb;">
                         <td style="padding: 1rem 0; font-weight: 600; color: #1f2937;">Monday - Friday</td>
-                        <td style="padding: 1rem 0; text-align: right; color: #4b5563;">8:00 AM - 8:00 PM</td>
+                        <td style="padding: 1rem 0; text-align: right; color: #4b5563;">09:00 - 17:00</td>
                     </tr>
                     <tr style="border-bottom: 1px solid #e5e7eb;">
                         <td style="padding: 1rem 0; font-weight: 600; color: #1f2937;">Saturday</td>
-                        <td style="padding: 1rem 0; text-align: right; color: #4b5563;">9:00 AM - 5:00 PM</td>
+                        <td style="padding: 1rem 0; text-align: right; color: #4b5563;">10:00 - 17:00</td>
                     </tr>
                     <tr>
                         <td style="padding: 1rem 0; font-weight: 600; color: #1f2937;">Sunday</td>
-                        <td style="padding: 1rem 0; text-align: right; color: #4b5563;">10:00 AM - 4:00 PM</td>
+                        <td style="padding: 1rem 0; text-align: right; color: #4b5563;">Closed</td>
                     </tr>
                 </table>
             </div>
