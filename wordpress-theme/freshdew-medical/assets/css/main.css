@@ -81,19 +81,23 @@ html {
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .hero-title {
-        font-size: 3.5rem !important;
+        font-size: 2.5rem !important;
+        text-shadow: none !important;
     }
     
     .hero-subtitle {
-        font-size: 1.5rem !important;
+        font-size: 1.125rem !important;
+        text-shadow: none !important;
     }
     
     .hero-title-gradient {
-        font-size: 3rem !important;
+        font-size: 2.25rem !important;
+        text-shadow: none !important;
     }
     
     .badge-text {
-        font-size: 1.125rem !important;
+        font-size: 1rem !important;
+        text-shadow: none !important;
     }
     
     section {
