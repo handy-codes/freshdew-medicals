@@ -424,16 +424,45 @@ html body .site-header {
     .team-card .team-card-image {
         width: 40% !important;
         min-width: 300px;
-        height: auto !important;
+        height: 300px !important;
+        max-height: 300px !important;
         flex-shrink: 0;
         border-radius: 0.75rem 0.75rem 0 0 !important;
+        overflow: hidden !important;
     }
+    
+    .team-card .team-card-image img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        object-position: center !important;
+    }
+}
+
+/* Team card image constraints for all screen sizes */
+.team-card-image {
+    height: 300px !important;
+    max-height: 300px !important;
+    overflow: hidden !important;
+}
+
+.team-card-image img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+}
     
     .team-card > div:not(.team-card-image) {
         width: 60% !important;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+    }
+    
+    .team-card-content {
+        display: flex !important;
+        flex-direction: column !important;
     }
     
     /* Make Book Appointment button smaller on desktop team cards */
