@@ -134,7 +134,7 @@ $contact_info = freshdew_get_contact_info();
                     </h3>
                     <div style="color: #4b5563; line-height: 1.8;">
                         <p>Monday - Friday: 8:00 AM - 8:00 PM</p>
-                        <p>Saturday - Sunday: 9:00 AM - 5:00 PM</p>
+                        <p>Saturday - Sunday: Closed</p>
                     </div>
                 </div>
             </div>
