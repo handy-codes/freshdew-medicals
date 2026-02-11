@@ -429,9 +429,6 @@ html body .site-header {
         flex-shrink: 0;
         border-radius: 0.75rem 0.75rem 0 0 !important;
         overflow: hidden !important;
-    }
-    
-    .team-card .team-card-image {
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
@@ -446,6 +443,35 @@ html body .site-header {
     
     .team-card .team-card-image img[alt="Karen Howald"] {
         object-position: center 20% !important;
+    }
+    
+    .team-card > div:not(.team-card-image) {
+        width: 60% !important;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .team-card-content {
+        display: flex !important;
+        flex-direction: column !important;
+        height: 100% !important;
+    }
+    
+    .team-card-content h3 {
+        flex-shrink: 0;
+    }
+    
+    .team-card-content p:nth-of-type(1) {
+        flex-shrink: 0;
+    }
+    
+    .team-card-content p:nth-of-type(2) {
+        flex-grow: 1;
+    }
+    
+    .team-card-content a {
+        flex-shrink: 0;
+        margin-top: auto;
     }
 }
 
