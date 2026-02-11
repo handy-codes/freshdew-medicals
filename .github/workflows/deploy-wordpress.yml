@@ -182,6 +182,14 @@ jobs:
           log-level: verbose
         timeout-minutes: 15
       
+      - name: Capture Theme FTP Error
+        if: steps.theme-ftp.outcome == 'failure'
+        run: |
+          echo "❌ Theme FTP Deployment Failed"
+          echo "Check the logs above for detailed error messages"
+          echo "error=true" >> $GITHUB_OUTPUT
+        continue-on-error: true
+      
       # Theme Deployment - Alternative paths (fallback)
       - name: Deploy Theme (Alternative Path 1)
         id: theme-alt1
@@ -342,7 +350,18 @@ jobs:
             echo "   - Alt Path 1: ${{ steps.theme-alt1.outcome }}"
             echo "   - Alt Path 2: ${{ steps.theme-alt2.outcome }}"
             echo ""
-            echo "   💡 Check the logs above for specific error messages from each deployment attempt."
+            echo "   📋 Detailed Status:"
+            echo "   - SFTP step: ${{ steps.theme-sftp.conclusion || 'not run' }}"
+            echo "   - FTP step: ${{ steps.theme-ftp.conclusion || 'not run' }}"
+            echo "   - Alt Path 1 step: ${{ steps.theme-alt1.conclusion || 'not run' }}"
+            echo "   - Alt Path 2 step: ${{ steps.theme-alt2.conclusion || 'not run' }}"
+            echo ""
+            echo "   💡 Scroll up in the logs to see detailed error messages from each deployment attempt."
+            echo "   💡 Common issues:"
+            echo "      • FTP credentials incorrect or expired"
+            echo "      • Server path incorrect (check FileZilla for exact path)"
+            echo "      • Hostinger blocking GitHub Actions IPs"
+            echo "      • FTP service disabled in Hostinger hPanel"
           fi
           echo ""
           echo "📦 Plugins Deployment:"
