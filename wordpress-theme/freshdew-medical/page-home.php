@@ -135,9 +135,9 @@ $contact_info = freshdew_get_contact_info();
 </section>
 
 <!-- Clinic Policies Section -->
-<section style="padding: 4rem 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+<section style="padding: 4rem 0; background: #f0f4f8;">
     <div class="container">
-        <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: white; font-weight: 700;">Clinic Policies</h2>
+        <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: #1f2937; font-weight: 700;">Clinic Policies</h2>
         <div style="max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 2rem;">
             
             <div style="background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%); padding: 2.5rem; border-radius: 0.75rem; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
