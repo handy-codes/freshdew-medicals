@@ -418,7 +418,7 @@ html body .site-header {
     /* Team cards - flex row on desktop */
     .team-card {
         flex-direction: row !important;
-        align-items: stretch;
+        align-items: center !important;
     }
     
     .team-card .team-card-image {
@@ -454,7 +454,6 @@ html body .site-header {
     .team-card-content {
         display: flex !important;
         flex-direction: column !important;
-        height: 100% !important;
     }
     
     .team-card-content h3 {
@@ -466,12 +465,12 @@ html body .site-header {
     }
     
     .team-card-content p:nth-of-type(2) {
-        flex-grow: 1;
+        flex-grow: 0;
     }
     
     .team-card-content a {
         flex-shrink: 0;
-        margin-top: auto;
+        margin-top: 1.5rem;
     }
 }
 
