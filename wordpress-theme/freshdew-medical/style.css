@@ -496,7 +496,9 @@ html body .site-header {
     object-fit: cover !important;
     object-position: center 20% !important;
 }
-    
+
+/* Desktop-only team card layout adjustments */
+@media (min-width: 768px) {
     .team-card > div:not(.team-card-image) {
         width: 60% !important;
         display: flex;
