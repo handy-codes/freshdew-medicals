@@ -318,10 +318,10 @@ final class FreshDew_Clinic_System {
     }
 
     /**
-     * After logout, redirect to homepage
+     * After logout, redirect to clinic login page
      */
     public function logout_redirect() {
-        wp_redirect(home_url('/'));
+        wp_redirect(home_url('/clinic-login'));
         exit;
     }
     

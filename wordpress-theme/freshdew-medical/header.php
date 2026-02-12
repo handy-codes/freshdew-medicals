@@ -173,6 +173,22 @@
                     'fallback_cb' => 'freshdew_default_menu',
                 ));
                 ?>
+                <?php if (class_exists('FreshDew_Clinic_System')): ?>
+                <div class="nav-auth-links">
+                    <?php if (is_user_logged_in()): 
+                        $current_user = wp_get_current_user();
+                        $dashboard_url = in_array('clinic_patient', $current_user->roles) 
+                            ? home_url('/patient-portal') 
+                            : home_url('/clinic-dashboard');
+                        $logout_url = wp_logout_url(home_url('/clinic-login'));
+                    ?>
+                        <a href="<?php echo esc_url($dashboard_url); ?>" class="auth-link auth-dashboard">Dashboard</a>
+                        <a href="<?php echo esc_url($logout_url); ?>" class="auth-link auth-logout">Sign Out</a>
+                    <?php else: ?>
+                        <a href="<?php echo esc_url(home_url('/clinic-login')); ?>" class="auth-link auth-login">Login</a>
+                    <?php endif; ?>
+                </div>
+                <?php endif; ?>
             </nav>
         </div>
     </div>

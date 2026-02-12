@@ -61,7 +61,7 @@ body {
 
 /* Header Styles */
 .site-header {
-    background: rgba(255, 255, 255, 0.98) !important;
+    background: #ffffff !important; /* Solid white - NO backdrop-filter (it breaks position:fixed on mobile menu children) */
     box-shadow: 0 2px 12px rgba(0,0,0,0.08) !important;
     position: -webkit-sticky !important;
     position: sticky !important;
@@ -70,8 +70,6 @@ body {
     right: 0 !important;
     z-index: 10000 !important;
     padding: 0 !important;
-    backdrop-filter: blur(10px) !important;
-    -webkit-backdrop-filter: blur(10px) !important;
     width: 100% !important;
     margin: 0 !important;
     margin-top: 0 !important;
@@ -200,7 +198,7 @@ html body .site-header {
     border-radius: 4px;
     cursor: pointer;
     padding: 0.4rem;
-    z-index: 1001;
+    z-index: 10002; /* Above backdrop (10000) and menu (10001) so it can always be clicked */
     position: relative;
     width: 36px;
     height: 36px;
@@ -335,6 +333,54 @@ html body .site-header {
 .main-navigation .current-menu-item > a::after,
 .main-navigation .current_page_item > a::after {
     width: 60%;
+}
+
+/* Auth Links in Navigation */
+.nav-auth-links {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: 0.5rem;
+}
+
+.auth-link {
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.4rem 1rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.auth-link.auth-login {
+    background: #2563eb;
+    color: #ffffff !important;
+}
+
+.auth-link.auth-login:hover {
+    background: #1d4ed8;
+    color: #ffffff !important;
+}
+
+.auth-link.auth-dashboard {
+    background: #059669;
+    color: #ffffff !important;
+}
+
+.auth-link.auth-dashboard:hover {
+    background: #047857;
+    color: #ffffff !important;
+}
+
+.auth-link.auth-logout {
+    background: #dc2626;
+    color: #ffffff !important;
+}
+
+.auth-link.auth-logout:hover {
+    background: #b91c1c;
+    color: #ffffff !important;
 }
 
 /* Hero Section - Matching TSX HeroSection */
@@ -1070,25 +1116,24 @@ html body .site-header {
     }
     
     .main-navigation {
-        position: fixed !important;
+        position: fixed;
         right: -100%;
         width: 80%;
         max-width: 320px;
-        height: 100vh !important;
-        height: 100dvh !important; /* Dynamic viewport height for mobile */
+        height: auto;
+        max-height: 80vh;
         background: #fafafa;
         box-shadow: -2px 0 10px rgba(0,0,0,0.1);
         transition: right 0.5s ease;
-        z-index: 10001 !important; /* Higher than header z-index: 10000 */
+        z-index: 10001;
         padding: 0;
-        padding-top: calc(50px + 2.5rem) !important; /* Space for header */
         overflow-y: auto;
         display: flex;
         flex-direction: column;
-        border-radius: 0;
-        top: 0 !important; /* Always start from top of viewport */
-        left: auto;
+        border-radius: 0 0 0 0.75rem;
+        top: 0;
         margin-top: 0;
+        padding-top: 70px; /* Space below the sticky header */
     }
     
     .main-navigation.active {
@@ -1137,20 +1182,38 @@ html body .site-header {
         font-weight: 700;
     }
     
+    /* Auth links in mobile menu */
+    .nav-auth-links {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        margin: 0;
+        width: 100%;
+        border-top: 2px solid #e5e7eb;
+    }
+    
+    .nav-auth-links .auth-link {
+        display: block;
+        padding: 1rem 1.5rem;
+        text-align: center;
+        border-radius: 0;
+        margin: 0 1rem;
+        font-size: 1.1rem;
+    }
+    
     body.menu-open {
         overflow: hidden;
     }
     
     body::before {
         content: '';
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100% !important;
-        height: 100vh !important;
-        height: 100dvh !important; /* Dynamic viewport height */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
         background: rgba(0,0,0,0.5);
-        z-index: 10000 !important; /* Same as header, below menu */
+        z-index: 10000; /* Above header, below menu */
         opacity: 0;
         pointer-events: none;
         transition: opacity 0.5s ease;
