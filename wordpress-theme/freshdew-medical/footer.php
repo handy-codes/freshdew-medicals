@@ -16,17 +16,13 @@ $contact_info = freshdew_get_contact_info();
                             echo '<img src="' . esc_url($logo_src) . '" alt="' . esc_attr(get_bloginfo('name')) . '" class="brand-logo" loading="lazy" decoding="async">';
                         }
                     } else {
-                        $logo = get_theme_mod('freshdew_logo');
-                        if ($logo) {
-                            echo '<img src="' . esc_url($logo) . '" alt="' . esc_attr(get_bloginfo('name')) . '" class="brand-logo" loading="lazy" decoding="async">';
-                        } else {
-                            echo '<span class="brand-logo" aria-hidden="true" style="display:inline-flex;align-items:center;justify-content:center;height:44px;width:44px;background:#e0f2fe;color:#2563eb;font-weight:900;border-radius:9999px;">FD</span>';
-                        }
+                        $favicon_logo = get_template_directory_uri() . '/assets/images/freshdew-favicon-logo.png';
+                        echo '<img src="' . esc_url($favicon_logo) . '" alt="' . esc_attr(get_bloginfo('name')) . '" class="brand-logo" loading="lazy" decoding="async">';
                     }
                     ?>
                     <span class="brand-text">
                         <span class="brand-name">FreshDew</span>
-                        <span class="brand-tagline">Medical Clinic</span>
+                        <span class="brand-tagline" style="color: #16a34a;">Medical Clinic</span>
                     </span>
                 </a>
                 <p class="footer-description">

@@ -281,6 +281,94 @@ function freshdew_get_contact_info() {
 }
 
 /**
+ * SEO: Custom document title for better Google indexing
+ */
+function freshdew_document_title_parts($title) {
+    $title['site'] = 'FreshDew Medical Clinic';
+    if (is_front_page()) {
+        $title['title'] = 'Quality Healthcare You Can Trust';
+    }
+    return $title;
+}
+add_filter('document_title_parts', 'freshdew_document_title_parts');
+
+function freshdew_document_title_separator($sep) {
+    return '–';
+}
+add_filter('document_title_separator', 'freshdew_document_title_separator');
+
+/**
+ * SEO: Per-page meta descriptions for Google snippets
+ */
+function freshdew_page_meta_descriptions() {
+    $descriptions = array(
+        'home'            => 'Experience premium medical care with cutting-edge technology, compassionate professionals, and innovative telehealth solutions at FreshDew Medical Clinic in Belleville, Ontario.',
+        'about'           => 'Learn about FreshDew Medical Clinic\'s experienced team of family doctors providing exceptional healthcare to the Belleville community and surrounding areas.',
+        'walk-in-clinic'  => 'No appointment needed. Visit FreshDew Walk-in Clinic in Belleville, Ontario for quality medical care when you need it. Open Monday to Saturday.',
+        'family-practice' => 'Comprehensive family healthcare with dedicated family doctors at FreshDew Medical Clinic. Now accepting new patients in Belleville, Ontario.',
+        'telehealth'      => 'Virtual medical consultations from the comfort of your home. FreshDew Medical Clinic offers secure, convenient telehealth appointments in Ontario.',
+        'contact'         => 'Contact FreshDew Medical Clinic at (613) 288-0183. Located at 135 Cannifton Road, Belleville, Ontario. Walk-ins welcome.',
+        'register'        => 'Register as a new patient at FreshDew Medical Clinic in Belleville. Join our waitlist for family practice services.',
+    );
+
+    if (is_page()) {
+        $slug = get_post_field('post_name', get_post());
+        if (isset($descriptions[$slug])) {
+            echo '<meta name="description" content="' . esc_attr($descriptions[$slug]) . '">' . "\n";
+        }
+    }
+}
+add_action('wp_head', 'freshdew_page_meta_descriptions', 1);
+
+/**
+ * SEO: Generate a basic XML sitemap at /sitemap.xml (WordPress 5.5+ has built-in)
+ */
+function freshdew_add_sitemap_pages($args, $post_type) {
+    // Ensure pages are included in sitemap
+    if ($post_type === 'page') {
+        $args['orderby'] = 'modified';
+        $args['order'] = 'DESC';
+    }
+    return $args;
+}
+add_filter('wp_sitemaps_posts_query_args', 'freshdew_add_sitemap_pages', 10, 2);
+
+/**
+ * SEO: Output BreadcrumbList structured data for inner pages
+ */
+function freshdew_breadcrumb_schema() {
+    if (is_front_page()) return;
+    if (!is_page()) return;
+
+    $contact = freshdew_get_contact_info();
+    $page_title = get_the_title();
+    $page_url = get_permalink();
+    ?>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "<?php echo esc_url(home_url('/')); ?>"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "<?php echo esc_js($page_title); ?>",
+                "item": "<?php echo esc_url($page_url); ?>"
+            }
+        ]
+    }
+    </script>
+    <?php
+}
+add_action('wp_head', 'freshdew_breadcrumb_schema', 5);
+
+/**
  * Custom Excerpt Length
  */
 function freshdew_excerpt_length($length) {

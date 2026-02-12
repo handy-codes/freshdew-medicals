@@ -28,7 +28,7 @@ $contact_info = freshdew_get_contact_info();
 <div id="ai-chat-widget-root" style="position: fixed; top: 0; left: 0; width: 0; height: 0; z-index: 9998; pointer-events: none;">
 <div id="ai-chat-widget" style="position: fixed !important; bottom: 80px !important; right: 16px !important; z-index: 9998 !important; pointer-events: auto !important;">
     <!-- Chat Window -->
-    <div id="ai-chat-window" style="display: none; position: fixed; bottom: 96px; right: 24px; width: 360px; max-width: calc(100vw - 32px); height: 520px; max-height: calc(100vh - 140px); background: white; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.2); flex-direction: column; overflow: hidden; z-index: 100000;">
+    <div id="ai-chat-window" style="display: none; position: fixed; bottom: 96px; right: 24px; width: 360px; max-width: calc(100vw - 32px); height: 520px; max-height: calc(100vh - 200px); background: white; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.2); flex-direction: column; overflow: hidden; z-index: 100000;">
         <!-- Chat Header (Sticky) -->
         <div id="chat-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; position: sticky; top: 0; z-index: 1;">
             <div>
@@ -391,7 +391,7 @@ console.log('Chat button script loading...');
         }
     });
     
-    // Save messages to localStorage
+    // Save messages to localStorage with 24-hour expiry
     function saveMessagesToStorage() {
         try {
             const messages = [];
@@ -406,20 +406,35 @@ console.log('Chat button script loading...');
                     });
                 }
             });
-            localStorage.setItem('freshdew_chat_messages', JSON.stringify(messages));
+            const payload = {
+                messages: messages,
+                timestamp: Date.now()
+            };
+            localStorage.setItem('freshdew_chat_messages', JSON.stringify(payload));
         } catch (e) {
             console.log('Could not save messages to localStorage:', e);
         }
     }
     
-    // Load messages from localStorage
+    // Load messages from localStorage (expires after 24 hours)
     function loadMessagesFromStorage() {
         try {
             const saved = localStorage.getItem('freshdew_chat_messages');
             if (saved) {
-                const messages = JSON.parse(saved);
+                const payload = JSON.parse(saved);
+                const messages = payload.messages || payload;
+                const timestamp = payload.timestamp || 0;
+                const maxAge = 24 * 60 * 60 * 1000; // 24 hours in ms
+
+                // If data is older than 24 hours, clear and show welcome
+                if (timestamp && (Date.now() - timestamp > maxAge)) {
+                    localStorage.removeItem('freshdew_chat_messages');
+                    showWelcomeMessage();
+                    return;
+                }
+
                 // Only load if we have saved messages
-                if (messages.length > 0) {
+                if (Array.isArray(messages) && messages.length > 0) {
                     // Clear any existing messages
                     chatMessages.innerHTML = '';
                     
@@ -441,11 +456,9 @@ console.log('Chat button script loading...');
                     
                     chatMessages.scrollTop = chatMessages.scrollHeight;
                 } else {
-                    // No saved messages, show welcome message
                     showWelcomeMessage();
                 }
             } else {
-                // No saved data, show welcome message
                 showWelcomeMessage();
             }
         } catch (e) {
@@ -599,6 +612,9 @@ console.log('Chat button script loading...');
         
         window.addEventListener('resize', updateChatButtonText);
         updateChatButtonText(); // Initial call
+        
+        // Load persisted messages on init
+        loadMessagesFromStorage();
     
         function escapeHtml(text) {
             const div = document.createElement('div');
@@ -644,15 +660,6 @@ console.log('Chat button script loading...');
             document.addEventListener('DOMContentLoaded', initChat);
         } else {
             initChat();
-        }
-        
-        // Load saved messages on page load
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', function() {
-                setTimeout(loadMessagesFromStorage, 100);
-            });
-        } else {
-            setTimeout(loadMessagesFromStorage, 100);
         }
 })();
 </script>

@@ -53,6 +53,8 @@ prisma/migrations/
 .cache/
 
 # Auto-generated documentation/troubleshooting files (noise)
-# Keep only README.md tracked
+# Keep only specific .md files tracked
 *.md
 !README.md
+!GOOGLE_MY_BUSINESS_GUIDE.md
+!AUTH_RBAC_PLAN.md

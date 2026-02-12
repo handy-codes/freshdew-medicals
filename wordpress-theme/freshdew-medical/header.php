@@ -4,6 +4,138 @@
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <?php
+    // --- SEO & Open Graph Meta Tags ---
+    $fd_contact = freshdew_get_contact_info();
+    $fd_site_title = 'FreshDew Medical Clinic';
+    $fd_default_title = 'Quality Healthcare You Can Trust';
+    $fd_description = 'Experience premium medical care with cutting-edge technology, compassionate professionals, and innovative telehealth solutions—all from the comfort of your home.';
+    $fd_url = home_url('/');
+    $fd_logo_url = get_template_directory_uri() . '/assets/images/freshdew-favicon-logo.png';
+
+    // Determine current page title
+    $fd_page_title = $fd_site_title . ' – ' . $fd_default_title;
+    if (is_page()) {
+        $fd_page_title = get_the_title() . ' – ' . $fd_site_title;
+    }
+    ?>
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="<?php echo esc_attr($fd_page_title); ?>">
+    <meta name="description" content="<?php echo esc_attr($fd_description); ?>">
+    <meta name="keywords" content="medical clinic Belleville, family doctor Belleville Ontario, walk-in clinic Belleville, telehealth Ontario, FreshDew Medical, healthcare Belleville, doctor near me, family practice Belleville, medical centre Quinte, patient registration Belleville">
+    <meta name="author" content="FreshDew Medical Clinic">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="<?php echo esc_url(is_front_page() ? $fd_url : get_permalink()); ?>">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="<?php echo esc_url(is_front_page() ? $fd_url : get_permalink()); ?>">
+    <meta property="og:title" content="<?php echo esc_attr($fd_page_title); ?>">
+    <meta property="og:description" content="<?php echo esc_attr($fd_description); ?>">
+    <meta property="og:image" content="<?php echo esc_url($fd_logo_url); ?>">
+    <meta property="og:site_name" content="<?php echo esc_attr($fd_site_title); ?>">
+    <meta property="og:locale" content="en_CA">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="<?php echo esc_url(is_front_page() ? $fd_url : get_permalink()); ?>">
+    <meta name="twitter:title" content="<?php echo esc_attr($fd_page_title); ?>">
+    <meta name="twitter:description" content="<?php echo esc_attr($fd_description); ?>">
+    <meta name="twitter:image" content="<?php echo esc_url($fd_logo_url); ?>">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="192x192" href="<?php echo esc_url($fd_logo_url); ?>">
+    <link rel="apple-touch-icon" href="<?php echo esc_url($fd_logo_url); ?>">
+    <link rel="shortcut icon" type="image/png" href="<?php echo esc_url($fd_logo_url); ?>">
+
+    <!-- Geo Tags for Local SEO -->
+    <meta name="geo.region" content="CA-ON">
+    <meta name="geo.placename" content="Belleville">
+    <meta name="geo.position" content="<?php echo esc_attr($fd_contact['latitude']); ?>;<?php echo esc_attr($fd_contact['longitude']); ?>">
+    <meta name="ICBM" content="<?php echo esc_attr($fd_contact['latitude']); ?>, <?php echo esc_attr($fd_contact['longitude']); ?>">
+
+    <!-- JSON-LD Structured Data for Google Rich Results & Sitelinks -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "MedicalClinic",
+        "name": "<?php echo esc_js($fd_site_title); ?>",
+        "alternateName": "FreshDew Medical Centre",
+        "url": "<?php echo esc_url($fd_url); ?>",
+        "logo": "<?php echo esc_url($fd_logo_url); ?>",
+        "image": "<?php echo esc_url($fd_logo_url); ?>",
+        "description": "<?php echo esc_js($fd_description); ?>",
+        "telephone": "+1<?php echo esc_js($fd_contact['phone']); ?>",
+        "faxNumber": "+1<?php echo esc_js($fd_contact['fax']); ?>",
+        "email": "<?php echo esc_js($fd_contact['email']); ?>",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "<?php echo esc_js($fd_contact['address']); ?>",
+            "addressLocality": "<?php echo esc_js($fd_contact['city']); ?>",
+            "addressRegion": "<?php echo esc_js($fd_contact['province']); ?>",
+            "postalCode": "<?php echo esc_js($fd_contact['postal_code']); ?>",
+            "addressCountry": "CA"
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": <?php echo esc_js($fd_contact['latitude']); ?>,
+            "longitude": <?php echo esc_js($fd_contact['longitude']); ?>
+        },
+        "openingHoursSpecification": [
+            {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+                "opens": "09:00",
+                "closes": "17:00"
+            },
+            {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": "Saturday",
+                "opens": "10:00",
+                "closes": "16:00"
+            }
+        ],
+        "medicalSpecialty": ["Family Practice","General Practice","Walk-in Clinic","Telehealth"],
+        "availableService": [
+            {"@type": "MedicalProcedure", "name": "Walk-in Clinic"},
+            {"@type": "MedicalProcedure", "name": "Family Practice"},
+            {"@type": "MedicalProcedure", "name": "Telehealth"},
+            {"@type": "MedicalProcedure", "name": "Patient Registration"}
+        ],
+        "sameAs": [
+            "https://x.com/FreshDewMedClin",
+            "https://www.facebook.com/share/1GJJTzcRQc/?mibextid=wwXIfr"
+        ],
+        "priceRange": "$$",
+        "areaServed": {
+            "@type": "GeoCircle",
+            "geoMidpoint": {
+                "@type": "GeoCoordinates",
+                "latitude": <?php echo esc_js($fd_contact['latitude']); ?>,
+                "longitude": <?php echo esc_js($fd_contact['longitude']); ?>
+            },
+            "geoRadius": "50000"
+        }
+    }
+    </script>
+
+    <!-- Sitelinks Search Box (Google) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "<?php echo esc_js($fd_site_title); ?>",
+        "url": "<?php echo esc_url($fd_url); ?>",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "<?php echo esc_url($fd_url); ?>?s={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+
     <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
@@ -22,19 +154,14 @@
                         echo '<img src="' . esc_url($logo_src) . '" alt="' . esc_attr(get_bloginfo('name')) . '" class="brand-logo" loading="eager" decoding="async">';
                     }
                 } else {
-                    // Optional fallback logo URL from Customizer (legacy setting)
-                    $logo = get_theme_mod('freshdew_logo');
-                    if ($logo) {
-                        echo '<img src="' . esc_url($logo) . '" alt="' . esc_attr(get_bloginfo('name')) . '" class="brand-logo" loading="eager" decoding="async">';
-                    } else {
-                        // No fallback SVG: use a simple dot mark
-                        echo '<span class="brand-logo" aria-hidden="true" style="display:inline-flex;align-items:center;justify-content:center;background:#e0f2fe;color:#2563eb;font-weight:900;">FD</span>';
-                    }
+                    // Fallback: use theme favicon logo
+                    $favicon_logo = get_template_directory_uri() . '/assets/images/freshdew-favicon-logo.png';
+                    echo '<img src="' . esc_url($favicon_logo) . '" alt="' . esc_attr(get_bloginfo('name')) . '" class="brand-logo" loading="eager" decoding="async">';
                 }
                 ?>
                 <span class="brand-text">
                     <span class="brand-name">FreshDew</span>
-                    <span class="brand-tagline">Medical Clinic</span>
+                    <span class="brand-tagline" style="color: #16a34a;">Medical Clinic</span>
                 </span>
             </a>
             
