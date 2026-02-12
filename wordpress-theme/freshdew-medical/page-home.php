@@ -15,9 +15,9 @@ $contact_info = freshdew_get_contact_info();
         <!-- Previous image: https://media.istockphoto.com/id/2218491828/photo/medical-team-smiling-at-camera-in-hospital-corridor.webp -->
         <img src="https://images.unsplash.com/photo-1725870953863-4ad4db0acfc2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cGF0aWVudCUyMGNhcmV8ZW58MHx8MHx8fDA%3D" 
              alt="Medical Team" 
-             class="hero-background"
-             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-        <div class="hero-background" style="display: none; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+         class="hero-background"
+         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+    <div class="hero-background" style="display: none; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
         <!-- Professional gradient overlay matching TSX version - lighter for better clarity -->
         <div class="hero-overlay" style="position: absolute; inset: 0; background: linear-gradient(to right, rgba(30, 58, 138, 0.5), rgba(30, 58, 138, 0.25), transparent); z-index: 10;"></div>
     </div>

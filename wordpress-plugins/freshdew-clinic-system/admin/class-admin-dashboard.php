@@ -1,0 +1,259 @@
+<?php
+/**
+ * Admin Dashboard Menu Registration
+ *
+ * @package FreshDewClinicSystem
+ */
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+class FDCS_Admin_Dashboard {
+
+    public function __construct() {
+        add_action('admin_menu', array($this, 'add_admin_menus'));
+    }
+
+    public function add_admin_menus() {
+        // Main Clinic Dashboard menu
+        add_menu_page(
+            __('Clinic Dashboard', 'freshdew-clinic'),
+            __('Clinic System', 'freshdew-clinic'),
+            'fdcs_access_dashboard',
+            'fdcs-dashboard',
+            array($this, 'render_wp_admin_dashboard'),
+            'dashicons-heart',
+            3
+        );
+
+        // Sub-menus
+        add_submenu_page('fdcs-dashboard', __('Overview', 'freshdew-clinic'), __('Overview', 'freshdew-clinic'), 'fdcs_access_dashboard', 'fdcs-dashboard', array($this, 'render_wp_admin_dashboard'));
+        add_submenu_page('fdcs-dashboard', __('Patients', 'freshdew-clinic'), __('Patients', 'freshdew-clinic'), 'fdcs_view_all_patients', 'fdcs-patients', array($this, 'render_patients_page'));
+        add_submenu_page('fdcs-dashboard', __('Appointments', 'freshdew-clinic'), __('Appointments', 'freshdew-clinic'), 'fdcs_manage_appointments', 'fdcs-appointments', array($this, 'render_appointments_page'));
+        add_submenu_page('fdcs-dashboard', __('User Management', 'freshdew-clinic'), __('User Management', 'freshdew-clinic'), 'fdcs_manage_users', 'fdcs-users', array($this, 'render_users_page'));
+        add_submenu_page('fdcs-dashboard', __('Audit Log', 'freshdew-clinic'), __('Audit Log', 'freshdew-clinic'), 'fdcs_view_audit_log', 'fdcs-audit-log', array($this, 'render_audit_log_page'));
+    }
+
+    /**
+     * Render the WP Admin overview page (for when users access wp-admin)
+     */
+    public function render_wp_admin_dashboard() {
+        $today = current_time('Y-m-d');
+        $total_patients = FDCS_Patient::count();
+        $waitlist = FDCS_Patient::count(array('status' => 'waitlist'));
+        $active = FDCS_Patient::count(array('status' => 'active'));
+        $today_appts = FDCS_Appointment::count(array('date' => $today));
+        ?>
+        <div class="wrap">
+            <h1 style="display: flex; align-items: center; gap: 0.5rem;">
+                <span class="dashicons dashicons-heart" style="color: #2563eb;"></span>
+                FreshDew Clinic Dashboard
+            </h1>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+                <div style="background: white; padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-left: 4px solid #2563eb;">
+                    <p style="color: #6b7280; font-size: 0.875rem; margin: 0;">Total Patients</p>
+                    <p style="font-size: 2rem; font-weight: 700; color: #1f2937; margin: 0.25rem 0 0;"><?php echo esc_html($total_patients); ?></p>
+                </div>
+                <div style="background: white; padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-left: 4px solid #f59e0b;">
+                    <p style="color: #6b7280; font-size: 0.875rem; margin: 0;">Waitlist</p>
+                    <p style="font-size: 2rem; font-weight: 700; color: #1f2937; margin: 0.25rem 0 0;"><?php echo esc_html($waitlist); ?></p>
+                </div>
+                <div style="background: white; padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-left: 4px solid #10b981;">
+                    <p style="color: #6b7280; font-size: 0.875rem; margin: 0;">Active Patients</p>
+                    <p style="font-size: 2rem; font-weight: 700; color: #1f2937; margin: 0.25rem 0 0;"><?php echo esc_html($active); ?></p>
+                </div>
+                <div style="background: white; padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-left: 4px solid #8b5cf6;">
+                    <p style="color: #6b7280; font-size: 0.875rem; margin: 0;">Today's Appointments</p>
+                    <p style="font-size: 2rem; font-weight: 700; color: #1f2937; margin: 0.25rem 0 0;"><?php echo esc_html($today_appts); ?></p>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div style="background: white; padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-top: 2rem;">
+                <h2 style="margin-top: 0;">Recent Activity</h2>
+                <table class="widefat striped">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>User</th>
+                            <th>Action</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $logs = FDCS_Audit_Log::get_recent(10);
+                        if (empty($logs)):
+                        ?>
+                            <tr><td colspan="4" style="text-align: center; color: #6b7280;">No activity yet. The system is ready!</td></tr>
+                        <?php else: foreach ($logs as $log): ?>
+                            <tr>
+                                <td><?php echo esc_html(wp_date('M j, g:i A', strtotime($log->created_at))); ?></td>
+                                <td><?php echo esc_html($log->user_name ?? 'System'); ?></td>
+                                <td><code><?php echo esc_html($log->action); ?></code></td>
+                                <td><?php echo esc_html($log->details); ?></td>
+                            </tr>
+                        <?php endforeach; endif; ?>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="margin-top: 2rem;">
+                <p style="color: #6b7280;">
+                    <strong>Frontend Dashboards:</strong>
+                    <a href="<?php echo esc_url(home_url('/clinic-dashboard')); ?>" target="_blank">Staff Dashboard</a> |
+                    <a href="<?php echo esc_url(home_url('/patient-portal')); ?>" target="_blank">Patient Portal</a> |
+                    <a href="<?php echo esc_url(home_url('/clinic-login')); ?>" target="_blank">Login Page</a> |
+                    <a href="<?php echo esc_url(home_url('/clinic-register')); ?>" target="_blank">Patient Registration</a>
+                </p>
+            </div>
+        </div>
+        <?php
+    }
+
+    public function render_patients_page() {
+        $patients = FDCS_Patient::get_all(array('limit' => 50));
+        ?>
+        <div class="wrap">
+            <h1>Patient Records</h1>
+            <table class="widefat striped" style="margin-top: 1rem;">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>DOB</th>
+                        <th>Status</th>
+                        <th>Registered</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (empty($patients)): ?>
+                        <tr><td colspan="5" style="text-align: center; color: #6b7280;">No patients registered yet.</td></tr>
+                    <?php else: foreach ($patients as $p): ?>
+                        <tr>
+                            <td><strong><?php echo esc_html($p->display_name); ?></strong></td>
+                            <td><?php echo esc_html($p->user_email); ?></td>
+                            <td><?php echo esc_html($p->date_of_birth ?? '—'); ?></td>
+                            <td>
+                                <span style="display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 0.8rem; font-weight: 600; 
+                                    <?php echo $p->registration_status === 'active' ? 'background: #d1fae5; color: #065f46;' : ($p->registration_status === 'waitlist' ? 'background: #fef3c7; color: #92400e;' : 'background: #fee2e2; color: #991b1b;'); ?>">
+                                    <?php echo esc_html(ucfirst($p->registration_status)); ?>
+                                </span>
+                            </td>
+                            <td><?php echo esc_html(wp_date('M j, Y', strtotime($p->created_at))); ?></td>
+                        </tr>
+                    <?php endforeach; endif; ?>
+                </tbody>
+            </table>
+        </div>
+        <?php
+    }
+
+    public function render_appointments_page() {
+        $today = current_time('Y-m-d');
+        $appointments = FDCS_Appointment::get_by_date($today);
+        ?>
+        <div class="wrap">
+            <h1>Appointments – <?php echo esc_html(wp_date('l, F j, Y')); ?></h1>
+            <table class="widefat striped" style="margin-top: 1rem;">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Patient</th>
+                        <th>Doctor</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (empty($appointments)): ?>
+                        <tr><td colspan="6" style="text-align: center; color: #6b7280;">No appointments today.</td></tr>
+                    <?php else: foreach ($appointments as $a): ?>
+                        <tr>
+                            <td><?php echo esc_html(wp_date('g:i A', strtotime($a->appointment_time))); ?></td>
+                            <td><?php echo esc_html($a->patient_name ?? '—'); ?></td>
+                            <td><?php echo esc_html($a->doctor_name ?? '—'); ?></td>
+                            <td><?php echo esc_html(ucfirst(str_replace('_', ' ', $a->type))); ?></td>
+                            <td><span style="display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 0.8rem; font-weight: 600; background: #dbeafe; color: #1e40af;"><?php echo esc_html(ucfirst($a->status)); ?></span></td>
+                            <td><?php echo esc_html($a->reason ?? '—'); ?></td>
+                        </tr>
+                    <?php endforeach; endif; ?>
+                </tbody>
+            </table>
+        </div>
+        <?php
+    }
+
+    public function render_users_page() {
+        $clinic_roles = array('head_admin', 'clinic_admin', 'clinic_doctor', 'clinic_patient');
+        $users = get_users(array('role__in' => $clinic_roles, 'orderby' => 'registered', 'order' => 'DESC'));
+        ?>
+        <div class="wrap">
+            <h1>User Management</h1>
+            <table class="widefat striped" style="margin-top: 1rem;">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Registered</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (empty($users)): ?>
+                        <tr><td colspan="4" style="text-align: center; color: #6b7280;">No clinic users yet.</td></tr>
+                    <?php else: foreach ($users as $u): ?>
+                        <tr>
+                            <td><strong><?php echo esc_html($u->display_name); ?></strong></td>
+                            <td><?php echo esc_html($u->user_email); ?></td>
+                            <td><?php echo esc_html(implode(', ', array_map('ucwords', str_replace('_', ' ', $u->roles)))); ?></td>
+                            <td><?php echo esc_html(wp_date('M j, Y', strtotime($u->user_registered))); ?></td>
+                        </tr>
+                    <?php endforeach; endif; ?>
+                </tbody>
+            </table>
+        </div>
+        <?php
+    }
+
+    public function render_audit_log_page() {
+        $logs = FDCS_Audit_Log::get_recent(100);
+        ?>
+        <div class="wrap">
+            <h1>Audit Log</h1>
+            <table class="widefat striped" style="margin-top: 1rem;">
+                <thead>
+                    <tr>
+                        <th>Date/Time</th>
+                        <th>User</th>
+                        <th>Action</th>
+                        <th>Entity</th>
+                        <th>Details</th>
+                        <th>IP</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (empty($logs)): ?>
+                        <tr><td colspan="6" style="text-align: center; color: #6b7280;">No activity logged yet.</td></tr>
+                    <?php else: foreach ($logs as $log): ?>
+                        <tr>
+                            <td><?php echo esc_html(wp_date('M j, Y g:i A', strtotime($log->created_at))); ?></td>
+                            <td><?php echo esc_html($log->user_name ?? 'System'); ?></td>
+                            <td><code><?php echo esc_html($log->action); ?></code></td>
+                            <td><?php echo esc_html(($log->entity_type ?? '') . ($log->entity_id ? ' #' . $log->entity_id : '')); ?></td>
+                            <td><?php echo esc_html($log->details); ?></td>
+                            <td><code><?php echo esc_html($log->ip_address ?? '—'); ?></code></td>
+                        </tr>
+                    <?php endforeach; endif; ?>
+                </tbody>
+            </table>
+        </div>
+        <?php
+    }
+}
+
+new FDCS_Admin_Dashboard();
+

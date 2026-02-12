@@ -7,19 +7,7 @@ $contact_info = freshdew_get_contact_info();
         <div class="footer-content">
             <div class="footer-section">
                 <a href="<?php echo esc_url(home_url('/')); ?>" class="footer-brand-text" style="margin-bottom: 1rem; text-decoration: none;">
-                    <?php
-                    // Use same logo logic as header
-                    $custom_logo_id = get_theme_mod('custom_logo');
-                    if ($custom_logo_id) {
-                        $logo_src = wp_get_attachment_image_url($custom_logo_id, 'full');
-                        if ($logo_src) {
-                            echo '<img src="' . esc_url($logo_src) . '" alt="' . esc_attr(get_bloginfo('name')) . '" class="brand-logo" loading="lazy" decoding="async">';
-                        }
-                    } else {
-                        $favicon_logo = get_template_directory_uri() . '/assets/images/freshdew-favicon-logo.png';
-                        echo '<img src="' . esc_url($favicon_logo) . '" alt="' . esc_attr(get_bloginfo('name')) . '" class="brand-logo" loading="lazy" decoding="async">';
-                    }
-                    ?>
+                    <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/freshdew-favicon-logo.png'); ?>" alt="<?php echo esc_attr(get_bloginfo('name')); ?>" class="brand-logo" loading="lazy" decoding="async">
                     <span class="brand-text">
                         <span class="brand-name">FreshDew</span>
                         <span class="brand-tagline" style="color: #16a34a;">Medical Clinic</span>

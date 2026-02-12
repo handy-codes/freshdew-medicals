@@ -1,0 +1,35 @@
+/**
+ * FreshDew Clinic System – Dashboard Styles
+ */
+
+/* Dashboard responsive grid for mobile */
+@media (max-width: 768px) {
+    .fdcs-auth-page form div[style*="grid-template-columns: 1fr 1fr"] {
+        grid-template-columns: 1fr !important;
+    }
+
+    main > div > div[style*="grid-template-columns: 1fr 1fr"] {
+        grid-template-columns: 1fr !important;
+    }
+
+    main > div > div[style*="grid-template-columns: repeat"] {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* Smooth input transitions */
+.fdcs-auth-page input:focus,
+.fdcs-auth-page select:focus {
+    border-color: #2563eb !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
+}
+
+/* Dashboard card hover effects */
+main div[style*="box-shadow: 0 1px 3px"] {
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+main div[style*="box-shadow: 0 1px 3px"]:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+

@@ -283,19 +283,16 @@ function freshdew_get_contact_info() {
 /**
  * SEO: Custom document title for better Google indexing
  */
-function freshdew_document_title_parts($title) {
-    $title['site'] = 'FreshDew Medical Clinic';
+function freshdew_custom_document_title($title) {
     if (is_front_page()) {
-        $title['title'] = 'Quality Healthcare You Can Trust';
+        return 'FreshDew Medical Clinic – Quality Healthcare You Can Trust';
     }
-    return $title;
+    if (is_page()) {
+        return get_the_title() . ' – FreshDew Medical Clinic';
+    }
+    return 'FreshDew Medical Clinic – ' . $title;
 }
-add_filter('document_title_parts', 'freshdew_document_title_parts');
-
-function freshdew_document_title_separator($sep) {
-    return '–';
-}
-add_filter('document_title_separator', 'freshdew_document_title_separator');
+add_filter('pre_get_document_title', 'freshdew_custom_document_title', 10);
 
 /**
  * SEO: Per-page meta descriptions for Google snippets

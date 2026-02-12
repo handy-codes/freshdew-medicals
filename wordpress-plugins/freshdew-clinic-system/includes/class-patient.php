@@ -1,0 +1,169 @@
+<?php
+/**
+ * Patient Data Management
+ *
+ * @package FreshDewClinicSystem
+ */
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+class FDCS_Patient {
+
+    /**
+     * Get patient profile by user ID
+     */
+    public static function get_by_user_id($user_id) {
+        global $wpdb;
+        $table = FDCS_Database::table('patients');
+        return $wpdb->get_row($wpdb->prepare("SELECT * FROM $table WHERE user_id = %d", $user_id));
+    }
+
+    /**
+     * Get patient profile by patient ID
+     */
+    public static function get($patient_id) {
+        global $wpdb;
+        $table = FDCS_Database::table('patients');
+        return $wpdb->get_row($wpdb->prepare("SELECT * FROM $table WHERE id = %d", $patient_id));
+    }
+
+    /**
+     * Get all patients with optional filters
+     */
+    public static function get_all($args = array()) {
+        global $wpdb;
+        $table = FDCS_Database::table('patients');
+
+        $defaults = array(
+            'status'    => '',
+            'doctor_id' => 0,
+            'search'    => '',
+            'orderby'   => 'created_at',
+            'order'     => 'DESC',
+            'limit'     => 20,
+            'offset'    => 0,
+        );
+        $args = wp_parse_args($args, $defaults);
+
+        $where = array('1=1');
+        $values = array();
+
+        if (!empty($args['status'])) {
+            $where[] = 'p.registration_status = %s';
+            $values[] = $args['status'];
+        }
+
+        if (!empty($args['doctor_id'])) {
+            $where[] = 'p.assigned_doctor_id = %d';
+            $values[] = (int) $args['doctor_id'];
+        }
+
+        if (!empty($args['search'])) {
+            $like = '%' . $wpdb->esc_like($args['search']) . '%';
+            $where[] = '(u.display_name LIKE %s OR u.user_email LIKE %s)';
+            $values[] = $like;
+            $values[] = $like;
+        }
+
+        $where_sql = implode(' AND ', $where);
+        $orderby = sanitize_sql_orderby($args['orderby'] . ' ' . $args['order']) ?: 'p.created_at DESC';
+
+        $sql = "SELECT p.*, u.display_name, u.user_email
+                FROM $table p
+                JOIN {$wpdb->users} u ON p.user_id = u.ID
+                WHERE $where_sql
+                ORDER BY $orderby
+                LIMIT %d OFFSET %d";
+
+        $values[] = (int) $args['limit'];
+        $values[] = (int) $args['offset'];
+
+        if (!empty($values)) {
+            $sql = $wpdb->prepare($sql, ...$values);
+        }
+
+        return $wpdb->get_results($sql);
+    }
+
+    /**
+     * Count patients with optional filters
+     */
+    public static function count($args = array()) {
+        global $wpdb;
+        $table = FDCS_Database::table('patients');
+
+        $where = array('1=1');
+        $values = array();
+
+        if (!empty($args['status'])) {
+            $where[] = 'registration_status = %s';
+            $values[] = $args['status'];
+        }
+
+        if (!empty($args['doctor_id'])) {
+            $where[] = 'assigned_doctor_id = %d';
+            $values[] = (int) $args['doctor_id'];
+        }
+
+        $where_sql = implode(' AND ', $where);
+        $sql = "SELECT COUNT(*) FROM $table WHERE $where_sql";
+
+        if (!empty($values)) {
+            $sql = $wpdb->prepare($sql, ...$values);
+        }
+
+        return (int) $wpdb->get_var($sql);
+    }
+
+    /**
+     * Update patient profile
+     */
+    public static function update($patient_id, $data) {
+        global $wpdb;
+        $table = FDCS_Database::table('patients');
+
+        $allowed_fields = array(
+            'date_of_birth', 'gender', 'health_card_number',
+            'emergency_contact_name', 'emergency_contact_phone',
+            'family_history', 'drug_history', 'allergy_history',
+            'medical_surgical_history', 'blood_type',
+            'assigned_doctor_id', 'registration_status',
+        );
+
+        $update_data = array();
+        $formats = array();
+        foreach ($allowed_fields as $field) {
+            if (isset($data[$field])) {
+                $update_data[$field] = $data[$field];
+                $formats[] = is_int($data[$field]) ? '%d' : '%s';
+            }
+        }
+
+        if (empty($update_data)) {
+            return false;
+        }
+
+        return $wpdb->update($table, $update_data, array('id' => $patient_id), $formats, array('%d'));
+    }
+
+    /**
+     * Get patients assigned to a specific doctor
+     */
+    public static function get_by_doctor($doctor_user_id, $limit = 50) {
+        global $wpdb;
+        $table = FDCS_Database::table('patients');
+        return $wpdb->get_results($wpdb->prepare(
+            "SELECT p.*, u.display_name, u.user_email
+             FROM $table p
+             JOIN {$wpdb->users} u ON p.user_id = u.ID
+             WHERE p.assigned_doctor_id = %d
+             ORDER BY u.display_name ASC
+             LIMIT %d",
+            $doctor_user_id,
+            $limit
+        ));
+    }
+}
+

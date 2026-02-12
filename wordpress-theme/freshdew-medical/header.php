@@ -29,19 +29,22 @@
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="<?php echo esc_url(is_front_page() ? $fd_url : get_permalink()); ?>">
 
-    <!-- Open Graph / Facebook -->
+    <!-- Open Graph / Facebook / WhatsApp -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="<?php echo esc_url(is_front_page() ? $fd_url : get_permalink()); ?>">
-    <meta property="og:title" content="<?php echo esc_attr($fd_page_title); ?>">
+    <meta property="og:title" content="<?php echo esc_attr($fd_site_title . ' – ' . $fd_default_title); ?>">
     <meta property="og:description" content="<?php echo esc_attr($fd_description); ?>">
     <meta property="og:image" content="<?php echo esc_url($fd_logo_url); ?>">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
+    <meta property="og:image:type" content="image/png">
     <meta property="og:site_name" content="<?php echo esc_attr($fd_site_title); ?>">
     <meta property="og:locale" content="en_CA">
 
     <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:card" content="summary">
     <meta name="twitter:url" content="<?php echo esc_url(is_front_page() ? $fd_url : get_permalink()); ?>">
-    <meta name="twitter:title" content="<?php echo esc_attr($fd_page_title); ?>">
+    <meta name="twitter:title" content="<?php echo esc_attr($fd_site_title . ' – ' . $fd_default_title); ?>">
     <meta name="twitter:description" content="<?php echo esc_attr($fd_description); ?>">
     <meta name="twitter:image" content="<?php echo esc_url($fd_logo_url); ?>">
 
@@ -145,20 +148,7 @@
     <div class="container">
         <div class="header-content">
             <a href="<?php echo esc_url(home_url('/')); ?>" class="site-logo">
-                <?php
-                // Prefer WordPress Custom Logo (Appearance → Customize → Site Identity → Logo)
-                $custom_logo_id = get_theme_mod('custom_logo');
-                if ($custom_logo_id) {
-                    $logo_src = wp_get_attachment_image_url($custom_logo_id, 'full');
-                    if ($logo_src) {
-                        echo '<img src="' . esc_url($logo_src) . '" alt="' . esc_attr(get_bloginfo('name')) . '" class="brand-logo" loading="eager" decoding="async">';
-                    }
-                } else {
-                    // Fallback: use theme favicon logo
-                    $favicon_logo = get_template_directory_uri() . '/assets/images/freshdew-favicon-logo.png';
-                    echo '<img src="' . esc_url($favicon_logo) . '" alt="' . esc_attr(get_bloginfo('name')) . '" class="brand-logo" loading="eager" decoding="async">';
-                }
-                ?>
+                <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/freshdew-favicon-logo.png'); ?>" alt="<?php echo esc_attr(get_bloginfo('name')); ?>" class="brand-logo" loading="eager" decoding="async">
                 <span class="brand-text">
                     <span class="brand-name">FreshDew</span>
                     <span class="brand-tagline" style="color: #16a34a;">Medical Clinic</span>
