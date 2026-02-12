@@ -45,10 +45,10 @@ $contact_info = freshdew_get_contact_info();
                         }
                         ?>
                     </div>
-                    <div class="team-card-content" style="padding: 2rem; display: flex; flex-direction: column;">
-                        <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem;">Dr. Joy Kinze</h3>
-                        <p style="color: #667eea; font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem;">MBBS, MRCGP, CCFP</p>
-                        <p style="color: #000000; line-height: 1.7; margin-bottom: 1.5rem; font-size: 1.125rem; flex-grow: 1;">
+                    <div class="team-card-content" style="padding: 2rem; display: flex; flex-direction: column; width: 100%;">
+                        <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem; width: 100%;">Dr. Joy Kinze</h3>
+                        <p style="color: #667eea; font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem; width: 100%;">MBBS, MRCGP, CCFP</p>
+                        <p style="color: #000000; line-height: 1.7; margin-bottom: 1.5rem; font-size: 1.125rem; flex-grow: 1; width: 100%;">
                          Dr. Joy Kinze is a UK trained seasoned family physician with over 15 years of robust clinical experience and practice. She has worked in low and middle income countries and spent the majority of her practice in rural English town.
                          Her areas of interest are lifestyle medicine and women's health. She is very passionate about healthcare administration having seen the catastrophic consequences when standards are not met in developing countries.
                          She is best described as a compassionate and excellent physician.
@@ -71,10 +71,10 @@ $contact_info = freshdew_get_contact_info();
                         }
                         ?>
                     </div>
-                    <div class="team-card-content" style="padding: 2rem; display: flex; flex-direction: column;">
-                        <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem;">Dr. Jamal Doe</h3>
-                        <p style="color: #667eea; font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem;">MBBS, MPH, MRCSeD, Cert.Med.Edu MRCGP, CCFP</p>
-                        <p style="color: #000000; line-height: 1.7; margin-bottom: 1.5rem; font-size: 1.125rem; flex-grow: 1;">
+                    <div class="team-card-content" style="padding: 2rem; display: flex; flex-direction: column; width: 100%;">
+                        <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem; width: 100%;">Dr. Jamal Doe</h3>
+                        <p style="color: #667eea; font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem; width: 100%;">MBBS, MPH, MRCSeD, Cert.Med.Edu MRCGP, CCFP</p>
+                        <p style="color: #000000; line-height: 1.7; margin-bottom: 1.5rem; font-size: 1.125rem; flex-grow: 1; width: 100%;">
                          Dr Jamal is a surgeon turned family physician. As an associate specialist in Trauma and Orthopaedic surgery, he has performed major  arthroplasties during his surgical training before venturing into family practice where he has been in the last 6 years-and loving it.
                          He holds a Licentiate of the Medical Council of Canada and  Certification in the College of Family Physicians of Canada. He is a Member of the Royal College of Surgeon, Edinburgh, United kingdom, holds Public Health Masters (with merit) from the University of Birmingham and did his Family Practice postgraduate training/residency in the Durham and Tees Valley being among the top 2% of his cohort in the Applied Knowledge Test.
                          He is passionate about Mens health, Public Health Protection, Musculoskeletal Health, Undergraduate and Postgraduate medical education having a Pgcert in Medical Education from the Sunderland University. He is on a pathway to his PhD at the Teesside University, United kingdom.
@@ -97,10 +97,10 @@ $contact_info = freshdew_get_contact_info();
                         }
                         ?>
                     </div>
-                    <div class="team-card-content" style="padding: 2rem; display: flex; flex-direction: column;">
-                        <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem;">Karen Howald</h3>
-                        <p style="color: #667eea; font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem;">Medical Office Assistant</p>
-                        <p style="color: #000000; line-height: 1.7; margin-bottom: 1.5rem; font-size: 1.125rem; flex-grow: 1;">
+                    <div class="team-card-content" style="padding: 2rem; display: flex; flex-direction: column; width: 100%;">
+                        <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem; width: 100%;">Karen Howald</h3>
+                        <p style="color: #667eea; font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem; width: 100%;">Medical Office Assistant</p>
+                        <p style="color: #000000; line-height: 1.7; margin-bottom: 1.5rem; font-size: 1.125rem; flex-grow: 1; width: 100%;">
                          With many years of experience in patient care, Karen is committed to delivering compassionate, efficient, and detail-oriented service. She prides in supporting others and creating a positive experience for every person she works with. Outside of work, she enjoys reading, the arts, and baking—especially carrot cake—and she shares her home with two cats. Karen is also a proud parent of a successful son and brings that same dedication and care to her professional life.
                         </p>
                         <a href="https://www.myhealthaccess.ca/branded/freshdew-medical-centre" target="_blank" rel="noopener noreferrer" style="display: block; width: 100%;">
@@ -121,10 +121,10 @@ $contact_info = freshdew_get_contact_info();
                         }
                         ?>
                     </div>
-                    <div class="team-card-content" style="padding: 2rem; display: flex; flex-direction: column;">
-                        <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem;">Emeka Owo</h3>
-                        <p style="color: #667eea; font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem;">Qualifications</p>
-                        <p style="color: #000000; line-height: 1.7; margin-bottom: 1.5rem; font-size: 1.125rem; flex-grow: 1;">
+                    <div class="team-card-content" style="padding: 2rem; display: flex; flex-direction: column; width: 100%;">
+                        <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem; width: 100%;">Emeka Owo</h3>
+                        <p style="color: #667eea; font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem; width: 100%;">Qualifications</p>
+                        <p style="color: #000000; line-height: 1.7; margin-bottom: 1.5rem; font-size: 1.125rem; flex-grow: 1; width: 100%;">
                          Team member description here.
                         </p>
                         <a href="https://www.myhealthaccess.ca/branded/freshdew-medical-centre" target="_blank" rel="noopener noreferrer" style="display: block; width: 100%;">
