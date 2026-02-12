@@ -51,3 +51,8 @@ prisma/migrations/
 *.tmp
 *.temp
 .cache/
+
+# Auto-generated documentation/troubleshooting files (noise)
+# Keep only README.md tracked
+*.md
+!README.md
