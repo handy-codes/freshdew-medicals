@@ -537,7 +537,7 @@ console.log('Chat button script loading...');
                 saveMessagesToStorage();
             } else {
                 // Type out the message with natural reading pace (for plain text)
-                typeMessage(messageParagraph, messageText, function() {
+            typeMessage(messageParagraph, messageText, function() {
                 chatMessages.scrollTop = chatMessages.scrollHeight;
                 
                 // Play reply sound after message is typed
@@ -549,7 +549,7 @@ console.log('Chat button script loading...');
                 
                 // Save messages to localStorage
                 saveMessagesToStorage();
-                });
+            });
             }
         })
         .catch(error => {
