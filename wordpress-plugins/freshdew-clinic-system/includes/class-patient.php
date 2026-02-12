@@ -89,29 +89,40 @@ class FDCS_Patient {
 
     /**
      * Count patients with optional filters
+     * Counts all WordPress users with clinic_patient role, optionally filtered by custom table status
      */
     public static function count($args = array()) {
         global $wpdb;
         $table = FDCS_Database::table('patients');
 
-        $where = array('1=1');
-        $values = array();
-
+        // If filtering by status, we need to join with the custom table
         if (!empty($args['status'])) {
-            $where[] = 'registration_status = %s';
+            $where = array('um.meta_value = %s', 'um.meta_key = %s');
+            $values = array('clinic_patient', $wpdb->get_blog_prefix() . 'capabilities');
+            
+            $where[] = 'p.registration_status = %s';
             $values[] = $args['status'];
-        }
-
-        if (!empty($args['doctor_id'])) {
-            $where[] = 'assigned_doctor_id = %d';
-            $values[] = (int) $args['doctor_id'];
-        }
-
-        $where_sql = implode(' AND ', $where);
-        $sql = "SELECT COUNT(*) FROM $table WHERE $where_sql";
-
-        if (!empty($values)) {
-            $sql = $wpdb->prepare($sql, ...$values);
+            
+            $where_sql = implode(' AND ', $where);
+            $sql = "SELECT COUNT(DISTINCT u.ID) 
+                    FROM {$wpdb->users} u
+                    INNER JOIN {$wpdb->usermeta} um ON u.ID = um.user_id
+                    LEFT JOIN $table p ON u.ID = p.user_id
+                    WHERE $where_sql";
+            
+            if (!empty($values)) {
+                $sql = $wpdb->prepare($sql, ...$values);
+            }
+        } else {
+            // Count all users with clinic_patient role
+            $sql = $wpdb->prepare(
+                "SELECT COUNT(DISTINCT u.ID) 
+                 FROM {$wpdb->users} u
+                 INNER JOIN {$wpdb->usermeta} um ON u.ID = um.user_id
+                 WHERE um.meta_key = %s AND um.meta_value LIKE %s",
+                $wpdb->get_blog_prefix() . 'capabilities',
+                '%clinic_patient%'
+            );
         }
 
         return (int) $wpdb->get_var($sql);

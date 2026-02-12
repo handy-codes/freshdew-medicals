@@ -44,7 +44,7 @@ get_header();
             </div>
             <div style="display: flex; gap: 0.75rem;">
                 <a href="<?php echo esc_url(home_url('/')); ?>" style="padding: 0.5rem 1rem; background: white; color: #374151; border-radius: 0.5rem; text-decoration: none; font-size: 0.875rem; border: 1px solid #d1d5db;">← Website</a>
-                <a href="<?php echo esc_url(wp_logout_url(home_url('/'))); ?>" style="padding: 0.5rem 1rem; background: #ef4444; color: white; border-radius: 0.5rem; text-decoration: none; font-size: 0.875rem;">Sign Out</a>
+                <a href="<?php echo esc_url(wp_logout_url(home_url('/clinic-login'))); ?>" style="padding: 0.5rem 1rem; background: #ef4444; color: white; border-radius: 0.5rem; text-decoration: none; font-size: 0.875rem;">Sign Out</a>
             </div>
         </div>
 
@@ -63,8 +63,8 @@ get_header();
 
         <!-- Quick Actions -->
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
-            <a href="<?php echo esc_url(home_url('/appointments-book')); ?>" style="background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; padding: 1.25rem; border-radius: 0.75rem; text-decoration: none; text-align: center; font-weight: 600; box-shadow: 0 2px 8px rgba(37,99,235,0.3); transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
-                📅 Book Appointment
+            <a href="https://www.myhealthaccess.ca/branded/freshdew-medical-centre" target="_blank" rel="noopener noreferrer" style="display: block; text-align: center; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
+                <img src="https://www.myhealthaccess.ca/build/branded_signup/book_appt_online_big.png" alt="Book an Appointment Online" style="max-width: 100%; height: auto; border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
             </a>
             <a href="<?php echo esc_url(home_url('/telehealth')); ?>" style="background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 1.25rem; border-radius: 0.75rem; text-decoration: none; text-align: center; font-weight: 600; box-shadow: 0 2px 8px rgba(16,185,129,0.3); transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
                 💻 Virtual Consultation
@@ -83,7 +83,9 @@ get_header();
                 <?php if (empty($upcoming_appointments)): ?>
                     <div style="text-align: center; padding: 2rem 0;">
                         <p style="color: #6b7280; margin: 0 0 1rem;">No upcoming appointments.</p>
-                        <a href="<?php echo esc_url(home_url('/appointments-book')); ?>" style="color: #2563eb; text-decoration: none; font-weight: 600;">Book an appointment →</a>
+                        <a href="https://www.myhealthaccess.ca/branded/freshdew-medical-centre" target="_blank" rel="noopener noreferrer" style="display: inline-block;">
+                            <img src="https://www.myhealthaccess.ca/build/branded_signup/book_appt_online_big.png" alt="Book an Appointment Online" style="max-width: 200px; height: auto;">
+                        </a>
                     </div>
                 <?php else: ?>
                     <div style="display: flex; flex-direction: column; gap: 0.75rem;">

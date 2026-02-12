@@ -114,18 +114,44 @@ get_header();
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
                     <div>
                         <label for="password" style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.9rem;">Password <span style="color: #ef4444;">*</span></label>
-                        <input type="password" id="password" name="password" required minlength="8" autocomplete="new-password"
-                               style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; outline: none;"
-                               onfocus="this.style.borderColor='#2563eb'" onblur="this.style.borderColor='#d1d5db'">
+                        <div style="position: relative;">
+                            <input type="password" id="password" name="password" required minlength="8" autocomplete="new-password"
+                                   style="width: 100%; padding: 0.75rem 2.5rem 0.75rem 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; outline: none;"
+                                   onfocus="this.style.borderColor='#2563eb'" onblur="this.style.borderColor='#d1d5db'">
+                            <button type="button" onclick="togglePassword('password', this)" 
+                                    style="position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; padding: 0.25rem; color: #6b7280; font-size: 1.1rem;"
+                                    aria-label="Show password">
+                                👁️
+                            </button>
+                        </div>
                         <span style="font-size: 0.75rem; color: #6b7280;">Min. 8 characters</span>
                     </div>
                     <div>
                         <label for="password_confirm" style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.9rem;">Confirm Password <span style="color: #ef4444;">*</span></label>
-                        <input type="password" id="password_confirm" name="password_confirm" required minlength="8" autocomplete="new-password"
-                               style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; outline: none;"
-                               onfocus="this.style.borderColor='#2563eb'" onblur="this.style.borderColor='#d1d5db'">
+                        <div style="position: relative;">
+                            <input type="password" id="password_confirm" name="password_confirm" required minlength="8" autocomplete="new-password"
+                                   style="width: 100%; padding: 0.75rem 2.5rem 0.75rem 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; outline: none;"
+                                   onfocus="this.style.borderColor='#2563eb'" onblur="this.style.borderColor='#d1d5db'">
+                            <button type="button" onclick="togglePassword('password_confirm', this)" 
+                                    style="position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; padding: 0.25rem; color: #6b7280; font-size: 1.1rem;"
+                                    aria-label="Show password">
+                                👁️
+                            </button>
+                        </div>
                     </div>
                 </div>
+                <script>
+                function togglePassword(inputId, button) {
+                    const input = document.getElementById(inputId);
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        button.textContent = '🙈';
+                    } else {
+                        input.type = 'password';
+                        button.textContent = '👁️';
+                    }
+                }
+                </script>
 
                 <button type="submit" style="width: 100%; padding: 0.875rem; background: linear-gradient(135deg, #16a34a, #15803d); color: white; border: none; border-radius: 0.5rem; font-size: 1rem; font-weight: 600; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;"
                         onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 12px rgba(22,163,74,0.4)'"

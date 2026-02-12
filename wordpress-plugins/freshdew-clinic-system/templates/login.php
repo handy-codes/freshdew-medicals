@@ -103,10 +103,29 @@ get_header();
 
                     <div style="margin-bottom: 1rem;">
                         <label for="password" style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.9rem;">Password</label>
-                        <input type="password" id="password" name="password" required autocomplete="current-password"
-                               style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; outline: none; transition: border-color 0.2s;"
-                               onfocus="this.style.borderColor='#2563eb'" onblur="this.style.borderColor='#d1d5db'">
+                        <div style="position: relative;">
+                            <input type="password" id="password" name="password" required autocomplete="current-password"
+                                   style="width: 100%; padding: 0.75rem 2.5rem 0.75rem 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; outline: none; transition: border-color 0.2s;"
+                                   onfocus="this.style.borderColor='#2563eb'" onblur="this.style.borderColor='#d1d5db'">
+                            <button type="button" onclick="togglePassword('password', this)" 
+                                    style="position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; padding: 0.25rem; color: #6b7280; font-size: 1.1rem;"
+                                    aria-label="Show password">
+                                👁️
+                            </button>
+                        </div>
                     </div>
+                    <script>
+                    function togglePassword(inputId, button) {
+                        const input = document.getElementById(inputId);
+                        if (input.type === 'password') {
+                            input.type = 'text';
+                            button.textContent = '🙈';
+                        } else {
+                            input.type = 'password';
+                            button.textContent = '👁️';
+                        }
+                    }
+                    </script>
 
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; font-size: 0.875rem;">
                         <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; color: #374151;">

@@ -35,7 +35,7 @@ get_header();
             </div>
             <div style="display: flex; gap: 0.75rem;">
                 <a href="<?php echo esc_url(home_url('/')); ?>" style="padding: 0.5rem 1rem; background: white; color: #374151; border-radius: 0.5rem; text-decoration: none; font-size: 0.875rem; border: 1px solid #d1d5db;">← Website</a>
-                <a href="<?php echo esc_url(wp_logout_url(home_url('/'))); ?>" style="padding: 0.5rem 1rem; background: #ef4444; color: white; border-radius: 0.5rem; text-decoration: none; font-size: 0.875rem;">Sign Out</a>
+                <a href="<?php echo esc_url(wp_logout_url(home_url('/clinic-login'))); ?>" style="padding: 0.5rem 1rem; background: #ef4444; color: white; border-radius: 0.5rem; text-decoration: none; font-size: 0.875rem;">Sign Out</a>
             </div>
         </div>
 

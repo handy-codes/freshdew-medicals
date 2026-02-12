@@ -13,6 +13,7 @@
     $fd_description = 'Experience premium medical care with cutting-edge technology, compassionate professionals, and innovative telehealth solutions—all from the comfort of your home.';
     $fd_url = home_url('/');
     $fd_logo_url = get_template_directory_uri() . '/assets/images/freshdew-favicon-logo.png';
+    $fd_favicon_url = get_template_directory_uri() . '/assets/images/fmc-favicon.svg';
 
     // Determine current page title
     $fd_page_title = $fd_site_title . ' – ' . $fd_default_title;
@@ -49,9 +50,10 @@
     <meta name="twitter:image" content="<?php echo esc_url($fd_logo_url); ?>">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" sizes="192x192" href="<?php echo esc_url($fd_logo_url); ?>">
-    <link rel="apple-touch-icon" href="<?php echo esc_url($fd_logo_url); ?>">
-    <link rel="shortcut icon" type="image/png" href="<?php echo esc_url($fd_logo_url); ?>">
+    <link rel="icon" type="image/svg+xml" href="<?php echo esc_url($fd_favicon_url); ?>">
+    <link rel="icon" type="image/png" sizes="192x192" href="<?php echo esc_url($fd_favicon_url); ?>">
+    <link rel="apple-touch-icon" href="<?php echo esc_url($fd_favicon_url); ?>">
+    <link rel="shortcut icon" type="image/svg+xml" href="<?php echo esc_url($fd_favicon_url); ?>">
 
     <!-- Geo Tags for Local SEO -->
     <meta name="geo.region" content="CA-ON">
