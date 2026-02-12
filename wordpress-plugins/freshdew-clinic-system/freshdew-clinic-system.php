@@ -78,6 +78,12 @@ final class FreshDew_Clinic_System {
         // Login/Logout redirects
         add_filter('login_redirect', array($this, 'role_based_login_redirect'), 10, 3);
         add_action('wp_logout', array($this, 'logout_redirect'));
+
+        // Set default role for new user registrations to clinic_patient
+        add_filter('pre_option_default_role', array($this, 'set_default_user_role'));
+        
+        // Ensure users created through our registration form get clinic_patient role
+        add_action('user_register', array($this, 'ensure_patient_role_on_registration'), 10, 1);
     }
 
     public function activate() {
@@ -325,6 +331,33 @@ final class FreshDew_Clinic_System {
         exit;
     }
     
+    /**
+     * Set default role for new user registrations to clinic_patient
+     * This ensures that any new user registration defaults to patient role
+     */
+    public function set_default_user_role($default_role) {
+        // Only set default if no role is explicitly set
+        // This allows admins to manually assign roles when creating users
+        return 'clinic_patient';
+    }
+
+    /**
+     * Ensure users registered through our form get clinic_patient role
+     * This is a safety net in case role assignment fails during registration
+     */
+    public function ensure_patient_role_on_registration($user_id) {
+        // Check if this registration came from our form
+        if (get_user_meta($user_id, 'fdcs_registered_via_form', true)) {
+            $user = new WP_User($user_id);
+            $roles = $user->roles;
+            
+            // If user doesn't have clinic_patient role, assign it
+            if (!in_array('clinic_patient', $roles)) {
+                $user->set_role('clinic_patient');
+            }
+        }
+    }
+
     /**
      * Prevent WordPress from loading page templates for our custom routes
      */

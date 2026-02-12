@@ -120,21 +120,36 @@ class FDCS_Auth {
             exit;
         }
 
-        // Create WordPress user
-        $user_id = wp_create_user($email, $password, $email);
+        // Set transient to identify this as our registration form
+        // This helps the ensure_patient_role_on_registration hook identify our registrations
+        $temp_user_id = 0; // Will be set after user creation
+        
+        // Create WordPress user with clinic_patient role
+        $user_id = wp_insert_user(array(
+            'user_login'   => $email,
+            'user_email'  => $email,
+            'user_pass'   => $password,
+            'first_name'  => $first_name,
+            'last_name'   => $last_name,
+            'display_name' => $first_name . ' ' . $last_name,
+            'role'        => 'clinic_patient', // Explicitly set role
+        ));
+        
         if (is_wp_error($user_id)) {
             wp_redirect(add_query_arg('error', 'create_failed', home_url('/clinic-register')));
             exit;
         }
 
-        // Set user meta
-        wp_update_user(array(
-            'ID'           => $user_id,
-            'first_name'   => $first_name,
-            'last_name'    => $last_name,
-            'display_name' => $first_name . ' ' . $last_name,
-            'role'         => 'clinic_patient',
-        ));
+        // Mark this user as registered via our form
+        update_user_meta($user_id, 'fdcs_registered_via_form', '1');
+        
+        // Ensure role is set (double-check)
+        $user = new WP_User($user_id);
+        if (!in_array('clinic_patient', $user->roles)) {
+            $user->set_role('clinic_patient');
+        }
+        
+        // Set additional user meta
         update_user_meta($user_id, 'phone', $phone);
 
         // Create patient profile in custom table
@@ -274,21 +289,29 @@ class FDCS_Auth {
             exit;
         }
 
-        // Create WordPress user
-        $user_id = wp_create_user($email, $password, $email);
+        // Create WordPress user with specified role
+        $user_id = wp_insert_user(array(
+            'user_login'   => $email,
+            'user_email'  => $email,
+            'user_pass'   => $password,
+            'first_name'  => $first_name,
+            'last_name'   => $last_name,
+            'display_name' => $first_name . ' ' . $last_name,
+            'role'        => $role, // Explicitly set role (clinic_admin or clinic_doctor)
+        ));
+        
         if (is_wp_error($user_id)) {
             wp_redirect(add_query_arg('error', 'create_failed', home_url('/clinic-dashboard')));
             exit;
         }
 
-        // Set user meta and role
-        wp_update_user(array(
-            'ID'           => $user_id,
-            'first_name'   => $first_name,
-            'last_name'    => $last_name,
-            'display_name' => $first_name . ' ' . $last_name,
-            'role'         => $role,
-        ));
+        // Ensure role is set (double-check)
+        $user = new WP_User($user_id);
+        if (!in_array($role, $user->roles)) {
+            $user->set_role($role);
+        }
+        
+        // Set additional user meta
         update_user_meta($user_id, 'phone', $phone);
 
         // Log creation
