@@ -1125,3 +1125,62 @@ function freshdew_ai_settings_page() {
     <?php
 }
 
+/**
+ * Add Dashboard/Login links to navigation menu for logged-in users
+ */
+function freshdew_add_dashboard_menu_items($items, $args) {
+    // Only add to primary menu
+    if ($args->theme_location !== 'primary') {
+        return $items;
+    }
+
+    // If user is logged in, add dashboard link based on role
+    if (is_user_logged_in()) {
+        $user = wp_get_current_user();
+        $roles = $user->roles;
+
+        // Determine dashboard URL based on role
+        if (in_array('clinic_patient', $roles)) {
+            $dashboard_url = home_url('/patient-portal');
+            $dashboard_text = 'Patient Portal';
+        } elseif (in_array('head_admin', $roles) || in_array('administrator', $roles) || 
+                   in_array('clinic_admin', $roles) || in_array('clinic_doctor', $roles)) {
+            $dashboard_url = home_url('/clinic-dashboard');
+            $dashboard_text = 'Dashboard';
+        } else {
+            return $items; // No dashboard for other roles
+        }
+
+        // Add dashboard link before Register button
+        $dashboard_item = '<li class="menu-item menu-item-type-custom menu-item-object-custom"><a href="' . esc_url($dashboard_url) . '" style="color: #2563eb; font-weight: 600;">' . esc_html($dashboard_text) . '</a></li>';
+        
+        // Insert before Register link if it exists, otherwise append
+        if (strpos($items, 'href="' . home_url('/register')) !== false) {
+            $items = str_replace(
+                '<li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="' . home_url('/register'),
+                $dashboard_item . '<li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="' . home_url('/register'),
+                $items
+            );
+        } else {
+            $items .= $dashboard_item;
+        }
+    } else {
+        // If not logged in, add login link
+        $login_item = '<li class="menu-item menu-item-type-custom menu-item-object-custom"><a href="' . esc_url(home_url('/clinic-login')) . '">Login</a></li>';
+        
+        // Insert before Register link if it exists
+        if (strpos($items, 'href="' . home_url('/register')) !== false) {
+            $items = str_replace(
+                '<li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="' . home_url('/register'),
+                $login_item . '<li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="' . home_url('/register'),
+                $items
+            );
+        } else {
+            $items .= $login_item;
+        }
+    }
+
+    return $items;
+}
+add_filter('wp_nav_menu_items', 'freshdew_add_dashboard_menu_items', 10, 2);
+

@@ -66,8 +66,11 @@ final class FreshDew_Clinic_System {
         add_action('wp_enqueue_scripts', array($this, 'enqueue_frontend_assets'));
         add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_assets'));
 
-        // Template redirects for dashboards
-        add_action('template_redirect', array($this, 'dashboard_template_redirect'));
+        // Template redirects for dashboards - use early priority
+        add_action('template_redirect', array($this, 'dashboard_template_redirect'), 1);
+        
+        // Prevent WordPress from loading page templates for our custom routes
+        add_filter('template_include', array($this, 'prevent_page_template'), 1);
 
         // Login/Logout redirects
         add_filter('login_redirect', array($this, 'role_based_login_redirect'), 10, 3);
@@ -108,6 +111,12 @@ final class FreshDew_Clinic_System {
             $vars[] = 'fdcs_register';
             return $vars;
         });
+        
+        // Flush rewrite rules if needed (only once)
+        if (!get_option('fdcs_rewrite_rules_flushed')) {
+            flush_rewrite_rules();
+            update_option('fdcs_rewrite_rules_flushed', true);
+        }
     }
 
     public function enqueue_frontend_assets() {
@@ -144,28 +153,47 @@ final class FreshDew_Clinic_System {
     }
 
     /**
-     * Route users to dashboard templates based on query vars
+     * Route users to dashboard templates based on query vars or direct URL matching
      */
     public function dashboard_template_redirect() {
-        if (get_query_var('fdcs_login')) {
+        // Get the request URI - handle both with and without query strings
+        $request_uri = strtok($_SERVER['REQUEST_URI'], '?');
+        $request_uri = trim($request_uri, '/');
+        $home_path = trim(parse_url(home_url(), PHP_URL_PATH), '/');
+        
+        // Remove home path from request URI if present
+        if ($home_path && strpos($request_uri, $home_path) === 0) {
+            $request_uri = trim(substr($request_uri, strlen($home_path)), '/');
+        }
+        
+        // Check query vars first (for rewrite rules), then direct URI matching
+        $is_login = get_query_var('fdcs_login') || $request_uri === 'clinic-login' || strpos($request_uri, 'clinic-login') === 0;
+        $is_register = get_query_var('fdcs_register') || $request_uri === 'clinic-register' || strpos($request_uri, 'clinic-register') === 0;
+        $is_dashboard = get_query_var('fdcs_dashboard') || $request_uri === 'clinic-dashboard' || strpos($request_uri, 'clinic-dashboard') === 0;
+        $is_patient_portal = get_query_var('fdcs_patient_portal') || $request_uri === 'patient-portal' || strpos($request_uri, 'patient-portal') === 0;
+        
+        if ($is_login) {
             if (is_user_logged_in()) {
                 $this->redirect_to_dashboard();
                 exit;
             }
+            // Prevent WordPress from loading theme templates
+            status_header(200);
             include FDCS_PLUGIN_DIR . 'templates/login.php';
             exit;
         }
 
-        if (get_query_var('fdcs_register')) {
+        if ($is_register) {
             if (is_user_logged_in()) {
                 $this->redirect_to_dashboard();
                 exit;
             }
+            status_header(200);
             include FDCS_PLUGIN_DIR . 'templates/register-patient.php';
             exit;
         }
 
-        if (get_query_var('fdcs_dashboard')) {
+        if ($is_dashboard) {
             if (!is_user_logged_in()) {
                 wp_redirect(home_url('/clinic-login'));
                 exit;
@@ -173,6 +201,7 @@ final class FreshDew_Clinic_System {
             $user = wp_get_current_user();
             $roles = $user->roles;
 
+            status_header(200);
             if (in_array('head_admin', $roles) || in_array('administrator', $roles)) {
                 include FDCS_PLUGIN_DIR . 'admin/dashboard-head-admin.php';
             } elseif (in_array('clinic_admin', $roles)) {
@@ -186,11 +215,12 @@ final class FreshDew_Clinic_System {
             exit;
         }
 
-        if (get_query_var('fdcs_patient_portal')) {
+        if ($is_patient_portal) {
             if (!is_user_logged_in()) {
                 wp_redirect(home_url('/clinic-login'));
                 exit;
             }
+            status_header(200);
             include FDCS_PLUGIN_DIR . 'patient/dashboard.php';
             exit;
         }
@@ -234,6 +264,29 @@ final class FreshDew_Clinic_System {
     public function logout_redirect() {
         wp_redirect(home_url('/'));
         exit;
+    }
+    
+    /**
+     * Prevent WordPress from loading page templates for our custom routes
+     */
+    public function prevent_page_template($template) {
+        $request_uri = trim($_SERVER['REQUEST_URI'], '/');
+        $home_path = trim(parse_url(home_url(), PHP_URL_PATH), '/');
+        
+        if ($home_path && strpos($request_uri, $home_path) === 0) {
+            $request_uri = trim(substr($request_uri, strlen($home_path)), '/');
+        }
+        
+        $custom_routes = array('clinic-login', 'clinic-register', 'clinic-dashboard', 'patient-portal');
+        
+        foreach ($custom_routes as $route) {
+            if ($request_uri === $route || strpos($request_uri, $route . '/') === 0) {
+                // Return a minimal template to prevent WordPress from loading page.php
+                return get_template_directory() . '/index.php';
+            }
+        }
+        
+        return $template;
     }
 }
 

@@ -13,6 +13,48 @@ class FDCS_Admin_Dashboard {
 
     public function __construct() {
         add_action('admin_menu', array($this, 'add_admin_menus'));
+        add_action('admin_notices', array($this, 'admin_notices'));
+        add_action('admin_post_fdcs_flush_rewrite_rules', array($this, 'flush_rewrite_rules_handler'));
+    }
+    
+    public function admin_notices() {
+        // Only show on our plugin pages
+        $screen = get_current_screen();
+        if (!$screen || strpos($screen->id, 'fdcs') === false) {
+            return;
+        }
+        
+        // Check if rewrite rules need flushing
+        if (!get_option('fdcs_rewrite_rules_flushed')) {
+            ?>
+            <div class="notice notice-warning is-dismissible">
+                <p><strong>FreshDew Clinic System:</strong> Rewrite rules need to be flushed. 
+                <a href="<?php echo esc_url(wp_nonce_url(admin_url('admin-post.php?action=fdcs_flush_rewrite_rules'), 'fdcs_flush_rewrite')); ?>" class="button button-primary">Flush Rewrite Rules Now</a></p>
+            </div>
+            <?php
+        }
+        
+        // Show access instructions
+        ?>
+        <div class="notice notice-info is-dismissible">
+            <p><strong>How to Access Dashboards:</strong></p>
+            <ul style="list-style: disc; margin-left: 20px;">
+                <li><strong>Login Page:</strong> <a href="<?php echo esc_url(home_url('/clinic-login')); ?>" target="_blank"><?php echo esc_url(home_url('/clinic-login')); ?></a></li>
+                <li><strong>Patient Registration:</strong> <a href="<?php echo esc_url(home_url('/clinic-register')); ?>" target="_blank"><?php echo esc_url(home_url('/clinic-register')); ?></a></li>
+                <li><strong>Staff Dashboard:</strong> <a href="<?php echo esc_url(home_url('/clinic-dashboard')); ?>" target="_blank"><?php echo esc_url(home_url('/clinic-dashboard')); ?></a> (requires login)</li>
+                <li><strong>Patient Portal:</strong> <a href="<?php echo esc_url(home_url('/patient-portal')); ?>" target="_blank"><?php echo esc_url(home_url('/patient-portal')); ?></a> (requires login)</li>
+            </ul>
+            <p><em>If pages show the homepage instead, click "Flush Rewrite Rules" above or go to Settings → Permalinks and click "Save Changes".</em></p>
+        </div>
+        <?php
+    }
+    
+    public function flush_rewrite_rules_handler() {
+        check_admin_referer('fdcs_flush_rewrite');
+        flush_rewrite_rules();
+        delete_option('fdcs_rewrite_rules_flushed');
+        wp_redirect(add_query_arg('fdcs_flushed', '1', admin_url('admin.php?page=fdcs-dashboard')));
+        exit;
     }
 
     public function add_admin_menus() {

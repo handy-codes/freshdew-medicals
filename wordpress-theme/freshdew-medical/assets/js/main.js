@@ -67,8 +67,6 @@
                 $hamburger.hide();
                 $close.show();
                 $('body').addClass('menu-open');
-                // Scroll to top so the menu is visible (header is sticky at top)
-                window.scrollTo({ top: 0, behavior: 'smooth' });
             } else {
                 $hamburger.show();
                 $close.hide();
