@@ -22,6 +22,9 @@ class FDCS_Auth {
 
         // Handle password reset
         add_action('admin_post_nopriv_fdcs_forgot_password', array($this, 'handle_forgot_password'));
+
+        // Handle staff creation (Head Admin only)
+        add_action('admin_post_fdcs_create_staff', array($this, 'handle_create_staff'));
     }
 
     /**
@@ -209,6 +212,104 @@ class FDCS_Auth {
 
         // Always show success to prevent email enumeration
         wp_redirect(add_query_arg(array('tab' => 'forgot', 'success' => 'sent'), home_url('/clinic-login')));
+        exit;
+    }
+
+    /**
+     * Handle staff creation (Clinic Admin, Doctor) - Head Admin only
+     */
+    public function handle_create_staff() {
+        // Check user is logged in and has permission
+        if (!is_user_logged_in()) {
+            wp_redirect(home_url('/clinic-login'));
+            exit;
+        }
+
+        $current_user = wp_get_current_user();
+        if (!current_user_can('fdcs_create_admins') && !current_user_can('fdcs_create_doctors')) {
+            wp_redirect(add_query_arg('error', 'permission_denied', home_url('/clinic-dashboard')));
+            exit;
+        }
+
+        // Verify nonce
+        if (!isset($_POST['fdcs_staff_nonce']) || !wp_verify_nonce($_POST['fdcs_staff_nonce'], 'fdcs_create_staff')) {
+            wp_redirect(add_query_arg('error', 'security', home_url('/clinic-dashboard')));
+            exit;
+        }
+
+        $first_name = sanitize_text_field($_POST['first_name'] ?? '');
+        $last_name = sanitize_text_field($_POST['last_name'] ?? '');
+        $email = sanitize_email($_POST['email'] ?? '');
+        $phone = sanitize_text_field($_POST['phone'] ?? '');
+        $password = $_POST['password'] ?? '';
+        $role = sanitize_text_field($_POST['role'] ?? '');
+
+        // Validate role
+        $allowed_roles = array();
+        if (current_user_can('fdcs_create_admins')) {
+            $allowed_roles[] = 'clinic_admin';
+        }
+        if (current_user_can('fdcs_create_doctors')) {
+            $allowed_roles[] = 'clinic_doctor';
+        }
+
+        if (!in_array($role, $allowed_roles)) {
+            wp_redirect(add_query_arg('error', 'invalid_role', home_url('/clinic-dashboard')));
+            exit;
+        }
+
+        // Validate
+        $errors = array();
+        if (empty($first_name)) $errors[] = 'First name is required.';
+        if (empty($last_name)) $errors[] = 'Last name is required.';
+        if (empty($email) || !is_email($email)) $errors[] = 'Valid email is required.';
+        if (empty($phone)) $errors[] = 'Phone number is required.';
+        if (empty($password) || strlen($password) < 8) $errors[] = 'Password must be at least 8 characters.';
+
+        if (email_exists($email)) $errors[] = 'An account with this email already exists.';
+
+        if (!empty($errors)) {
+            $error_string = urlencode(implode('|', $errors));
+            wp_redirect(add_query_arg('error', $error_string, home_url('/clinic-dashboard')));
+            exit;
+        }
+
+        // Create WordPress user
+        $user_id = wp_create_user($email, $password, $email);
+        if (is_wp_error($user_id)) {
+            wp_redirect(add_query_arg('error', 'create_failed', home_url('/clinic-dashboard')));
+            exit;
+        }
+
+        // Set user meta and role
+        wp_update_user(array(
+            'ID'           => $user_id,
+            'first_name'   => $first_name,
+            'last_name'    => $last_name,
+            'display_name' => $first_name . ' ' . $last_name,
+            'role'         => $role,
+        ));
+        update_user_meta($user_id, 'phone', $phone);
+
+        // Log creation
+        $role_name = $role === 'clinic_admin' ? 'Clinic Admin' : 'Doctor';
+        FDCS_Audit_Log::log('staff_created', 'user', $user_id, "Created $role_name: $first_name $last_name", $current_user->ID);
+
+        // Send welcome email
+        wp_mail(
+            $email,
+            'Welcome to FreshDew Medical Clinic – ' . $role_name . ' Account',
+            "Hello $first_name,\n\n" .
+            "Your $role_name account has been created at FreshDew Medical Clinic.\n\n" .
+            "Login URL: " . home_url('/clinic-login') . "\n" .
+            "Email: $email\n" .
+            "Password: (the password you set)\n\n" .
+            "Please log in and change your password after your first login.\n\n" .
+            "– FreshDew Medical Clinic",
+            array('Content-Type: text/plain; charset=UTF-8')
+        );
+
+        wp_redirect(add_query_arg('success', 'staff_created', home_url('/clinic-dashboard')));
         exit;
     }
 }
