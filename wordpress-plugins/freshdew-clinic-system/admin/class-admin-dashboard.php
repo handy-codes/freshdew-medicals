@@ -24,6 +24,26 @@ class FDCS_Admin_Dashboard {
             return;
         }
         
+        // Check for conflicting WordPress pages
+        $conflicting_pages = array();
+        $routes = array('clinic-login', 'clinic-register', 'clinic-dashboard', 'patient-portal');
+        foreach ($routes as $route) {
+            $page = get_page_by_path($route);
+            if ($page) {
+                $conflicting_pages[] = $route;
+            }
+        }
+        
+        if (!empty($conflicting_pages)) {
+            ?>
+            <div class="notice notice-error is-dismissible">
+                <p><strong>⚠️ Conflict Detected:</strong> WordPress pages exist with these slugs: <code><?php echo esc_html(implode(', ', $conflicting_pages)); ?></code></p>
+                <p>These pages will interfere with the clinic system. Please delete or rename them, or the plugin routes won't work.</p>
+                <p><a href="<?php echo esc_url(admin_url('edit.php?post_type=page')); ?>" class="button">Go to Pages →</a></p>
+            </div>
+            <?php
+        }
+        
         // Check if rewrite rules need flushing
         if (!get_option('fdcs_rewrite_rules_flushed')) {
             ?>
@@ -37,14 +57,19 @@ class FDCS_Admin_Dashboard {
         // Show access instructions
         ?>
         <div class="notice notice-info is-dismissible">
-            <p><strong>How to Access Dashboards:</strong></p>
-            <ul style="list-style: disc; margin-left: 20px;">
-                <li><strong>Login Page:</strong> <a href="<?php echo esc_url(home_url('/clinic-login')); ?>" target="_blank"><?php echo esc_url(home_url('/clinic-login')); ?></a></li>
-                <li><strong>Patient Registration:</strong> <a href="<?php echo esc_url(home_url('/clinic-register')); ?>" target="_blank"><?php echo esc_url(home_url('/clinic-register')); ?></a></li>
-                <li><strong>Staff Dashboard:</strong> <a href="<?php echo esc_url(home_url('/clinic-dashboard')); ?>" target="_blank"><?php echo esc_url(home_url('/clinic-dashboard')); ?></a> (requires login)</li>
-                <li><strong>Patient Portal:</strong> <a href="<?php echo esc_url(home_url('/patient-portal')); ?>" target="_blank"><?php echo esc_url(home_url('/patient-portal')); ?></a> (requires login)</li>
+            <p><strong>📋 How to Access Dashboards:</strong></p>
+            <ul style="list-style: disc; margin-left: 20px; margin-top: 0.5rem;">
+                <li><strong>Login Page:</strong> <a href="<?php echo esc_url(home_url('/clinic-login')); ?>" target="_blank"><?php echo esc_url(home_url('/clinic-login')); ?></a> — Shows login form with email/password fields and "Forgot Password" tab</li>
+                <li><strong>Patient Registration:</strong> <a href="<?php echo esc_url(home_url('/clinic-register')); ?>" target="_blank"><?php echo esc_url(home_url('/clinic-register')); ?></a> — Form for new patients to create accounts</li>
+                <li><strong>Staff Dashboard:</strong> <a href="<?php echo esc_url(home_url('/clinic-dashboard')); ?>" target="_blank"><?php echo esc_url(home_url('/clinic-dashboard')); ?></a> — Requires login (Head Admin, Clinic Admin, or Doctor role)</li>
+                <li><strong>Patient Portal:</strong> <a href="<?php echo esc_url(home_url('/patient-portal')); ?>" target="_blank"><?php echo esc_url(home_url('/patient-portal')); ?></a> — Requires login as Patient role</li>
             </ul>
-            <p><em>If pages show the homepage instead, click "Flush Rewrite Rules" above or go to Settings → Permalinks and click "Save Changes".</em></p>
+            <p style="margin-top: 1rem;"><strong>🔧 Troubleshooting:</strong></p>
+            <ul style="list-style: disc; margin-left: 20px;">
+                <li>If pages show the homepage: Go to <strong>Settings → Permalinks</strong> and click <strong>"Save Changes"</strong> (this flushes rewrite rules)</li>
+                <li>If you see a 404: Check if WordPress pages with those slugs exist and delete them</li>
+                <li>To create your first admin: Go to <strong>Users → Add New</strong>, create a user, and set role to <strong>"Head Admin (CMO)"</strong> or <strong>"Clinic Admin"</strong></li>
+            </ul>
         </div>
         <?php
     }

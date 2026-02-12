@@ -66,7 +66,10 @@ final class FreshDew_Clinic_System {
         add_action('wp_enqueue_scripts', array($this, 'enqueue_frontend_assets'));
         add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_assets'));
 
-        // Template redirects for dashboards - use early priority
+        // Catch requests early - before WordPress processes them
+        add_action('parse_request', array($this, 'catch_custom_routes'), 1);
+        
+        // Template redirects for dashboards - use early priority as backup
         add_action('template_redirect', array($this, 'dashboard_template_redirect'), 1);
         
         // Prevent WordPress from loading page templates for our custom routes
@@ -153,6 +156,46 @@ final class FreshDew_Clinic_System {
     }
 
     /**
+     * Catch custom routes early in parse_request
+     */
+    public function catch_custom_routes($wp) {
+        if (!isset($_SERVER['REQUEST_URI'])) {
+            return;
+        }
+        
+        $request_uri = strtok($_SERVER['REQUEST_URI'], '?');
+        $request_uri = trim($request_uri, '/');
+        $home_path = trim(parse_url(home_url(), PHP_URL_PATH), '/');
+        
+        if ($home_path && strpos($request_uri, $home_path) === 0) {
+            $request_uri = trim(substr($request_uri, strlen($home_path)), '/');
+        }
+        
+        $custom_routes = array('clinic-login', 'clinic-register', 'clinic-dashboard', 'patient-portal');
+        
+        foreach ($custom_routes as $route) {
+            if ($request_uri === $route || strpos($request_uri, $route . '/') === 0) {
+                // Set query vars so template_redirect can catch them
+                $wp->query_vars[$this->get_route_query_var($route)] = '1';
+                break;
+            }
+        }
+    }
+    
+    /**
+     * Get query var name for a route
+     */
+    private function get_route_query_var($route) {
+        $map = array(
+            'clinic-login' => 'fdcs_login',
+            'clinic-register' => 'fdcs_register',
+            'clinic-dashboard' => 'fdcs_dashboard',
+            'patient-portal' => 'fdcs_patient_portal',
+        );
+        return isset($map[$route]) ? $map[$route] : '';
+    }
+    
+    /**
      * Route users to dashboard templates based on query vars or direct URL matching
      */
     public function dashboard_template_redirect() {
@@ -178,6 +221,10 @@ final class FreshDew_Clinic_System {
                 exit;
             }
             // Prevent WordPress from loading theme templates
+            global $wp_query;
+            $wp_query->is_404 = false;
+            $wp_query->is_page = false;
+            $wp_query->is_singular = false;
             status_header(200);
             include FDCS_PLUGIN_DIR . 'templates/login.php';
             exit;
@@ -188,6 +235,10 @@ final class FreshDew_Clinic_System {
                 $this->redirect_to_dashboard();
                 exit;
             }
+            global $wp_query;
+            $wp_query->is_404 = false;
+            $wp_query->is_page = false;
+            $wp_query->is_singular = false;
             status_header(200);
             include FDCS_PLUGIN_DIR . 'templates/register-patient.php';
             exit;
@@ -201,6 +252,10 @@ final class FreshDew_Clinic_System {
             $user = wp_get_current_user();
             $roles = $user->roles;
 
+            global $wp_query;
+            $wp_query->is_404 = false;
+            $wp_query->is_page = false;
+            $wp_query->is_singular = false;
             status_header(200);
             if (in_array('head_admin', $roles) || in_array('administrator', $roles)) {
                 include FDCS_PLUGIN_DIR . 'admin/dashboard-head-admin.php';
@@ -220,6 +275,10 @@ final class FreshDew_Clinic_System {
                 wp_redirect(home_url('/clinic-login'));
                 exit;
             }
+            global $wp_query;
+            $wp_query->is_404 = false;
+            $wp_query->is_page = false;
+            $wp_query->is_singular = false;
             status_header(200);
             include FDCS_PLUGIN_DIR . 'patient/dashboard.php';
             exit;
