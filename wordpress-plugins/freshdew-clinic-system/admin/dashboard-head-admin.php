@@ -29,6 +29,18 @@ $staff_query = new WP_User_Query(array(
 ));
 $all_staff = $staff_query->get_results();
 
+// Get all patients for patient management
+$all_patients = FDCS_Patient::get_all(array('limit' => 100, 'orderby' => 'created_at', 'order' => 'DESC'));
+
+// Get all doctors for assignment dropdown
+$doctors_query = new WP_User_Query(array(
+    'role__in' => array('clinic_doctor'),
+    'number' => 50,
+    'orderby' => 'display_name',
+    'order' => 'ASC',
+));
+$all_doctors = $doctors_query->get_results();
+
 // Get success/error messages
 $success_msg = isset($_GET['success']) ? sanitize_text_field($_GET['success']) : '';
 $error_msg = isset($_GET['error']) ? sanitize_text_field($_GET['error']) : '';
@@ -134,16 +146,27 @@ get_header();
                     <p style="color: #6b7280; text-align: center; padding: 2rem 0;">No patients on the waitlist.</p>
                 <?php else: ?>
                     <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                        <?php foreach ($recent_patients as $p): ?>
+                        <?php foreach ($recent_patients as $p): 
+                            $patient = FDCS_Patient::get_by_user_id($p->user_id ?? 0);
+                            $patient_id = $patient ? $patient->id : 0;
+                        ?>
                             <div style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem; border: 1px solid #e5e7eb; border-radius: 0.5rem;">
                                 <div style="width: 40px; height: 40px; background: #fef3c7; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #92400e; font-size: 1rem;">
                                     <?php echo esc_html(strtoupper(substr($p->display_name ?? 'P', 0, 1))); ?>
                                 </div>
-                                <div style="flex: 1;">
+                                <div style="flex: 1; cursor: pointer;" onclick="showPatientDetails(<?php echo esc_js($patient_id); ?>)">
                                     <p style="margin: 0; font-weight: 600; color: #1f2937;"><?php echo esc_html($p->display_name); ?></p>
                                     <p style="margin: 0; color: #6b7280; font-size: 0.8rem;"><?php echo esc_html($p->user_email); ?> • Registered <?php echo esc_html(wp_date('M j', strtotime($p->created_at))); ?></p>
                                 </div>
-                                <span style="padding: 2px 8px; border-radius: 10px; font-size: 0.75rem; font-weight: 600; background: #fef3c7; color: #92400e;">Waitlist</span>
+                                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                                    <span style="padding: 2px 8px; border-radius: 10px; font-size: 0.75rem; font-weight: 600; background: #fef3c7; color: #92400e;">Waitlist</span>
+                                    <?php if ($patient_id): ?>
+                                        <button onclick="event.stopPropagation(); approvePatient(<?php echo esc_js($patient_id); ?>)" 
+                                                style="padding: 0.25rem 0.75rem; background: #10b981; color: white; border: none; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600; cursor: pointer;">
+                                            Approve
+                                        </button>
+                                    <?php endif; ?>
+                                </div>
                             </div>
                         <?php endforeach; ?>
                     </div>
@@ -290,6 +313,114 @@ get_header();
             </div>
         </div>
 
+        <!-- Patient Management Section -->
+        <div style="background: white; padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-top: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                <h2 style="font-size: 1.25rem; font-weight: 700; color: #1f2937; margin: 0;">👥 Patient Management</h2>
+                <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                    <input type="text" id="patientSearch" placeholder="Search patients..." 
+                           style="padding: 0.5rem 1rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 0.875rem; min-width: 200px;"
+                           onkeyup="filterPatients()">
+                    <select id="patientStatusFilter" onchange="filterPatients()"
+                            style="padding: 0.5rem 1rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 0.875rem;">
+                        <option value="">All Status</option>
+                        <option value="waitlist">Waitlist</option>
+                        <option value="active">Active</option>
+                    </select>
+                    <select id="patientDoctorFilter" onchange="filterPatients()"
+                            style="padding: 0.5rem 1rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 0.875rem;">
+                        <option value="">All Doctors</option>
+                        <option value="0">Unassigned</option>
+                        <?php foreach ($all_doctors as $doc): ?>
+                            <option value="<?php echo esc_attr($doc->ID); ?>"><?php echo esc_html($doc->display_name); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Patient List -->
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse;" id="patientTable">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #e5e7eb;">
+                            <th style="text-align: left; padding: 0.75rem; font-size: 0.8rem; color: #6b7280; text-transform: uppercase;">Name</th>
+                            <th style="text-align: left; padding: 0.75rem; font-size: 0.8rem; color: #6b7280; text-transform: uppercase;">Email</th>
+                            <th style="text-align: left; padding: 0.75rem; font-size: 0.8rem; color: #6b7280; text-transform: uppercase;">Phone</th>
+                            <th style="text-align: left; padding: 0.75rem; font-size: 0.8rem; color: #6b7280; text-transform: uppercase;">Status</th>
+                            <th style="text-align: left; padding: 0.75rem; font-size: 0.8rem; color: #6b7280; text-transform: uppercase;">Assigned Doctor</th>
+                            <th style="text-align: left; padding: 0.75rem; font-size: 0.8rem; color: #6b7280; text-transform: uppercase;">Registered</th>
+                            <th style="text-align: left; padding: 0.75rem; font-size: 0.8rem; color: #6b7280; text-transform: uppercase;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if (empty($all_patients)): ?>
+                            <tr>
+                                <td colspan="7" style="padding: 2rem; text-align: center; color: #6b7280;">No patients found.</td>
+                            </tr>
+                        <?php else: ?>
+                            <?php foreach ($all_patients as $patient_data): 
+                                $user = get_user_by('ID', $patient_data->user_id);
+                                if (!$user) continue;
+                                
+                                $patient = FDCS_Patient::get_by_user_id($user->ID);
+                                $patient_id = $patient ? $patient->id : 0;
+                                $phone = get_user_meta($user->ID, 'phone', true);
+                                $assigned_doctor = $patient && $patient->assigned_doctor_id ? get_user_by('ID', $patient->assigned_doctor_id) : null;
+                            ?>
+                                <tr class="patient-row" 
+                                    data-name="<?php echo esc_attr(strtolower($user->display_name)); ?>"
+                                    data-email="<?php echo esc_attr(strtolower($user->user_email)); ?>"
+                                    data-status="<?php echo esc_attr($patient ? $patient->registration_status : ''); ?>"
+                                    data-doctor="<?php echo esc_attr($patient && $patient->assigned_doctor_id ? $patient->assigned_doctor_id : '0'); ?>"
+                                    style="border-bottom: 1px solid #f3f4f6;">
+                                    <td style="padding: 0.75rem; font-size: 0.875rem; color: #1f2937; font-weight: 500; cursor: pointer;" onclick="showPatientDetails(<?php echo esc_js($patient_id); ?>)">
+                                        <?php echo esc_html($user->display_name); ?>
+                                    </td>
+                                    <td style="padding: 0.75rem; font-size: 0.875rem; color: #6b7280;">
+                                        <?php echo esc_html($user->user_email); ?>
+                                    </td>
+                                    <td style="padding: 0.75rem; font-size: 0.875rem; color: #6b7280;">
+                                        <?php echo esc_html($phone ?: '—'); ?>
+                                    </td>
+                                    <td style="padding: 0.75rem;">
+                                        <span style="padding: 2px 8px; border-radius: 10px; font-size: 0.75rem; font-weight: 600;
+                                            <?php echo ($patient && $patient->registration_status === 'active') ? 'background: #d1fae5; color: #065f46;' : 'background: #fef3c7; color: #92400e;'; ?>">
+                                            <?php echo esc_html(ucfirst($patient ? $patient->registration_status : 'waitlist')); ?>
+                                        </span>
+                                    </td>
+                                    <td style="padding: 0.75rem; font-size: 0.875rem; color: #6b7280;">
+                                        <?php echo $assigned_doctor ? esc_html($assigned_doctor->display_name) : '<span style="color: #9ca3af;">Unassigned</span>'; ?>
+                                    </td>
+                                    <td style="padding: 0.75rem; font-size: 0.875rem; color: #6b7280;">
+                                        <?php echo esc_html(wp_date('M j, Y', strtotime($patient ? $patient->created_at : $user->user_registered))); ?>
+                                    </td>
+                                    <td style="padding: 0.75rem;">
+                                        <button onclick="showPatientDetails(<?php echo esc_js($patient_id); ?>)" 
+                                                style="padding: 0.25rem 0.75rem; background: #2563eb; color: white; border: none; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600; cursor: pointer; margin-right: 0.25rem;">
+                                            View
+                                        </button>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Patient Detail Modal -->
+        <div id="patientDetailModal" style="display: none; position: fixed; z-index: 10003; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); overflow: auto;">
+            <div style="background: white; margin: 2% auto; padding: 2rem; border-radius: 0.75rem; max-width: 900px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin: 0;">Patient Details</h3>
+                    <button onclick="closePatientDetails()" style="background: none; border: none; font-size: 1.5rem; color: #6b7280; cursor: pointer; padding: 0; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">&times;</button>
+                </div>
+                <div id="patientDetailContent">
+                    <!-- Content will be loaded via AJAX or populated inline -->
+                </div>
+            </div>
+        </div>
+
         <!-- Recent Activity -->
         <div style="background: white; padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-top: 1.5rem;">
             <h2 style="font-size: 1.25rem; font-weight: 700; color: #1f2937; margin: 0 0 1rem;">📋 Recent Activity</h2>
@@ -323,6 +454,239 @@ get_header();
 
     </div>
 </main>
+
+<script>
+// Patient data for modal
+const patientData = <?php 
+    $patients_json = array();
+    foreach ($all_patients as $p_data) {
+        $user = get_user_by('ID', $p_data->user_id);
+        if (!$user) continue;
+        $patient = FDCS_Patient::get_by_user_id($user->ID);
+        if (!$patient) continue;
+        $phone = get_user_meta($user->ID, 'phone', true);
+        $assigned_doctor = $patient->assigned_doctor_id ? get_user_by('ID', $patient->assigned_doctor_id) : null;
+        
+        $patients_json[$patient->id] = array(
+            'id' => $patient->id,
+            'user_id' => $user->ID,
+            'name' => $user->display_name,
+            'email' => $user->user_email,
+            'phone' => $phone ?: '',
+            'date_of_birth' => $patient->date_of_birth ? wp_date('F j, Y', strtotime($patient->date_of_birth)) : '',
+            'gender' => $patient->gender ? ucfirst($patient->gender) : '',
+            'status' => $patient->registration_status,
+            'assigned_doctor_id' => $patient->assigned_doctor_id ?: 0,
+            'assigned_doctor_name' => $assigned_doctor ? $assigned_doctor->display_name : '',
+            'family_history' => $patient->family_history ?: '',
+            'drug_history' => $patient->drug_history ?: '',
+            'allergy_history' => $patient->allergy_history ?: '',
+            'medical_surgical_history' => $patient->medical_surgical_history ?: '',
+            'pap_smear_status' => $patient->pap_smear_status ? ucfirst(str_replace('_', ' ', $patient->pap_smear_status)) : '',
+            'last_mammogram' => $patient->last_mammogram ?: '',
+            'other_information' => $patient->other_information ?: '',
+            'created_at' => wp_date('F j, Y', strtotime($patient->created_at)),
+        );
+    }
+    echo json_encode($patients_json);
+?>;
+
+const doctorsList = <?php 
+    $doctors_json = array();
+    foreach ($all_doctors as $doc) {
+        $doctors_json[$doc->ID] = $doc->display_name;
+    }
+    echo json_encode($doctors_json);
+?>;
+
+function showPatientDetails(patientId) {
+    const patient = patientData[patientId];
+    if (!patient) {
+        alert('Patient not found');
+        return;
+    }
+    
+    const modal = document.getElementById('patientDetailModal');
+    const content = document.getElementById('patientDetailContent');
+    
+    content.innerHTML = `
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+            <div>
+                <h4 style="font-size: 0.875rem; font-weight: 600; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase;">Personal Information</h4>
+                <div style="background: #f9fafb; padding: 1rem; border-radius: 0.5rem;">
+                    <p style="margin: 0.5rem 0;"><strong>Name:</strong> ${escapeHtml(patient.name)}</p>
+                    <p style="margin: 0.5rem 0;"><strong>Email:</strong> ${escapeHtml(patient.email)}</p>
+                    <p style="margin: 0.5rem 0;"><strong>Phone:</strong> ${escapeHtml(patient.phone || '—')}</p>
+                    <p style="margin: 0.5rem 0;"><strong>Date of Birth:</strong> ${escapeHtml(patient.date_of_birth || '—')}</p>
+                    <p style="margin: 0.5rem 0;"><strong>Gender:</strong> ${escapeHtml(patient.gender || '—')}</p>
+                </div>
+            </div>
+            <div>
+                <h4 style="font-size: 0.875rem; font-weight: 600; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase;">Registration Details</h4>
+                <div style="background: #f9fafb; padding: 1rem; border-radius: 0.5rem;">
+                    <p style="margin: 0.5rem 0;"><strong>Status:</strong> 
+                        <span style="padding: 2px 8px; border-radius: 10px; font-size: 0.75rem; font-weight: 600; ${patient.status === 'active' ? 'background: #d1fae5; color: #065f46;' : 'background: #fef3c7; color: #92400e;'}">
+                            ${escapeHtml(patient.status.charAt(0).toUpperCase() + patient.status.slice(1))}
+                        </span>
+                    </p>
+                    <p style="margin: 0.5rem 0;"><strong>Assigned Doctor:</strong> ${escapeHtml(patient.assigned_doctor_name || 'Unassigned')}</p>
+                    <p style="margin: 0.5rem 0;"><strong>Registered:</strong> ${escapeHtml(patient.created_at)}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div style="margin-bottom: 2rem;">
+            <h4 style="font-size: 0.875rem; font-weight: 600; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase;">Family History</h4>
+            <div style="background: #f9fafb; padding: 1rem; border-radius: 0.5rem; min-height: 80px;">
+                <p style="margin: 0; color: #374151; white-space: pre-wrap;">${escapeHtml(patient.family_history || 'Not provided')}</p>
+            </div>
+        </div>
+        
+        <div style="margin-bottom: 2rem;">
+            <h4 style="font-size: 0.875rem; font-weight: 600; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase;">Drug History</h4>
+            <div style="background: #f9fafb; padding: 1rem; border-radius: 0.5rem; min-height: 80px;">
+                <p style="margin: 0; color: #374151; white-space: pre-wrap;">${escapeHtml(patient.drug_history || 'Not provided')}</p>
+            </div>
+        </div>
+        
+        <div style="margin-bottom: 2rem;">
+            <h4 style="font-size: 0.875rem; font-weight: 600; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase;">Allergy History</h4>
+            <div style="background: #f9fafb; padding: 1rem; border-radius: 0.5rem; min-height: 80px;">
+                <p style="margin: 0; color: #374151; white-space: pre-wrap;">${escapeHtml(patient.allergy_history || 'Not provided')}</p>
+            </div>
+        </div>
+        
+        <div style="margin-bottom: 2rem;">
+            <h4 style="font-size: 0.875rem; font-weight: 600; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase;">Medical and Surgical History</h4>
+            <div style="background: #f9fafb; padding: 1rem; border-radius: 0.5rem; min-height: 80px;">
+                <p style="margin: 0; color: #374151; white-space: pre-wrap;">${escapeHtml(patient.medical_surgical_history || 'Not provided')}</p>
+            </div>
+        </div>
+        
+        <div style="margin-bottom: 2rem;">
+            <h4 style="font-size: 0.875rem; font-weight: 600; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase;">Gynaecology History</h4>
+            <div style="background: #f9fafb; padding: 1rem; border-radius: 0.5rem;">
+                <p style="margin: 0.5rem 0;"><strong>Pap Smear Status:</strong> ${escapeHtml(patient.pap_smear_status || '—')}</p>
+                <p style="margin: 0.5rem 0;"><strong>Last Mammogram:</strong> ${escapeHtml(patient.last_mammogram || '—')}</p>
+            </div>
+        </div>
+        
+        ${patient.other_information ? `
+        <div style="margin-bottom: 2rem;">
+            <h4 style="font-size: 0.875rem; font-weight: 600; color: #6b7280; margin-bottom: 0.5rem; text-transform: uppercase;">Other Information</h4>
+            <div style="background: #f9fafb; padding: 1rem; border-radius: 0.5rem; min-height: 80px;">
+                <p style="margin: 0; color: #374151; white-space: pre-wrap;">${escapeHtml(patient.other_information)}</p>
+            </div>
+        </div>
+        ` : ''}
+        
+        <div style="display: flex; gap: 0.75rem; margin-top: 2rem; padding-top: 2rem; border-top: 2px solid #e5e7eb;">
+            <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" style="flex: 1;">
+                <input type="hidden" name="action" value="fdcs_update_patient_status">
+                <input type="hidden" name="patient_id" value="${patient.id}">
+                <input type="hidden" name="status" value="${patient.status === 'waitlist' ? 'active' : 'waitlist'}">
+                <?php wp_nonce_field('fdcs_update_patient_status', 'fdcs_patient_status_nonce'); ?>
+                <button type="submit" style="width: 100%; padding: 0.75rem; background: ${patient.status === 'waitlist' ? '#10b981' : '#f59e0b'}; color: white; border: none; border-radius: 0.5rem; font-weight: 600; cursor: pointer;">
+                    ${patient.status === 'waitlist' ? 'Approve Patient' : 'Move to Waitlist'}
+                </button>
+            </form>
+            <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" style="flex: 1;">
+                <input type="hidden" name="action" value="fdcs_assign_doctor">
+                <input type="hidden" name="patient_id" value="${patient.id}">
+                <?php wp_nonce_field('fdcs_assign_doctor', 'fdcs_assign_doctor_nonce'); ?>
+                <select name="doctor_id" required style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; margin-bottom: 0.5rem;">
+                    <option value="0">Unassign</option>
+                    ${Object.entries(doctorsList).map(([id, name]) => 
+                        `<option value="${id}" ${patient.assigned_doctor_id == id ? 'selected' : ''}>${escapeHtml(name)}</option>`
+                    ).join('')}
+                </select>
+                <button type="submit" style="width: 100%; padding: 0.75rem; background: #2563eb; color: white; border: none; border-radius: 0.5rem; font-weight: 600; cursor: pointer;">
+                    Assign Doctor
+                </button>
+            </form>
+        </div>
+    `;
+    
+    modal.style.display = 'block';
+}
+
+function closePatientDetails() {
+    document.getElementById('patientDetailModal').style.display = 'none';
+}
+
+function approvePatient(patientId) {
+    if (confirm('Are you sure you want to approve this patient?')) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '<?php echo esc_url(admin_url('admin-post.php')); ?>';
+        
+        const action = document.createElement('input');
+        action.type = 'hidden';
+        action.name = 'action';
+        action.value = 'fdcs_update_patient_status';
+        form.appendChild(action);
+        
+        const patientIdInput = document.createElement('input');
+        patientIdInput.type = 'hidden';
+        patientIdInput.name = 'patient_id';
+        patientIdInput.value = patientId;
+        form.appendChild(patientIdInput);
+        
+        const status = document.createElement('input');
+        status.type = 'hidden';
+        status.name = 'status';
+        status.value = 'active';
+        form.appendChild(status);
+        
+        const nonce = document.createElement('input');
+        nonce.type = 'hidden';
+        nonce.name = 'fdcs_patient_status_nonce';
+        nonce.value = '<?php echo wp_create_nonce('fdcs_update_patient_status'); ?>';
+        form.appendChild(nonce);
+        
+        document.body.appendChild(form);
+        form.submit();
+    }
+}
+
+function filterPatients() {
+    const search = document.getElementById('patientSearch').value.toLowerCase();
+    const statusFilter = document.getElementById('patientStatusFilter').value;
+    const doctorFilter = document.getElementById('patientDoctorFilter').value;
+    const rows = document.querySelectorAll('#patientTable tbody tr.patient-row');
+    
+    rows.forEach(row => {
+        const name = row.getAttribute('data-name') || '';
+        const email = row.getAttribute('data-email') || '';
+        const status = row.getAttribute('data-status') || '';
+        const doctor = row.getAttribute('data-doctor') || '0';
+        
+        const matchesSearch = !search || name.includes(search) || email.includes(search);
+        const matchesStatus = !statusFilter || status === statusFilter;
+        const matchesDoctor = !doctorFilter || doctor === doctorFilter;
+        
+        if (matchesSearch && matchesStatus && matchesDoctor) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    const modal = document.getElementById('patientDetailModal');
+    if (event.target === modal) {
+        closePatientDetails();
+    }
+}
+</script>
 
 <?php get_footer(); ?>
 

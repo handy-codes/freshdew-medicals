@@ -84,6 +84,10 @@ final class FreshDew_Clinic_System {
         
         // Ensure users created through our registration form get clinic_patient role
         add_action('user_register', array($this, 'ensure_patient_role_on_registration'), 10, 1);
+
+        // Patient management actions
+        add_action('admin_post_fdcs_update_patient_status', array($this, 'handle_update_patient_status'));
+        add_action('admin_post_fdcs_assign_doctor', array($this, 'handle_assign_doctor'));
     }
 
     public function activate() {
@@ -356,6 +360,103 @@ final class FreshDew_Clinic_System {
                 $user->set_role('clinic_patient');
             }
         }
+    }
+
+    /**
+     * Handle patient status update (waitlist to active, etc.)
+     */
+    public function handle_update_patient_status() {
+        if (!is_user_logged_in() || (!current_user_can('fdcs_view_all_patients') && !current_user_can('fdcs_edit_all_patients'))) {
+            wp_redirect(add_query_arg('error', 'permission_denied', home_url('/clinic-dashboard')));
+            exit;
+        }
+
+        if (!isset($_POST['fdcs_patient_status_nonce']) || !wp_verify_nonce($_POST['fdcs_patient_status_nonce'], 'fdcs_update_patient_status')) {
+            wp_redirect(add_query_arg('error', 'security', home_url('/clinic-dashboard')));
+            exit;
+        }
+
+        $patient_id = (int) ($_POST['patient_id'] ?? 0);
+        $new_status = sanitize_text_field($_POST['status'] ?? '');
+
+        if (!$patient_id || !in_array($new_status, array('waitlist', 'active'))) {
+            wp_redirect(add_query_arg('error', 'invalid_data', home_url('/clinic-dashboard')));
+            exit;
+        }
+
+        $result = FDCS_Patient::update($patient_id, array('registration_status' => $new_status));
+
+        if ($result !== false) {
+            $patient = FDCS_Patient::get($patient_id);
+            $user = get_user_by('ID', $patient->user_id);
+            
+            // Log action
+            FDCS_Audit_Log::log('patient_status_changed', 'patient', $patient_id, "Status changed to: $new_status", get_current_user_id());
+            
+            // Send email notification if activated
+            if ($new_status === 'active' && $user) {
+                wp_mail(
+                    $user->user_email,
+                    'Account Activated – FreshDew Medical Clinic',
+                    "Hello " . $user->display_name . ",\n\n" .
+                    "Your patient account has been activated. You can now access all features of the patient portal.\n\n" .
+                    "Login: " . home_url('/clinic-login') . "\n\n" .
+                    "Thank you for choosing FreshDew Medical Clinic!",
+                    array('Content-Type: text/plain; charset=UTF-8')
+                );
+            }
+            
+            wp_redirect(add_query_arg('success', 'patient_status_updated', home_url('/clinic-dashboard')));
+        } else {
+            wp_redirect(add_query_arg('error', 'update_failed', home_url('/clinic-dashboard')));
+        }
+        exit;
+    }
+
+    /**
+     * Handle doctor assignment to patient
+     */
+    public function handle_assign_doctor() {
+        if (!is_user_logged_in() || (!current_user_can('fdcs_view_all_patients') && !current_user_can('fdcs_edit_all_patients'))) {
+            wp_redirect(add_query_arg('error', 'permission_denied', home_url('/clinic-dashboard')));
+            exit;
+        }
+
+        if (!isset($_POST['fdcs_assign_doctor_nonce']) || !wp_verify_nonce($_POST['fdcs_assign_doctor_nonce'], 'fdcs_assign_doctor')) {
+            wp_redirect(add_query_arg('error', 'security', home_url('/clinic-dashboard')));
+            exit;
+        }
+
+        $patient_id = (int) ($_POST['patient_id'] ?? 0);
+        $doctor_id = (int) ($_POST['doctor_id'] ?? 0);
+
+        if (!$patient_id) {
+            wp_redirect(add_query_arg('error', 'invalid_patient', home_url('/clinic-dashboard')));
+            exit;
+        }
+
+        // Verify doctor exists and has clinic_doctor role
+        if ($doctor_id > 0) {
+            $doctor = get_user_by('ID', $doctor_id);
+            if (!$doctor || !in_array('clinic_doctor', $doctor->roles)) {
+                wp_redirect(add_query_arg('error', 'invalid_doctor', home_url('/clinic-dashboard')));
+                exit;
+            }
+        }
+
+        $result = FDCS_Patient::update($patient_id, array('assigned_doctor_id' => $doctor_id > 0 ? $doctor_id : null));
+
+        if ($result !== false) {
+            $patient = FDCS_Patient::get($patient_id);
+            $doctor_name = $doctor_id > 0 ? get_user_by('ID', $doctor_id)->display_name : 'Unassigned';
+            
+            FDCS_Audit_Log::log('doctor_assigned', 'patient', $patient_id, "Assigned to: $doctor_name", get_current_user_id());
+            
+            wp_redirect(add_query_arg('success', 'doctor_assigned', home_url('/clinic-dashboard')));
+        } else {
+            wp_redirect(add_query_arg('error', 'assignment_failed', home_url('/clinic-dashboard')));
+        }
+        exit;
     }
 
     /**
