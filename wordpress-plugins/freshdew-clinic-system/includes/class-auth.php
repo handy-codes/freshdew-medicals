@@ -100,6 +100,13 @@ class FDCS_Auth {
         $password_confirm = $_POST['password_confirm'] ?? '';
         $date_of_birth = sanitize_text_field($_POST['date_of_birth'] ?? '');
         $gender = sanitize_text_field($_POST['gender'] ?? '');
+        $family_history = sanitize_textarea_field($_POST['family_history'] ?? '');
+        $drug_history = sanitize_textarea_field($_POST['drug_history'] ?? '');
+        $allergy_history = sanitize_textarea_field($_POST['allergy_history'] ?? '');
+        $medical_surgical_history = sanitize_textarea_field($_POST['medical_surgical_history'] ?? '');
+        $pap_smear_status = sanitize_text_field($_POST['pap_smear_status'] ?? '');
+        $last_mammogram = sanitize_text_field($_POST['last_mammogram'] ?? '');
+        $other_information = sanitize_textarea_field($_POST['other_information'] ?? '');
 
         // Validate
         $errors = array();
@@ -110,6 +117,12 @@ class FDCS_Auth {
         if (empty($password) || strlen($password) < 8) $errors[] = 'Password must be at least 8 characters.';
         if ($password !== $password_confirm) $errors[] = 'Passwords do not match.';
         if (empty($date_of_birth)) $errors[] = 'Date of birth is required.';
+        if (empty($family_history)) $errors[] = 'Family history is required.';
+        if (empty($drug_history)) $errors[] = 'Drug history is required.';
+        if (empty($allergy_history)) $errors[] = 'Allergy history is required.';
+        if (empty($medical_surgical_history)) $errors[] = 'Medical and surgical history is required.';
+        if (empty($pap_smear_status)) $errors[] = 'Pap smear status is required.';
+        if (empty($last_mammogram)) $errors[] = 'Last mammogram information is required.';
 
         if (email_exists($email)) $errors[] = 'An account with this email already exists.';
         if (username_exists($email)) $errors[] = 'An account with this email already exists.';
@@ -156,12 +169,19 @@ class FDCS_Auth {
         global $wpdb;
         $table = FDCS_Database::table('patients');
         $wpdb->insert($table, array(
-            'user_id'        => $user_id,
-            'date_of_birth'  => $date_of_birth,
-            'gender'         => $gender,
-            'registration_status' => 'waitlist',
-            'created_at'     => current_time('mysql'),
-        ), array('%d', '%s', '%s', '%s', '%s'));
+            'user_id'                => $user_id,
+            'date_of_birth'          => $date_of_birth,
+            'gender'                 => $gender,
+            'family_history'         => $family_history,
+            'drug_history'           => $drug_history,
+            'allergy_history'       => $allergy_history,
+            'medical_surgical_history' => $medical_surgical_history,
+            'pap_smear_status'       => $pap_smear_status,
+            'last_mammogram'         => $last_mammogram,
+            'other_information'      => $other_information,
+            'registration_status'    => 'waitlist',
+            'created_at'             => current_time('mysql'),
+        ), array('%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s'));
 
         // Log registration
         FDCS_Audit_Log::log('patient_registered', 'patient', $user_id, $first_name . ' ' . $last_name . ' registered');

@@ -139,7 +139,8 @@ class FDCS_Patient {
             'date_of_birth', 'gender', 'health_card_number',
             'emergency_contact_name', 'emergency_contact_phone',
             'family_history', 'drug_history', 'allergy_history',
-            'medical_surgical_history', 'blood_type',
+            'medical_surgical_history', 'pap_smear_status',
+            'last_mammogram', 'other_information', 'blood_type',
             'assigned_doctor_id', 'registration_status',
         );
 

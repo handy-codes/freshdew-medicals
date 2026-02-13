@@ -34,6 +34,9 @@ class FDCS_Database {
             drug_history LONGTEXT DEFAULT NULL,
             allergy_history LONGTEXT DEFAULT NULL,
             medical_surgical_history LONGTEXT DEFAULT NULL,
+            pap_smear_status VARCHAR(20) DEFAULT NULL,
+            last_mammogram VARCHAR(100) DEFAULT NULL,
+            other_information LONGTEXT DEFAULT NULL,
             blood_type VARCHAR(10) DEFAULT NULL,
             assigned_doctor_id BIGINT UNSIGNED DEFAULT NULL,
             registration_status VARCHAR(20) DEFAULT 'waitlist',
@@ -173,8 +176,40 @@ class FDCS_Database {
         dbDelta($sql_chat);
         dbDelta($sql_availability);
 
+        // Migrate existing tables to add new columns if needed
+        self::migrate_patients_table();
+
         // Store DB version
         update_option('fdcs_db_version', FDCS_VERSION);
+    }
+
+    /**
+     * Migrate patients table to add new columns
+     */
+    public static function migrate_patients_table() {
+        global $wpdb;
+        $table = self::table('patients');
+
+        // Check if columns exist and add them if they don't
+        $columns_to_add = array(
+            'pap_smear_status' => "ALTER TABLE $table ADD COLUMN pap_smear_status VARCHAR(20) DEFAULT NULL AFTER medical_surgical_history",
+            'last_mammogram' => "ALTER TABLE $table ADD COLUMN last_mammogram VARCHAR(100) DEFAULT NULL AFTER pap_smear_status",
+            'other_information' => "ALTER TABLE $table ADD COLUMN other_information LONGTEXT DEFAULT NULL AFTER last_mammogram",
+        );
+
+        foreach ($columns_to_add as $column_name => $sql) {
+            $column_exists = $wpdb->get_results($wpdb->prepare(
+                "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS 
+                 WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s",
+                DB_NAME,
+                $table,
+                $column_name
+            ));
+
+            if (empty($column_exists)) {
+                $wpdb->query($sql);
+            }
+        }
     }
 
     /**
