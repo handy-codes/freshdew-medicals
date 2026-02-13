@@ -206,7 +206,18 @@ class FDCS_Auth {
         wp_set_current_user($user_id);
         wp_set_auth_cookie($user_id, true);
 
-        wp_redirect(add_query_arg('registered', '1', home_url('/patient-portal')));
+        // Show success message then redirect
+        echo '<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">';
+        echo '<title>Registration Successful - FreshDew Medical Clinic</title></head>';
+        echo '<body style="margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #f0f4ff 0%, #e8f5e9 100%); font-family: -apple-system, BlinkMacSystemFont, sans-serif;">';
+        echo '<div style="text-align: center; background: white; padding: 3rem 2rem; border-radius: 1rem; box-shadow: 0 8px 24px rgba(0,0,0,0.12); max-width: 440px; width: 90%;">';
+        echo '<div style="width: 64px; height: 64px; background: #d1fae5; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 2rem;">✅</div>';
+        echo '<h1 style="font-size: 1.5rem; font-weight: 700; color: #065f46; margin: 0 0 0.75rem;">Registration Successful!</h1>';
+        echo '<p style="color: #6b7280; font-size: 1rem; margin: 0 0 1.5rem; line-height: 1.6;">Redirecting to your Patient Dashboard in a moment...</p>';
+        echo '<div style="width: 40px; height: 40px; border: 3px solid #e5e7eb; border-top: 3px solid #16a34a; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto;"></div>';
+        echo '<style>@keyframes spin { to { transform: rotate(360deg); } }</style>';
+        echo '<script>setTimeout(function() { window.location.href = "' . esc_url(add_query_arg('registered', '1', home_url('/patient-portal'))) . '"; }, 2500);</script>';
+        echo '</div></body></html>';
         exit;
     }
 

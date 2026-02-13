@@ -15,19 +15,8 @@ $errors = $error ? explode('|', $error) : array();
 get_header();
 ?>
 
-<main class="fdcs-auth-page" style="min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; background: linear-gradient(135deg, #f0f4ff 0%, #e8f5e9 100%);">
+<main class="fdcs-auth-page" style="min-height: calc(100vh - 80px); display: flex; align-items: flex-start; justify-content: center; padding: 2rem 1rem; background: linear-gradient(135deg, #f0f4ff 0%, #e8f5e9 100%);">
     <div style="width: 100%; max-width: 440px;">
-
-        <!-- Logo -->
-        <div style="text-align: center; margin-bottom: 2rem;">
-            <a href="<?php echo esc_url(home_url('/')); ?>" style="text-decoration: none;">
-                <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/freshdew-favicon-logo.png'); ?>" alt="FreshDew" style="width: 64px; height: 64px; border-radius: 50%; margin-bottom: 0.75rem;">
-                <div>
-                    <span style="font-size: 1.75rem; font-weight: 800; color: #2563eb; display: block;">FreshDew</span>
-                    <span style="font-size: 1rem; font-weight: 700; color: #16a34a;">Medical Clinic</span>
-                </div>
-            </a>
-        </div>
 
         <!-- Tab Switcher -->
         <div style="display: flex; margin-bottom: 0; border-bottom: 2px solid #e5e7eb; background: white; border-radius: 0.75rem 0.75rem 0 0; overflow: hidden;">
@@ -228,13 +217,34 @@ get_header();
                         button.textContent = '👁️';
                     }
                 }
+                
+                // Spinner on form submit
+                document.addEventListener('DOMContentLoaded', function() {
+                    const form = document.querySelector('form[action*="admin-post.php"]');
+                    if (form) {
+                        form.addEventListener('submit', function() {
+                            const btn = document.getElementById('registerBtn');
+                            const btnText = document.getElementById('registerBtnText');
+                            const spinner = document.getElementById('registerSpinner');
+                            if (btn && btnText && spinner) {
+                                btn.disabled = true;
+                                btn.style.opacity = '0.7';
+                                btn.style.cursor = 'not-allowed';
+                                btnText.textContent = 'Registering...';
+                                spinner.style.display = 'inline-block';
+                            }
+                        });
+                    }
+                });
                 </script>
 
-                <button type="submit" style="width: 100%; padding: 0.875rem; background: linear-gradient(135deg, #16a34a, #15803d); color: white; border: none; border-radius: 0.5rem; font-size: 1rem; font-weight: 600; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; margin-top: 1rem;"
+                <button type="submit" id="registerBtn" style="width: 100%; padding: 0.875rem; background: linear-gradient(135deg, #16a34a, #15803d); color: white; border: none; border-radius: 0.5rem; font-size: 1rem; font-weight: 600; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; margin-top: 1rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;"
                         onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 12px rgba(22,163,74,0.4)'"
                         onmouseout="this.style.transform='none'; this.style.boxShadow='none'">
-                    Create Account
+                    <span id="registerBtnText">Register as Patient</span>
+                    <span id="registerSpinner" style="display: none; width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3); border-top: 2px solid white; border-radius: 50%; animation: fdcs-spin 0.8s linear infinite;"></span>
                 </button>
+                <style>@keyframes fdcs-spin { to { transform: rotate(360deg); } }</style>
 
                 <p style="text-align: center; margin-top: 1.5rem; font-size: 0.875rem; color: #6b7280;">
                     Already have an account?
@@ -245,4 +255,7 @@ get_header();
     </div>
 </main>
 
-<?php get_footer(); ?>
+<!-- No footer on auth pages -->
+<?php wp_footer(); ?>
+</body>
+</html>

@@ -343,23 +343,34 @@ html body .site-header {
     margin-left: 0.5rem;
 }
 
-.auth-link {
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.9rem;
-    padding: 0.4rem 1rem;
-    border-radius: 6px;
+.auth-link,
+.site-header .main-navigation .nav-auth-links .auth-link {
+    text-decoration: none !important;
+    font-weight: 600 !important;
+    font-size: 0.9rem !important;
+    padding: 0.4rem 1rem !important;
+    border-radius: 6px !important;
     transition: all 0.2s ease;
     white-space: nowrap;
+    border-bottom: none !important;
+    position: relative;
 }
 
-.auth-link.auth-login {
-    background: #2563eb;
+.site-header .main-navigation .nav-auth-links .auth-link::after {
+    display: none !important;
+}
+
+.auth-link.auth-login,
+.site-header .main-navigation .nav-auth-links .auth-link.auth-login {
+    background: #2563eb !important;
     color: #ffffff !important;
+    padding: 0.4rem 1rem;
+    border-radius: 6px;
 }
 
-.auth-link.auth-login:hover {
-    background: #1d4ed8;
+.auth-link.auth-login:hover,
+.site-header .main-navigation .nav-auth-links .auth-link.auth-login:hover {
+    background: #1d4ed8 !important;
     color: #ffffff !important;
 }
 
@@ -373,13 +384,17 @@ html body .site-header {
     color: #ffffff !important;
 }
 
-.auth-link.auth-logout {
-    background: #dc2626;
+.auth-link.auth-logout,
+.site-header .main-navigation .nav-auth-links .auth-link.auth-logout {
+    background: #dc2626 !important;
     color: #ffffff !important;
+    padding: 0.4rem 1rem;
+    border-radius: 6px;
 }
 
-.auth-link.auth-logout:hover {
-    background: #b91c1c;
+.auth-link.auth-logout:hover,
+.site-header .main-navigation .nav-auth-links .auth-link.auth-logout:hover {
+    background: #b91c1c !important;
     color: #ffffff !important;
 }
 
@@ -420,6 +435,7 @@ html body .site-header {
     z-index: 20;
     max-width: 48rem;
     padding: 2rem;
+    padding-top: 4rem;
 }
 
 .hero-badge {
@@ -1120,8 +1136,7 @@ html body .site-header {
         right: -100%;
         width: 80%;
         max-width: 320px;
-        height: 100vh;
-        height: 100dvh; /* Dynamic viewport height for mobile */
+        height: 85vh;
         background: #fafafa;
         box-shadow: -2px 0 10px rgba(0,0,0,0.1);
         transition: right 0.5s ease;
@@ -1130,29 +1145,10 @@ html body .site-header {
         overflow-y: auto;
         display: flex;
         flex-direction: column;
-        border-radius: 0;
+        border-radius: 0 0 0 0.75rem;
         top: 0;
         left: auto;
-        margin-top: 0;
-        padding-top: 70px; /* Space below the sticky header */
-    }
-    
-    /* Ensure header stays visible when menu is open */
-    body.menu-open .site-header {
-        position: sticky !important;
-        top: 0 !important;
-        z-index: 10002 !important; /* Above menu backdrop, below menu itself */
-        background: #ffffff !important;
-    }
-    
-    body.menu-open .header-content {
-        position: relative;
-        z-index: 10003 !important; /* Ensure header content is above backdrop */
-    }
-    
-    body.menu-open .mobile-menu-toggle {
-        z-index: 10004 !important; /* Always clickable above everything */
-        position: relative;
+        margin-top: 70px; /* Clear the header height */
     }
     
     .main-navigation.active {
@@ -1213,11 +1209,26 @@ html body .site-header {
     
     .nav-auth-links .auth-link {
         display: block;
-        padding: 1rem 1.5rem;
+        padding: 1.25rem 1.5rem;
         text-align: center;
+        border-radius: 0;
+        margin: 0 1rem;
+        font-size: 1.25rem;
+        font-weight: 500;
+        width: auto;
+    }
+    
+    .nav-auth-links .auth-link.auth-login,
+    .nav-auth-links .auth-link.auth-logout {
+        background: #2563eb;
+        color: #ffffff !important;
         border-radius: 6px;
-        margin: 0.75rem 1rem;
-        font-size: 1.1rem;
+        margin: 0.75rem 1.5rem;
+        padding: 1rem 1.5rem;
+    }
+    
+    .nav-auth-links .auth-link.auth-logout {
+        background: #dc2626;
     }
     
     /* Hide Register button in mobile menu */

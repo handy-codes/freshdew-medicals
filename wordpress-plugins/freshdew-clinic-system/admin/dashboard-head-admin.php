@@ -30,6 +30,39 @@ $staff_query = new WP_User_Query(array(
 $all_staff = $staff_query->get_results();
 
 // Get all patients for patient management
+// First get patients from custom table
+$all_patients = FDCS_Patient::get_all(array('limit' => 100, 'orderby' => 'created_at', 'order' => 'DESC'));
+
+// Also get ALL WordPress users with clinic_patient role (includes Hostinger-created users)
+$all_patient_users_query = new WP_User_Query(array(
+    'role' => 'clinic_patient',
+    'number' => 100,
+    'orderby' => 'registered',
+    'order' => 'DESC',
+));
+$all_wp_patient_users = $all_patient_users_query->get_results();
+
+// Build a set of user_ids already in fd_patients table
+$existing_patient_user_ids = array();
+foreach ($all_patients as $p) {
+    $existing_patient_user_ids[] = $p->user_id;
+}
+
+// Auto-create fd_patients entries for WP users with clinic_patient role who are missing
+foreach ($all_wp_patient_users as $wp_user) {
+    if (!in_array($wp_user->ID, $existing_patient_user_ids)) {
+        // Create a minimal patient record so they show up in Patient Management
+        global $wpdb;
+        $table = FDCS_Database::table('patients');
+        $wpdb->insert($table, array(
+            'user_id'             => $wp_user->ID,
+            'registration_status' => 'waitlist',
+            'created_at'          => $wp_user->user_registered ?: current_time('mysql'),
+        ), array('%d', '%s', '%s'));
+    }
+}
+
+// Re-fetch all patients after syncing
 $all_patients = FDCS_Patient::get_all(array('limit' => 100, 'orderby' => 'created_at', 'order' => 'DESC'));
 
 // Get all doctors for assignment dropdown
@@ -265,6 +298,7 @@ get_header();
                     <div style="margin-bottom: 1rem;">
                         <label style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.875rem;">Role *</label>
                         <select name="role" required style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.875rem;">
+                            <option value="">Select a role...</option>
                             <?php if (current_user_can('fdcs_create_admins')): ?>
                                 <option value="clinic_admin">Clinic Admin</option>
                             <?php endif; ?>
@@ -305,10 +339,12 @@ get_header();
                         <button type="button" onclick="document.getElementById('createStaffModal').style.display='none'" style="padding: 0.5rem 1rem; background: #f3f4f6; color: #374151; border: none; border-radius: 0.5rem; cursor: pointer; font-weight: 600; font-size: 0.875rem;">
                             Cancel
                         </button>
-                        <button type="submit" style="padding: 0.5rem 1rem; background: #2563eb; color: white; border: none; border-radius: 0.5rem; cursor: pointer; font-weight: 600; font-size: 0.875rem;">
-                            Create Staff Member
+                        <button type="submit" id="createStaffBtn" style="padding: 0.5rem 1rem; background: #2563eb; color: white; border: none; border-radius: 0.5rem; cursor: pointer; font-weight: 600; font-size: 0.875rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <span id="createStaffBtnText">Create Staff Member</span>
+                            <span id="createStaffSpinner" style="display: none; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top: 2px solid white; border-radius: 50%; animation: fdcs-spin 0.8s linear infinite;"></span>
                         </button>
                     </div>
+                    <style>@keyframes fdcs-spin { to { transform: rotate(360deg); } }</style>
                 </form>
             </div>
         </div>
@@ -682,10 +718,32 @@ function escapeHtml(text) {
 // Close modal when clicking outside
 window.onclick = function(event) {
     const modal = document.getElementById('patientDetailModal');
+    const staffModal = document.getElementById('createStaffModal');
     if (event.target === modal) {
         closePatientDetails();
     }
+    if (event.target === staffModal) {
+        staffModal.style.display = 'none';
+    }
 }
+
+// Staff form spinner
+document.addEventListener('DOMContentLoaded', function() {
+    const staffForm = document.querySelector('#createStaffModal form');
+    if (staffForm) {
+        staffForm.addEventListener('submit', function() {
+            const btn = document.getElementById('createStaffBtn');
+            const btnText = document.getElementById('createStaffBtnText');
+            const spinner = document.getElementById('createStaffSpinner');
+            if (btn && btnText && spinner) {
+                btn.disabled = true;
+                btn.style.opacity = '0.7';
+                btnText.textContent = 'Creating...';
+                spinner.style.display = 'inline-block';
+            }
+        });
+    }
+});
 </script>
 
 <?php get_footer(); ?>

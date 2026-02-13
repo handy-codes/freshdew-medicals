@@ -224,16 +224,16 @@ $contact_info = freshdew_get_contact_info();
         left: 50% !important;
         transform: translateX(-50%) !important;
         right: auto !important;
-        width: calc(100vw - 48px) !important;
-        max-width: 320px !important;
-        height: min(460px, calc(100vh - 140px)) !important;
-        max-height: min(460px, calc(100vh - 140px)) !important;
+        width: calc(100vw - 32px) !important;
+        max-width: 360px !important;
+        height: min(580px, calc(100vh - 120px)) !important;
+        max-height: min(580px, calc(100vh - 120px)) !important;
         position: fixed !important;
         z-index: 2147483647 !important;
     }
     
     #chat-messages {
-        max-height: calc(100vh - 340px) !important;
+        max-height: calc(100vh - 280px) !important;
     }
     
     /* Ensure widget is visible even when menu is open - MAXIMUM PRIORITY */
@@ -330,6 +330,13 @@ console.log('Chat button script loading...');
             if (chatTextFull) chatTextFull.style.display = 'none';
             if (chatTextShort) chatTextShort.style.display = 'none';
             if (closeIcon) closeIcon.style.display = 'inline';
+            
+            // Scroll to the last message so user can continue from where they stopped
+            if (chatMessages) {
+                setTimeout(() => {
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }, 50);
+            }
             if (chatInput) {
                 setTimeout(() => chatInput.focus(), 100);
             }
