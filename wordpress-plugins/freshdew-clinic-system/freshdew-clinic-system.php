@@ -340,8 +340,13 @@ final class FreshDew_Clinic_System {
      * This ensures that any new user registration defaults to patient role
      */
     public function set_default_user_role($default_role) {
-        // Only set default if no role is explicitly set
-        // This allows admins to manually assign roles when creating users
+        // Don't change default role if user is being created from WordPress admin
+        // Check if we're in the admin area and user has permission to create users
+        if (is_admin() && current_user_can('create_users')) {
+            return $default_role;
+        }
+        
+        // For frontend registrations, default to clinic_patient
         return 'clinic_patient';
     }
 

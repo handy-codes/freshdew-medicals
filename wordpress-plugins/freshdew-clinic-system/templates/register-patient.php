@@ -15,7 +15,7 @@ $errors = $error ? explode('|', $error) : array();
 get_header();
 ?>
 
-<main class="fdcs-auth-page" style="min-height: calc(100vh - 80px); display: flex; align-items: flex-start; justify-content: center; padding: 2rem 1rem; background: linear-gradient(135deg, #f0f4ff 0%, #e8f5e9 100%);">
+<main class="fdcs-auth-page" style="min-height: 100vh; display: flex; align-items: flex-start; justify-content: center; padding: 6rem 1rem 2rem 1rem; background: linear-gradient(135deg, #f0f4ff 0%, #e8f5e9 100%);">
     <div style="width: 100%; max-width: 440px;">
 
         <!-- Tab Switcher -->
@@ -185,12 +185,16 @@ get_header();
                                    style="width: 100%; padding: 0.75rem 2.5rem 0.75rem 0.75rem; border: 1px solid #F69710; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; outline: none; background: white;"
                                    onfocus="this.style.borderColor='#2563eb'; this.style.borderWidth='2px'" onblur="this.style.borderColor='#F69710'; this.style.borderWidth='1px'">
                             <button type="button" onclick="togglePassword('password', this)" 
-                                    style="position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; padding: 0.25rem; color: #6b7280; font-size: 1.1rem;"
-                                    aria-label="Show password">
-                                👁️
+                                    style="position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; padding: 0.25rem; color: #6b7280;"
+                                    aria-label="Toggle password visibility">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
                             </button>
                         </div>
                         <span style="font-size: 0.75rem; color: #6b7280;">Min. 8 characters</span>
+                        <div id="passwordError" style="color: #dc2626; font-size: 0.875rem; margin-top: 0.25rem; display: none;"></div>
                     </div>
                     <div>
                         <label for="password_confirm" style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.9rem;">Confirm Password <span style="color: #ef4444;">*</span></label>
@@ -199,30 +203,76 @@ get_header();
                                    style="width: 100%; padding: 0.75rem 2.5rem 0.75rem 0.75rem; border: 1px solid #F69710; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; outline: none; background: white;"
                                    onfocus="this.style.borderColor='#2563eb'; this.style.borderWidth='2px'" onblur="this.style.borderColor='#F69710'; this.style.borderWidth='1px'">
                             <button type="button" onclick="togglePassword('password_confirm', this)" 
-                                    style="position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; padding: 0.25rem; color: #6b7280; font-size: 1.1rem;"
-                                    aria-label="Show password">
-                                👁️
+                                    style="position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; padding: 0.25rem; color: #6b7280;"
+                                    aria-label="Toggle password visibility">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
                             </button>
                         </div>
+                        <div id="confirmPasswordError" style="color: #dc2626; font-size: 0.875rem; margin-top: 0.25rem; display: none;"></div>
                     </div>
                 </div>
+                <div id="emailError" style="color: #dc2626; font-size: 0.875rem; margin-bottom: 0.5rem; display: none;"></div>
                 <script>
                 function togglePassword(inputId, button) {
                     const input = document.getElementById(inputId);
+                    const svg = button.querySelector('svg');
+                    
                     if (input.type === 'password') {
                         input.type = 'text';
-                        button.textContent = '🙈';
+                        svg.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>';
                     } else {
                         input.type = 'password';
-                        button.textContent = '👁️';
+                        svg.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>';
                     }
                 }
                 
-                // Spinner on form submit
+                // Form validation and spinner on submit
                 document.addEventListener('DOMContentLoaded', function() {
                     const form = document.querySelector('form[action*="admin-post.php"]');
                     if (form) {
-                        form.addEventListener('submit', function() {
+                        form.addEventListener('submit', function(e) {
+                            // Clear previous errors
+                            document.getElementById('emailError').style.display = 'none';
+                            document.getElementById('passwordError').style.display = 'none';
+                            document.getElementById('confirmPasswordError').style.display = 'none';
+                            
+                            const email = document.getElementById('email').value.trim();
+                            const password = document.getElementById('password').value;
+                            const passwordConfirm = document.getElementById('password_confirm').value;
+                            let hasError = false;
+                            
+                            // Validate email format
+                            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                            if (!emailRegex.test(email)) {
+                                document.getElementById('emailError').textContent = 'Please enter a valid email address';
+                                document.getElementById('emailError').style.display = 'block';
+                                hasError = true;
+                            }
+                            
+                            // Validate password length
+                            if (password.length < 8) {
+                                document.getElementById('passwordError').textContent = 'Password must be at least 8 characters';
+                                document.getElementById('passwordError').style.display = 'block';
+                                hasError = true;
+                            }
+                            
+                            // Validate passwords match
+                            if (password !== passwordConfirm) {
+                                document.getElementById('confirmPasswordError').textContent = 'Passwords do not match';
+                                document.getElementById('confirmPasswordError').style.display = 'block';
+                                hasError = true;
+                            }
+                            
+                            if (hasError) {
+                                e.preventDefault();
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                                return false;
+                            }
+                            
+                            // Show loading state
                             const btn = document.getElementById('registerBtn');
                             const btnText = document.getElementById('registerBtnText');
                             const spinner = document.getElementById('registerSpinner');

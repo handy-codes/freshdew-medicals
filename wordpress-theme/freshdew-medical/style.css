@@ -1259,6 +1259,19 @@ html body .site-header {
         pointer-events: auto;
     }
     
+    /* Ensure header stays visible when menu is open */
+    body.menu-open .site-header {
+        z-index: 10002 !important;
+    }
+    
+    body.menu-open .header-content {
+        z-index: 10003 !important;
+    }
+    
+    body.menu-open .mobile-menu-toggle {
+        z-index: 10004 !important;
+    }
+    
     .hero-section {
         height: 100dvh !important; /* Dynamic viewport height for mobile */
         min-height: 100vh !important;
@@ -1273,26 +1286,35 @@ html body .site-header {
     }
     
     .hero-content {
-        padding: 2rem 1rem !important;
-        padding-top: 5rem !important; /* Add top margin to avoid header overlap on mobile */
+        padding: 1rem !important;
+        padding-top: 2rem !important; /* Reduced to fit content in viewport */
         width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
     }
     
     .hero-title {
-        font-size: 2.5rem !important;
+        font-size: 2rem !important;
         text-shadow: none !important;
+        line-height: 1.2 !important;
+        margin-bottom: 0.5rem !important;
     }
     
     .hero-subtitle {
         color: #ffffff !important;
         text-shadow: none !important;
-        font-size: 1.125rem !important;
+        font-size: 1rem !important;
+        line-height: 1.4 !important;
+        margin-bottom: 0.5rem !important;
     }
     
     .hero-title-gradient {
         color: #6DDDFF !important;
         text-shadow: none !important;
-        font-size: 2.75rem !important;
+        font-size: 2.25rem !important;
+        line-height: 1.2 !important;
+        margin-bottom: 0.5rem !important;
     }
     
     .badge-text {
