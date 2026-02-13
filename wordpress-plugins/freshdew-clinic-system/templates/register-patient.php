@@ -15,8 +15,8 @@ $errors = $error ? explode('|', $error) : array();
 get_header();
 ?>
 
-<main class="fdcs-auth-page" style="min-height: 80vh; padding: 2rem 1rem; background: linear-gradient(135deg, #f0f4ff 0%, #e8f5e9 100%);">
-    <div style="width: 100%; max-width: 800px; margin: 0 auto;">
+<main class="fdcs-auth-page" style="min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; background: linear-gradient(135deg, #f0f4ff 0%, #e8f5e9 100%);">
+    <div style="width: 100%; max-width: 440px;">
 
         <!-- Logo -->
         <div style="text-align: center; margin-bottom: 2rem;">
@@ -64,14 +64,14 @@ get_header();
                     <div>
                         <label for="first_name" style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.9rem;">First Name <span style="color: #ef4444;">*</span></label>
                         <input type="text" id="first_name" name="first_name" required
-                               style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; outline: none; background: #fefce8;"
-                               onfocus="this.style.borderColor='#2563eb'; this.style.background='#ffffff'" onblur="this.style.borderColor='#d1d5db'; this.style.background='#fefce8'">
+                               style="width: 100%; padding: 0.75rem; border: 1px solid #F69710; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; outline: none; background: white;"
+                               onfocus="this.style.borderColor='#2563eb'; this.style.borderWidth='2px'" onblur="this.style.borderColor='#F69710'; this.style.borderWidth='1px'">
                     </div>
                     <div>
                         <label for="last_name" style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.9rem;">Last Name <span style="color: #ef4444;">*</span></label>
                         <input type="text" id="last_name" name="last_name" required
-                               style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; outline: none; background: #fefce8;"
-                               onfocus="this.style.borderColor='#2563eb'; this.style.background='#ffffff'" onblur="this.style.borderColor='#d1d5db'; this.style.background='#fefce8'">
+                               style="width: 100%; padding: 0.75rem; border: 1px solid #F69710; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; outline: none; background: white;"
+                               onfocus="this.style.borderColor='#2563eb'; this.style.borderWidth='2px'" onblur="this.style.borderColor='#F69710'; this.style.borderWidth='1px'">
                     </div>
                 </div>
 
@@ -79,32 +79,32 @@ get_header();
                 <div style="margin-bottom: 1.25rem;">
                     <label for="date_of_birth" style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.9rem;">Date of Birth <span style="color: #ef4444;">*</span></label>
                     <input type="date" id="date_of_birth" name="date_of_birth" required placeholder="mm/dd/yyyy"
-                           style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; outline: none; background: #fefce8;"
-                           onfocus="this.style.borderColor='#2563eb'; this.style.background='#ffffff'" onblur="this.style.borderColor='#d1d5db'; this.style.background='#fefce8'">
+                           style="width: 100%; padding: 0.75rem; border: 1px solid #F69710; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; outline: none; background: white;"
+                           onfocus="this.style.borderColor='#2563eb'; this.style.borderWidth='2px'" onblur="this.style.borderColor='#F69710'; this.style.borderWidth='1px'">
                 </div>
 
                 <!-- Phone -->
                 <div style="margin-bottom: 1.25rem;">
                     <label for="phone" style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.9rem;">Phone Number <span style="color: #ef4444;">*</span></label>
                     <input type="tel" id="phone" name="phone" required placeholder="(613) 000-0000"
-                           style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; outline: none; background: #fefce8;"
-                           onfocus="this.style.borderColor='#2563eb'; this.style.background='#ffffff'" onblur="this.style.borderColor='#d1d5db'; this.style.background='#fefce8'">
+                           style="width: 100%; padding: 0.75rem; border: 1px solid #F69710; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; outline: none; background: white;"
+                           onfocus="this.style.borderColor='#2563eb'; this.style.borderWidth='2px'" onblur="this.style.borderColor='#F69710'; this.style.borderWidth='1px'">
                 </div>
 
                 <!-- Email -->
                 <div style="margin-bottom: 1.25rem;">
                     <label for="email" style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.9rem;">Email Address <span style="color: #ef4444;">*</span></label>
                     <input type="email" id="email" name="email" required autocomplete="email"
-                           style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; outline: none; background: #fefce8;"
-                           onfocus="this.style.borderColor='#2563eb'; this.style.background='#ffffff'" onblur="this.style.borderColor='#d1d5db'; this.style.background='#fefce8'">
+                           style="width: 100%; padding: 0.75rem; border: 1px solid #F69710; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; outline: none; background: white;"
+                           onfocus="this.style.borderColor='#2563eb'; this.style.borderWidth='2px'" onblur="this.style.borderColor='#F69710'; this.style.borderWidth='1px'">
                 </div>
 
                 <!-- Gender -->
                 <div style="margin-bottom: 2rem;">
                     <label for="gender" style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.9rem;">Gender</label>
                     <select id="gender" name="gender"
-                            style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; outline: none; background: #fefce8;"
-                            onfocus="this.style.borderColor='#2563eb'; this.style.background='#ffffff'" onblur="this.style.borderColor='#d1d5db'; this.style.background='#fefce8'">
+                            style="width: 100%; padding: 0.75rem; border: 1px solid #F69710; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; outline: none; background: white;"
+                            onfocus="this.style.borderColor='#2563eb'; this.style.borderWidth='2px'" onblur="this.style.borderColor='#F69710'; this.style.borderWidth='1px'">
                         <option value="">Select...</option>
                         <option value="male">Male</option>
                         <option value="female">Female</option>
@@ -118,8 +118,8 @@ get_header();
                 <div style="margin-bottom: 2rem;">
                     <label for="family_history" style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.9rem;">Family History <span style="color: #ef4444;">*</span></label>
                     <textarea id="family_history" name="family_history" rows="4" required placeholder="Please provide any relevant family medical history..."
-                              style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; outline: none; background: #fefce8; resize: vertical; font-family: inherit;"
-                              onfocus="this.style.borderColor='#2563eb'; this.style.background='#ffffff'" onblur="this.style.borderColor='#d1d5db'; this.style.background='#fefce8'"></textarea>
+                              style="width: 100%; padding: 0.75rem; border: 1px solid #F69710; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; outline: none; background: white; resize: vertical; font-family: inherit;"
+                              onfocus="this.style.borderColor='#2563eb'; this.style.borderWidth='2px'" onblur="this.style.borderColor='#F69710'; this.style.borderWidth='1px'"></textarea>
                 </div>
 
                 <!-- Drug History Section -->
@@ -127,8 +127,8 @@ get_header();
                 <div style="margin-bottom: 2rem;">
                     <label for="drug_history" style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.9rem;">Drug History <span style="color: #ef4444;">*</span></label>
                     <textarea id="drug_history" name="drug_history" rows="4" required placeholder="Please list any current medications or drug history..."
-                              style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; outline: none; background: #fefce8; resize: vertical; font-family: inherit;"
-                              onfocus="this.style.borderColor='#2563eb'; this.style.background='#ffffff'" onblur="this.style.borderColor='#d1d5db'; this.style.background='#fefce8'"></textarea>
+                              style="width: 100%; padding: 0.75rem; border: 1px solid #F69710; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; outline: none; background: white; resize: vertical; font-family: inherit;"
+                              onfocus="this.style.borderColor='#2563eb'; this.style.borderWidth='2px'" onblur="this.style.borderColor='#F69710'; this.style.borderWidth='1px'"></textarea>
                 </div>
 
                 <!-- Allergy History Section -->
@@ -136,8 +136,8 @@ get_header();
                 <div style="margin-bottom: 2rem;">
                     <label for="allergy_history" style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.9rem;">Allergy History <span style="color: #ef4444;">*</span></label>
                     <textarea id="allergy_history" name="allergy_history" rows="4" required placeholder="Please list any known allergies..."
-                              style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; outline: none; background: #fefce8; resize: vertical; font-family: inherit;"
-                              onfocus="this.style.borderColor='#2563eb'; this.style.background='#ffffff'" onblur="this.style.borderColor='#d1d5db'; this.style.background='#fefce8'"></textarea>
+                              style="width: 100%; padding: 0.75rem; border: 1px solid #F69710; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; outline: none; background: white; resize: vertical; font-family: inherit;"
+                              onfocus="this.style.borderColor='#2563eb'; this.style.borderWidth='2px'" onblur="this.style.borderColor='#F69710'; this.style.borderWidth='1px'"></textarea>
                 </div>
 
                 <!-- Medical and Surgical History Section -->
@@ -145,8 +145,8 @@ get_header();
                 <div style="margin-bottom: 2rem;">
                     <label for="medical_surgical_history" style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.9rem;">Current and Past Medical and Surgical History <span style="color: #ef4444;">*</span></label>
                     <textarea id="medical_surgical_history" name="medical_surgical_history" rows="4" required placeholder="Please provide details of any current or past medical conditions and surgical procedures..."
-                              style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; outline: none; background: #fefce8; resize: vertical; font-family: inherit;"
-                              onfocus="this.style.borderColor='#2563eb'; this.style.background='#ffffff'" onblur="this.style.borderColor='#d1d5db'; this.style.background='#fefce8'"></textarea>
+                              style="width: 100%; padding: 0.75rem; border: 1px solid #F69710; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; outline: none; background: white; resize: vertical; font-family: inherit;"
+                              onfocus="this.style.borderColor='#2563eb'; this.style.borderWidth='2px'" onblur="this.style.borderColor='#F69710'; this.style.borderWidth='1px'"></textarea>
                 </div>
 
                 <!-- Gynaecology History Section -->
@@ -173,8 +173,8 @@ get_header();
                 <div style="margin-bottom: 2rem;">
                     <label for="last_mammogram" style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.9rem;">When was your last mammogram? <span style="color: #ef4444;">*</span></label>
                     <input type="text" id="last_mammogram" name="last_mammogram" required placeholder="e.g., January 2024 or Not applicable"
-                           style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; outline: none; background: #fefce8;"
-                           onfocus="this.style.borderColor='#2563eb'; this.style.background='#ffffff'" onblur="this.style.borderColor='#d1d5db'; this.style.background='#fefce8'">
+                           style="width: 100%; padding: 0.75rem; border: 1px solid #F69710; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; outline: none; background: white;"
+                           onfocus="this.style.borderColor='#2563eb'; this.style.borderWidth='2px'" onblur="this.style.borderColor='#F69710'; this.style.borderWidth='1px'">
                 </div>
 
                 <!-- Any Other Information Section -->
@@ -182,8 +182,8 @@ get_header();
                 <div style="margin-bottom: 2rem;">
                     <label for="other_information" style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.9rem;">Any other information</label>
                     <textarea id="other_information" name="other_information" rows="4" placeholder="Any additional information..."
-                              style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; outline: none; background: #fefce8; resize: vertical; font-family: inherit;"
-                              onfocus="this.style.borderColor='#2563eb'; this.style.background='#ffffff'" onblur="this.style.borderColor='#d1d5db'; this.style.background='#fefce8'"></textarea>
+                              style="width: 100%; padding: 0.75rem; border: 1px solid #F69710; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; outline: none; background: white; resize: vertical; font-family: inherit;"
+                              onfocus="this.style.borderColor='#2563eb'; this.style.borderWidth='2px'" onblur="this.style.borderColor='#F69710'; this.style.borderWidth='1px'"></textarea>
                 </div>
 
                 <!-- Password Section -->
@@ -193,8 +193,8 @@ get_header();
                         <label for="password" style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.9rem;">Password <span style="color: #ef4444;">*</span></label>
                         <div style="position: relative;">
                             <input type="password" id="password" name="password" required minlength="8" autocomplete="new-password"
-                                   style="width: 100%; padding: 0.75rem 2.5rem 0.75rem 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; outline: none; background: #fefce8;"
-                                   onfocus="this.style.borderColor='#2563eb'; this.style.background='#ffffff'" onblur="this.style.borderColor='#d1d5db'; this.style.background='#fefce8'">
+                                   style="width: 100%; padding: 0.75rem 2.5rem 0.75rem 0.75rem; border: 1px solid #F69710; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; outline: none; background: white;"
+                                   onfocus="this.style.borderColor='#2563eb'; this.style.borderWidth='2px'" onblur="this.style.borderColor='#F69710'; this.style.borderWidth='1px'">
                             <button type="button" onclick="togglePassword('password', this)" 
                                     style="position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; padding: 0.25rem; color: #6b7280; font-size: 1.1rem;"
                                     aria-label="Show password">
@@ -207,8 +207,8 @@ get_header();
                         <label for="password_confirm" style="display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; font-size: 0.9rem;">Confirm Password <span style="color: #ef4444;">*</span></label>
                         <div style="position: relative;">
                             <input type="password" id="password_confirm" name="password_confirm" required minlength="8" autocomplete="new-password"
-                                   style="width: 100%; padding: 0.75rem 2.5rem 0.75rem 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; outline: none; background: #fefce8;"
-                                   onfocus="this.style.borderColor='#2563eb'; this.style.background='#ffffff'" onblur="this.style.borderColor='#d1d5db'; this.style.background='#fefce8'">
+                                   style="width: 100%; padding: 0.75rem 2.5rem 0.75rem 0.75rem; border: 1px solid #F69710; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; outline: none; background: white;"
+                                   onfocus="this.style.borderColor='#2563eb'; this.style.borderWidth='2px'" onblur="this.style.borderColor='#F69710'; this.style.borderWidth='1px'">
                             <button type="button" onclick="togglePassword('password_confirm', this)" 
                                     style="position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; padding: 0.25rem; color: #6b7280; font-size: 1.1rem;"
                                     aria-label="Show password">

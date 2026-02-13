@@ -168,24 +168,29 @@
             
             <nav class="main-navigation" role="navigation" aria-label="<?php esc_attr_e('Primary Menu', 'freshdew-medical'); ?>">
                 <?php
+                // Filter out Register link from menu
+                add_filter('wp_nav_menu_items', function($items, $args) {
+                    if ($args->theme_location == 'primary') {
+                        $items = preg_replace('/<li[^>]*>.*?Register.*?<\/li>/i', '', $items);
+                    }
+                    return $items;
+                }, 10, 2);
+                
                 wp_nav_menu(array(
                     'theme_location' => 'primary',
                     'menu_class' => 'nav-menu',
                     'container' => false,
                     'fallback_cb' => 'freshdew_default_menu',
                 ));
+                
+                remove_all_filters('wp_nav_menu_items');
                 ?>
                 <?php if (class_exists('FreshDew_Clinic_System')): ?>
                 <div class="nav-auth-links">
                     <?php if (is_user_logged_in()): 
-                        $current_user = wp_get_current_user();
-                        $dashboard_url = in_array('clinic_patient', $current_user->roles) 
-                            ? home_url('/patient-portal') 
-                            : home_url('/clinic-dashboard');
                         $logout_url = wp_logout_url(home_url('/clinic-login'));
                     ?>
-                        <a href="<?php echo esc_url($dashboard_url); ?>" class="auth-link auth-dashboard">Dashboard</a>
-                        <a href="<?php echo esc_url($logout_url); ?>" class="auth-link auth-logout">Sign Out</a>
+                        <a href="<?php echo esc_url($logout_url); ?>" class="auth-link auth-logout">Logout</a>
                     <?php else: ?>
                         <a href="<?php echo esc_url(home_url('/clinic-login')); ?>" class="auth-link auth-login">Login</a>
                     <?php endif; ?>
@@ -207,7 +212,6 @@ function freshdew_default_menu() {
     echo '<li><a href="' . esc_url(home_url('/walk-in-clinic')) . '">Walk-in Clinic</a></li>';
     echo '<li><a href="' . esc_url(home_url('/family-practice')) . '">Family Practice</a></li>';
     echo '<li><a href="' . esc_url(home_url('/telehealth')) . '">Telehealth</a></li>';
-    echo '<li><a href="' . esc_url(home_url('/register')) . '">Register</a></li>';
     echo '<li><a href="' . esc_url(home_url('/contact')) . '">Contact</a></li>';
     echo '</ul>';
 }
