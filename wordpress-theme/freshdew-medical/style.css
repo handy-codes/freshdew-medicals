@@ -1120,8 +1120,8 @@ html body .site-header {
         right: -100%;
         width: 80%;
         max-width: 320px;
-        height: auto;
-        max-height: 80vh;
+        height: 100vh;
+        height: 100dvh; /* Dynamic viewport height for mobile */
         background: #fafafa;
         box-shadow: -2px 0 10px rgba(0,0,0,0.1);
         transition: right 0.5s ease;
@@ -1130,10 +1130,29 @@ html body .site-header {
         overflow-y: auto;
         display: flex;
         flex-direction: column;
-        border-radius: 0 0 0 0.75rem;
+        border-radius: 0;
         top: 0;
+        left: auto;
         margin-top: 0;
         padding-top: 70px; /* Space below the sticky header */
+    }
+    
+    /* Ensure header stays visible when menu is open */
+    body.menu-open .site-header {
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 10002 !important; /* Above menu backdrop, below menu itself */
+        background: #ffffff !important;
+    }
+    
+    body.menu-open .header-content {
+        position: relative;
+        z-index: 10003 !important; /* Ensure header content is above backdrop */
+    }
+    
+    body.menu-open .mobile-menu-toggle {
+        z-index: 10004 !important; /* Always clickable above everything */
+        position: relative;
     }
     
     .main-navigation.active {
@@ -1196,9 +1215,14 @@ html body .site-header {
         display: block;
         padding: 1rem 1.5rem;
         text-align: center;
-        border-radius: 0;
-        margin: 0 1rem;
+        border-radius: 6px;
+        margin: 0.75rem 1rem;
         font-size: 1.1rem;
+    }
+    
+    /* Hide Register button in mobile menu */
+    .main-navigation a[href*="register"] {
+        display: none !important;
     }
     
     body.menu-open {
