@@ -75,6 +75,11 @@ body {
     margin-top: 0 !important;
 }
 
+/* Make header-content a positioning context for mobile menu */
+.header-content {
+    position: relative;
+}
+
 /* Hide WordPress Admin Bar on Frontend - Force Hide */
 #wpadminbar,
 html #wpadminbar {
@@ -435,7 +440,7 @@ html body .site-header {
     z-index: 20;
     max-width: 48rem;
     padding: 2rem;
-    padding-top: 4rem;
+    padding-top: 2.5rem; /* Reduced from 4rem to reduce white space above badge */
 }
 
 .hero-badge {
@@ -1146,9 +1151,9 @@ html body .site-header {
         display: flex;
         flex-direction: column;
         border-radius: 0 0 0 0.75rem;
-        top: 0;
+        top: 70px; /* Position directly below header */
         left: auto;
-        margin-top: 70px; /* Clear the header height */
+        margin-top: 0; /* Remove margin, use top instead */
     }
     
     .main-navigation.active {
@@ -1287,11 +1292,15 @@ html body .site-header {
     
     .hero-content {
         padding: 1rem !important;
-        padding-top: 2rem !important; /* Reduced to fit content in viewport */
+        padding-top: 1rem !important; /* Reduced white space above "Accepting New Patients" */
         width: 100% !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: center !important;
+    }
+    
+    .hero-badge {
+        margin-bottom: 0.75rem !important; /* Reduce space below badge */
     }
     
     .hero-title {
