@@ -326,6 +326,11 @@ html body .site-header {
     color: white !important;
 }
 
+/* Hide Emeka Owo card */
+.emeka-owo-card {
+    display: none !important;
+}
+
 .main-navigation .current-menu-item > a,
 .main-navigation .current_page_item > a,
 .main-navigation a.current,
