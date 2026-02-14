@@ -79,10 +79,10 @@ export default function ContactPage() {
               <CardContent>
                 <p className="text-gray-700">
                   <a href="tel:+16132880183" className="hover:text-blue-600">
-                    (613) 288-0183
+                    (613) 243-0110
                   </a>
                 </p>
-                <p className="text-sm text-gray-500 mt-2">Fax: (613) 288-0321</p>
+                <p className="text-sm text-gray-500 mt-2">Fax: (613) 243-0321</p>
                 <p className="text-sm text-gray-500 mt-2">Emergency: 911</p>
               </CardContent>
             </Card>

@@ -270,9 +270,9 @@ function freshdew_get_contact_info() {
         'province' => 'Ontario',
         'postal_code' => 'K8N 4V4',
         'phone' => '6132880183',
-        'phone_formatted' => '(613) 288-0183',
+        'phone_formatted' => '(613) 243-0110',
         'fax' => '6132880321',
-        'fax_formatted' => '(613) 288-0321',
+        'fax_formatted' => '(613) 243-0321',
         'email' => 'info@freshdewmedicalclinic.com',
         'website' => 'www.freshdewmedicalclinic.com',
         'latitude' => 44.1628,
@@ -304,7 +304,7 @@ function freshdew_page_meta_descriptions() {
         'walk-in-clinic'  => 'No appointment needed. Visit FreshDew Walk-in Clinic in Belleville, Ontario for quality medical care when you need it. Open Monday to Saturday.',
         'family-practice' => 'Comprehensive family healthcare with dedicated family doctors at FreshDew Medical Clinic. Now accepting new patients in Belleville, Ontario.',
         'telehealth'      => 'Virtual medical consultations from the comfort of your home. FreshDew Medical Clinic offers secure, convenient telehealth appointments in Ontario.',
-        'contact'         => 'Contact FreshDew Medical Clinic at (613) 288-0183. Located at 135 Cannifton Road, Belleville, Ontario. Walk-ins welcome.',
+        'contact'         => 'Contact FreshDew Medical Clinic at (613) 243-0110. Located at 135 Cannifton Road, Belleville, Ontario. Walk-ins welcome.',
         'register'        => 'Register as a new patient at FreshDew Medical Clinic in Belleville. Join our waitlist for family practice services.',
     );
 

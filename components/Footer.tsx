@@ -41,8 +41,8 @@ export default function Footer() {
                 Belleville, Ontario, K8N 4V4<br />
                 Canada<br />
                 <br />
-                Phone: (613) 288-0183<br />
-                Fax: (613) 288-0321<br />
+                Phone: (613) 243-0110<br />
+                Fax: (613) 243-0321<br />
                 Email: info@freshdewmedicalclinic.com<br />
                 Website: www.freshdewmedicalclinic.com
               </address>

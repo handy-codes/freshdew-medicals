@@ -14,7 +14,7 @@
 | **Business category** | Medical clinic *(primary)*, Family practice physician, Walk-in clinic |
 | **Address** | 135 Cannifton Road, Unit 2 & 3, Belleville, Ontario K8N 4V4, Canada |
 | **Service area** | Belleville and surrounding areas (Bay of Quinte region) |
-| **Phone** | (613) 288-0183 |
+| **Phone** | (613) 243-0110 |
 | **Website** | https://freshdewmedicalclinic.com |
 | **Hours** | Mon–Fri: 9:00 AM – 5:00 PM, Sat: 10:00 AM – 4:00 PM, Sun: Closed |
 
