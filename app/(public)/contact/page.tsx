@@ -78,7 +78,7 @@ export default function ContactPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-gray-700">
-                  <a href="tel:+16132880183" className="hover:text-blue-600">
+                  <a href="tel:+16132430110" className="hover:text-blue-600">
                     (613) 243-0110
                   </a>
                 </p>
