@@ -226,14 +226,14 @@ $contact_info = freshdew_get_contact_info();
         right: auto !important;
         width: calc(100vw - 32px) !important;
         max-width: 360px !important;
-        height: min(400px, calc(100vh - 140px)) !important;
-        max-height: min(400px, calc(100vh - 140px)) !important;
+        height: min(480px, calc(100vh - 120px)) !important;
+        max-height: min(480px, calc(100vh - 120px)) !important;
         position: fixed !important;
         z-index: 2147483647 !important;
     }
     
     #chat-messages {
-        max-height: calc(100vh - 300px) !important;
+        max-height: calc(100vh - 280px) !important;
     }
     
     /* Ensure widget is visible even when menu is open - MAXIMUM PRIORITY */

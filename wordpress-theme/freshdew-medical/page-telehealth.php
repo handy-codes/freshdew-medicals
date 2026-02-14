@@ -95,6 +95,11 @@ $contact_info = freshdew_get_contact_info();
                 </li>
             </ul>
             
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="https://www.myhealthaccess.ca/branded/freshdew-medical-centre" target="_blank" rel="noopener noreferrer" style="display: inline-block;">
+                    <img src="https://www.myhealthaccess.ca/build/branded_signup/book_appt_online_big.png" alt="Book Appointment Online" style="max-width: 100%; height: auto; display: block;">
+                </a>
+            </div>
             <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1.5rem; margin: 3rem 0; border-radius: 0.5rem;">
                 <p style="color: #92400e; margin: 0; font-weight: 600;">
                     ⚠️ <strong>Note:</strong> For medical emergencies, please call 911 or visit your nearest emergency room. 
@@ -102,11 +107,6 @@ $contact_info = freshdew_get_contact_info();
                 </p>
             </div>
             
-            <div style="text-align: center; margin-top: 3rem;">
-                <a href="https://www.myhealthaccess.ca/branded/freshdew-medical-centre" target="_blank" rel="noopener noreferrer" style="display: inline-block;">
-                    <img src="https://www.myhealthaccess.ca/build/branded_signup/book_appt_online_big.png" alt="Book Appointment Online" style="max-width: 100%; height: auto; display: block;">
-                </a>
-            </div>
         </div>
     </div>
 </section>
