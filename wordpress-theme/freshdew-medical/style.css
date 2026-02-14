@@ -1276,16 +1276,21 @@ html body .site-header {
         pointer-events: auto;
     }
     
-    /* Ensure header stays visible when menu is open */
+    /* Ensure header stays visible and sticky when menu is open */
     body.menu-open .site-header {
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        top: 0 !important;
         z-index: 10002 !important;
     }
     
     body.menu-open .header-content {
+        position: relative !important;
         z-index: 10003 !important;
     }
     
     body.menu-open .mobile-menu-toggle {
+        position: relative !important;
         z-index: 10004 !important;
     }
     
