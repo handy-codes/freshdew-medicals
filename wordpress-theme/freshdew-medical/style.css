@@ -1128,6 +1128,14 @@ html body .site-header {
         max-height: 300px !important;
     }
     
+    /* Ensure header is sticky on mobile */
+    .site-header {
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 10000 !important;
+    }
+    
     .mobile-menu-toggle {
         display: flex !important;
         visibility: visible !important;
