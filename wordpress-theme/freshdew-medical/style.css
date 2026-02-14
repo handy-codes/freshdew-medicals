@@ -309,20 +309,21 @@ html body .site-header {
 }
 
 /* Register button styling */
-.main-navigation a[href*="register"] {
+.register-link-nav {
     background: #F69710 !important;
     color: white !important;
-    padding: 0.5rem !important;
+    padding: 0.5rem 1rem !important;
     border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    margin-left: 1rem;
+    display: inline-block;
+    transition: background 0.3s;
 }
 
-.main-navigation a[href*="register"]:hover {
+.register-link-nav:hover {
     background: #E0870F !important;
     color: white !important;
-}
-
-.main-navigation a[href*="register"]::after {
-    display: none !important;
 }
 
 .main-navigation .current-menu-item > a,
@@ -1226,6 +1227,19 @@ html body .site-header {
     
     .nav-auth-links .auth-link.auth-logout {
         background: #dc2626;
+    }
+    
+    /* Register button in mobile menu */
+    .register-link-nav {
+        display: block !important;
+        width: calc(100% - 2rem) !important;
+        margin: 0.75rem 1rem !important;
+        text-align: center;
+        background: #F69710 !important;
+        color: white !important;
+        padding: 1rem 1.5rem !important;
+        border-radius: 6px;
+        font-size: 1.25rem;
     }
     
     /* Register button visible in mobile menu with yellow background */
