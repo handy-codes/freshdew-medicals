@@ -1139,7 +1139,8 @@ html body .site-header {
         right: -100%;
         width: 80%;
         max-width: 320px;
-        height: 85vh;
+        height: calc(85% - 70px); /* 85% of viewport minus header height */
+        max-height: calc(85vh - 70px);
         background: #fafafa;
         box-shadow: -2px 0 10px rgba(0,0,0,0.1);
         transition: right 0.5s ease;
@@ -1151,7 +1152,7 @@ html body .site-header {
         border-radius: 0 0 0 0.75rem;
         top: 70px; /* Position directly below header */
         left: auto;
-        margin-top: 0; /* Remove margin, use top instead */
+        margin-top: 0;
     }
     
     .main-navigation.active {
