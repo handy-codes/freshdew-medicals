@@ -49,7 +49,7 @@ $contact_info = freshdew_get_contact_info();
                         <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem; width: 100%;">Dr. Joy Kinze</h3>
                         <p style="color: #667eea; font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem; width: 100%;">MBBS, MRCGP, CCFP</p>
                         <p style="color: #000000; line-height: 1.7; margin-bottom: 1.5rem; font-size: 1.125rem; flex-grow: 1; width: 100%;">
-                         Dr. Joy Kinze is a UK trained seasoned family physician with over 15 years of robust clinical experience and practice. She has worked in low and middle income countries and spent the majority of her practice in rural English town.
+                         Dr. Joy Kinze is a UK trained family physician with over a decade of clinical experience and practice. She has worked in low and middle income countries and spent the majority of her practice in rural English town.
                          Her areas of interest are lifestyle medicine and women's health. She is very passionate about healthcare administration having seen the catastrophic consequences when standards are not met in developing countries.
                          She is best described as a compassionate and excellent physician.
                         </p>
