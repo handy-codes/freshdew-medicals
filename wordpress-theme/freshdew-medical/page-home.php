@@ -184,15 +184,17 @@ $contact_info = freshdew_get_contact_info();
                     </tr>
                     <tr style="border-bottom: 1px solid #e5e7eb;">
                         <td style="padding: 1rem 0; font-weight: 600; color: #1f2937;">Saturday</td>
-                        <td style="padding: 1rem 0; text-align: right; color: #4b5563;">10:00 - 16:00</td>
+                        <td style="padding: 1rem 0; text-align: right; color: #4b5563;">10:00 - 14:00</td>
                     </tr>
                     <tr>
                         <td style="padding: 1rem 0; font-weight: 600; color: #1f2937;">Sunday</td>
                         <td style="padding: 1rem 0; text-align: right; color: #4b5563;">Closed</td>
                     </tr>
                 </table>
-                <div style="color: #4b5563; line-height: 1.8; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e5e7eb;">
-                    <p style="margin: 0; font-size: 0.95rem;">Please check our website and clinic notice for any updates to working hours.</p>
+                <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e5e7eb;">
+                    <p style="margin: 0; font-size: 1rem; font-weight: 600; color: #92400e; background: #fef3c7; padding: 1rem 1.25rem; border-radius: 0.5rem; border-left: 4px solid #f59e0b; text-align: center;">
+                        ⚠️ Please check our website and clinic notice for any updates to working hours.
+                    </p>
                 </div>
             </div>
         </div>

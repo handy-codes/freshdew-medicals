@@ -326,8 +326,13 @@ html body .site-header {
     color: white !important;
 }
 
-/* Hide Emeka Owo card */
+/* Emeka Owo card - visible for editing */
 .emeka-owo-card {
+    display: flex !important;
+}
+
+/* Hide telehealth consultation section */
+.telehealth-consultation-section {
     display: none !important;
 }
 
