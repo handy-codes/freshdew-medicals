@@ -342,10 +342,7 @@ html body .site-header {
 
 /* Auth Links in Navigation */
 .nav-auth-links {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-left: 0.5rem;
+    display: none !important;
 }
 
 .auth-link,
@@ -1204,12 +1201,7 @@ html body .site-header {
     
     /* Auth links in mobile menu */
     .nav-auth-links {
-        display: flex;
-        flex-direction: column;
-        gap: 0;
-        margin: 0;
-        width: 100%;
-        border-top: 2px solid #e5e7eb;
+        display: none !important;
     }
     
     .nav-auth-links .auth-link {
@@ -1236,10 +1228,7 @@ html body .site-header {
         background: #dc2626;
     }
     
-    /* Hide Register button in mobile menu */
-    .main-navigation a[href*="register"] {
-        display: none !important;
-    }
+    /* Register button visible in mobile menu with yellow background */
     
     body.menu-open {
         overflow: hidden;

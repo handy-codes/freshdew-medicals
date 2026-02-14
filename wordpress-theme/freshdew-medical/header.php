@@ -168,25 +168,15 @@
             
             <nav class="main-navigation" role="navigation" aria-label="<?php esc_attr_e('Primary Menu', 'freshdew-medical'); ?>">
                 <?php
-                // Filter out Register link from menu
-                add_filter('wp_nav_menu_items', function($items, $args) {
-                    if ($args->theme_location == 'primary') {
-                        $items = preg_replace('/<li[^>]*>.*?Register.*?<\/li>/i', '', $items);
-                    }
-                    return $items;
-                }, 10, 2);
-                
                 wp_nav_menu(array(
                     'theme_location' => 'primary',
                     'menu_class' => 'nav-menu',
                     'container' => false,
                     'fallback_cb' => 'freshdew_default_menu',
                 ));
-                
-                remove_all_filters('wp_nav_menu_items');
                 ?>
                 <?php if (class_exists('FreshDew_Clinic_System')): ?>
-                <div class="nav-auth-links">
+                <div class="nav-auth-links" style="display: none !important;">
                     <?php if (is_user_logged_in()): 
                         $logout_url = wp_logout_url(home_url('/clinic-login'));
                     ?>
