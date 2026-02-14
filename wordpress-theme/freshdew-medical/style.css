@@ -520,6 +520,22 @@ html body .site-header {
         object-position: center 20% !important;
     }
     
+    /* Ensure Emeka Owo matches on desktop */
+    .emeka-owo-card .team-card-image {
+        width: 40% !important;
+        min-width: 300px;
+        height: 300px !important;
+        max-height: 300px !important;
+        flex-shrink: 0;
+    }
+    
+    .emeka-owo-card .team-card-image img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        object-position: center top !important;
+    }
+    
     .team-card > div:not(.team-card-image) {
         width: 60% !important;
         display: flex;
@@ -570,6 +586,20 @@ html body .site-header {
 .team-card-image img[alt="Karen Howald"] {
     object-fit: cover !important;
     object-position: center 20% !important;
+}
+
+/* Ensure Emeka Owo image box matches other cards exactly */
+.emeka-owo-card .team-card-image {
+    height: 300px !important;
+    max-height: 300px !important;
+    min-height: 300px !important;
+}
+
+.emeka-owo-card .team-card-image img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center top !important;
 }
 
 /* Desktop-only team card layout adjustments */
