@@ -39,7 +39,7 @@ export default function AboutPage() {
           <h2 className="text-2xl font-semibold mt-8 mb-4">Why Choose Us</h2>
           <p className="mb-6">
             FreshDew Medical Clinic combines the best of traditional healthcare with modern technology.
-            Our team of experienced healthcare professionals is dedicated to providing personalized care
+            Our team of experienced healthcare professionals are dedicated to providing personalized care
             that meets the unique needs of each patient.
           </p>
         </div>

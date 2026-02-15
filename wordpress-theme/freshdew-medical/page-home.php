@@ -120,7 +120,7 @@ $contact_info = freshdew_get_contact_info();
                     FreshDew Medical Clinic is committed to providing exceptional healthcare services to the Belleville community and surrounding areas.
                 </p>
                 <p style="color: #4b5563; line-height: 1.8; margin-bottom: 1.5rem;">
-                    Our team of experienced healthcare professionals is dedicated to delivering compassionate, patient-centered care using the latest medical technologies.
+                    Our team of experienced healthcare professionals are dedicated to delivering compassionate, patient-centered care using the latest medical technologies.
                 </p>
                 <a href="<?php echo esc_url(home_url('/about')); ?>" class="btn">Learn More About Us</a>
             </div>
