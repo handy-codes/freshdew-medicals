@@ -37,9 +37,10 @@ $contact_info = freshdew_get_contact_info();
                 <div class="team-card" style="background: white; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 12px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)';">
                     <div class="team-card-image" style="width: 100%; height: 300px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); position: relative; overflow: hidden; border-radius: 0.75rem 0.75rem 0 0; display: flex; align-items: center; justify-content: center;">
                         <?php
-                        $doctor1_image = get_template_directory_uri() . '/assets/images/doctors/dr-joy-kinze.jpg';
-                        if (file_exists(get_template_directory() . '/assets/images/doctors/dr-joy-kinze.jpg')) {
-                            echo '<img src="' . esc_url($doctor1_image) . '" alt="Dr. Joy Kinze" style="width: 100%; height: 100%; object-fit: cover; object-position: center top;">';
+                        $doctor1_image_path = get_template_directory() . '/assets/images/doctors/dr-joy-kinze.jpg';
+                        $doctor1_image_url = get_template_directory_uri() . '/assets/images/doctors/dr-joy-kinze.jpg';
+                        if (file_exists($doctor1_image_path) && filesize($doctor1_image_path) > 0) {
+                            echo '<img src="' . esc_url($doctor1_image_url) . '" alt="Dr. Joy Kinze" style="width: 100%; height: 100%; object-fit: cover; object-position: center top;">';
                         } else {
                             echo '<div style="width: 100%; height: 100%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: 600;">JK</div>';
                         }
@@ -63,9 +64,10 @@ $contact_info = freshdew_get_contact_info();
                 <div class="team-card" style="background: white; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 12px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)';">
                     <div class="team-card-image" style="width: 100%; height: 300px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); position: relative; overflow: hidden; border-radius: 0.75rem 0.75rem 0 0; display: flex; align-items: center; justify-content: center;">
                         <?php
-                        $doctor2_image = get_template_directory_uri() . '/assets/images/doctors/dr-jamal-doe.jpg';
-                        if (file_exists(get_template_directory() . '/assets/images/doctors/dr-jamal-doe.jpg')) {
-                            echo '<img src="' . esc_url($doctor2_image) . '" alt="Dr. Jamal Doe" style="width: 100%; height: 100%; object-fit: cover; object-position: center top;">';
+                        $doctor2_image_path = get_template_directory() . '/assets/images/doctors/dr-jamal-doe.jpg';
+                        $doctor2_image_url = get_template_directory_uri() . '/assets/images/doctors/dr-jamal-doe.jpg';
+                        if (file_exists($doctor2_image_path) && filesize($doctor2_image_path) > 0) {
+                            echo '<img src="' . esc_url($doctor2_image_url) . '" alt="Dr. Jamal Doe" style="width: 100%; height: 100%; object-fit: cover; object-position: center top;">';
                         } else {
                             echo '<div style="width: 100%; height: 100%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: 600;">JD</div>';
                         }
@@ -88,7 +90,15 @@ $contact_info = freshdew_get_contact_info();
                 <!-- Template Card 1 - Karen Howald -->
                 <div class="team-card" style="background: white; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 12px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)';">
                     <div class="team-card-image" style="width: 100%; height: 300px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); position: relative; overflow: hidden; border-radius: 0.75rem 0.75rem 0 0; display: flex; align-items: center; justify-content: center;">
-                        <div style="width: 100%; height: 100%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: 600;">KH</div>
+                        <?php
+                        $doctor3_image_path = get_template_directory() . '/assets/images/doctors/karen-howald.jpg';
+                        $doctor3_image_url = get_template_directory_uri() . '/assets/images/doctors/karen-howald.jpg';
+                        if (file_exists($doctor3_image_path) && filesize($doctor3_image_path) > 0) {
+                            echo '<img src="' . esc_url($doctor3_image_url) . '" alt="Karen Howald" style="width: 100%; height: 100%; object-fit: cover; object-position: center 20%;">';
+                        } else {
+                            echo '<div style="width: 100%; height: 100%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: 600;">KH</div>';
+                        }
+                        ?>
                     </div>
                     <div class="team-card-content" style="padding: 2rem; display: flex; flex-direction: column; width: 100%;">
                         <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem; width: 100%;">Karen Howald</h3>
@@ -105,7 +115,15 @@ $contact_info = freshdew_get_contact_info();
                 <!-- Template Card 2 - Emeka Owo -->
                 <div class="team-card emeka-owo-card" style="background: white; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 12px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)';">
                     <div class="team-card-image" style="width: 100%; height: 300px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); position: relative; overflow: hidden; border-radius: 0.75rem 0.75rem 0 0; display: flex; align-items: center; justify-content: center;">
-                        <div style="width: 100%; height: 100%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: 600;">EO</div>
+                        <?php
+                        $doctor4_image_path = get_template_directory() . '/assets/images/doctors/emeka-owo.jpg';
+                        $doctor4_image_url = get_template_directory_uri() . '/assets/images/doctors/emeka-owo.jpg';
+                        if (file_exists($doctor4_image_path) && filesize($doctor4_image_path) > 0) {
+                            echo '<img src="' . esc_url($doctor4_image_url) . '" alt="Emeka Owo" style="width: 100%; height: 100%; object-fit: cover; object-position: center top;">';
+                        } else {
+                            echo '<div style="width: 100%; height: 100%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: 600;">EO</div>';
+                        }
+                        ?>
                     </div>
                     <div class="team-card-content" style="padding: 2rem; display: flex; flex-direction: column; width: 100%;">
                         <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem; width: 100%;">Emeka Owo</h3>
