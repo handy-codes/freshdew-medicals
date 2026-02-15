@@ -134,6 +134,28 @@ $contact_info = freshdew_get_contact_info();
     </div>
 </section>
 
+<!-- Meet and Greet Notice Section -->
+<section style="padding: 4rem 0; background: #f9fafb;">
+    <div class="container">
+        <div style="max-width: 900px; margin: 0 auto;">
+            <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1.5rem; border-radius: 0.5rem;">
+                <p style="color: #92400e; margin: 0 0 1rem 0; font-weight: 600; font-size: 1.125rem;">
+                    ⚠️ <strong>Important Notice:</strong> All first appointments with Dr. Kinze will be a "Meet and Greet" to enrol patients into her family practice.
+                </p>
+                <p style="color: #92400e; margin: 0 0 1rem 0; font-weight: 600; font-size: 1.125rem;">
+                    Please note that no medical complaints will be discussed during this visit.
+                </p>
+                <p style="color: #92400e; margin: 0 0 1rem 0; font-weight: 600; font-size: 1.125rem;">
+                    You are welcome to book other appointments to discuss medical concerns.
+                </p>
+                <p style="color: #92400e; margin: 0; font-weight: 600; font-size: 1.125rem;">
+                    Please take note of the clinic policies on the website.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- Clinic Policies Section -->
 <section style="padding: 4rem 0; background: #f0f4f8;">
     <div class="container">
