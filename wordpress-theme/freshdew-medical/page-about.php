@@ -132,7 +132,36 @@ $contact_info = freshdew_get_contact_info();
                         Emeka Owo is a Healthcare Technology Developer with years of experience designing and implementing secure, high-performance systems for clinical settings. He brings deep expertise in health information systems, telemedicine integration, clinical workflow optimization, and healthcare data protection. His core strengths include building secure cloud infrastructures, developing scalable application architectures, and ensuring compliance-driven data management for modern medical practices.  
                         </p>
                         <p style="color: #000000; line-height: 1.7; margin-bottom: 1.5rem; font-size: 1.125rem; flex-grow: 1; width: 100%;">
-                         Emeka’s work focuses on advancing care delivery through resilient digital solutions that enhance operational efficiency and safeguard patient information. Outside of work, he maintains a keen interest in global affairs and practices strategic chess to refine his analytical thinking.
+                         Emeka's work focuses on advancing care delivery through resilient digital solutions that enhance operational efficiency and safeguard patient information. Outside of work, he maintains a keen interest in global affairs and practices strategic chess to refine his analytical thinking.
+                        </p>
+                        <a href="https://www.myhealthaccess.ca/branded/freshdew-medical-centre" target="_blank" rel="noopener noreferrer" style="display: block; width: 100%;">
+                            <img src="https://www.myhealthaccess.ca/build/branded_signup/book_appt_online_big.png" alt="Book Appointment Online" style="max-width: 100%; height: auto; display: block; width: 100%;">
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Template Card 3 - Rejoice Obioha -->
+                <div class="team-card" style="background: white; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 12px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)';">
+                    <div class="team-card-image" style="width: 100%; height: 300px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); position: relative; overflow: hidden; border-radius: 0.75rem 0.75rem 0 0; display: flex; align-items: center; justify-content: center;">
+                        <?php
+                        $doctor5_image_path = get_template_directory() . '/assets/images/doctors/rejoice-obioha.jpg';
+                        $doctor5_image_url = get_template_directory_uri() . '/assets/images/doctors/rejoice-obioha.jpg';
+                        if (file_exists($doctor5_image_path) && filesize($doctor5_image_path) > 0) {
+                            echo '<img src="' . esc_url($doctor5_image_url) . '" alt="Rejoice Obioha" style="width: 100%; height: 100%; object-fit: cover; object-position: center top;">';
+                        } else {
+                            echo '<div style="width: 100%; height: 100%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: 600;">RO</div>';
+                        }
+                        ?>
+                    </div>
+                    <div class="team-card-content" style="padding: 2rem; display: flex; flex-direction: column; width: 100%;">
+                        <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem; width: 100%;">Rejoice Obioha</h3>
+                        <p style="color: #667eea; font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem; width: 100%;">Team Member</p>
+                        <p style="color: #000000; line-height: 1.7; margin-bottom: 1.5rem; font-size: 1.125rem; flex-grow: 1; width: 100%;">
+                         <!-- Add bio content here -->
+                         Rejoice works as the Executive Assistant, providing  operational support with efficiency and professionalism.
+                         After completing High school, Rejoice spent a year studying pre-medical science, before enrolling in a Medical degree program, demonstrating her strong interest in healthcare systems.
+                         She has previously worked as the Executive Secretary of a British firm-Jay-Kay Ebele Limited-supplying Family physicians to the UK National Health Service.
+                         She brings enthusiasm and reliability to her role contributing to the smooth daily operations of the clinic.
                         </p>
                         <a href="https://www.myhealthaccess.ca/branded/freshdew-medical-centre" target="_blank" rel="noopener noreferrer" style="display: block; width: 100%;">
                             <img src="https://www.myhealthaccess.ca/build/branded_signup/book_appt_online_big.png" alt="Book Appointment Online" style="max-width: 100%; height: auto; display: block; width: 100%;">

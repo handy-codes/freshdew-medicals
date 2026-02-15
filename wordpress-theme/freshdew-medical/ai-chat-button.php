@@ -62,7 +62,7 @@ $contact_info = freshdew_get_contact_info();
             </div>
             <div style="margin-top: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem;">
                 <button class="quick-action" style="padding: 0.5rem 1rem; background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 20px; font-size: 0.75rem; cursor: pointer; color: #4b5563;">Book appointment</button>
-                <button class="quick-action" style="padding: 0.5rem 1rem; background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 20px; font-size: 0.75rem; cursor: pointer; color: #4b5563;">Find doctor</button>
+                <button class="quick-action" style="padding: 0.5rem 1rem; background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 20px; font-size: 0.75rem; cursor: pointer; color: #4b5563; display: none !important;">Find doctor</button>
                 <button class="quick-action" style="padding: 0.5rem 1rem; background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 20px; font-size: 0.75rem; cursor: pointer; color: #4b5563;">Hours</button>
             </div>
         </div>
