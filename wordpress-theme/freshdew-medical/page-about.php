@@ -155,12 +155,12 @@ $contact_info = freshdew_get_contact_info();
                     </div>
                     <div class="team-card-content" style="padding: 2rem; display: flex; flex-direction: column; width: 100%;">
                         <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem; width: 100%;">Rejoice Obioha</h3>
-                        <p style="color: #667eea; font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem; width: 100%;">Team Member</p>
+                        <p style="color: #667eea; font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem; width: 100%;">Executive Assistant</p>
                         <p style="color: #000000; line-height: 1.7; margin-bottom: 1.5rem; font-size: 1.125rem; flex-grow: 1; width: 100%;">
                          <!-- Add bio content here -->
                          Rejoice works as the Executive Assistant, providing  operational support with efficiency and professionalism.
                          After completing High school, Rejoice spent a year studying pre-medical science, before enrolling in a Medical degree program, demonstrating her strong interest in healthcare systems.
-                         She has previously worked as the Executive Secretary of a British firm-Jay-Kay Ebele Limited-supplying Family physicians to the UK National Health Service.
+                         She has previously worked as the Executive Secretary of a British firm, Jay-Kay Ebele Limited-supplying Family physicians to the UK National Health Service.
                          She brings enthusiasm and reliability to her role contributing to the smooth daily operations of the clinic.
                         </p>
                         <a href="https://www.myhealthaccess.ca/branded/freshdew-medical-centre" target="_blank" rel="noopener noreferrer" style="display: block; width: 100%;">
