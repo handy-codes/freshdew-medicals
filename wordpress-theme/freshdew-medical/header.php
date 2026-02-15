@@ -175,7 +175,7 @@
                     'fallback_cb' => 'freshdew_default_menu',
                 ));
                 ?>
-                <a href="<?php echo esc_url(home_url('/register')); ?>" class="register-link-nav" style="background: #F69710 !important; color: white !important; padding: 0.5rem !important; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 1rem;">Register</a>
+                <a href="<?php echo esc_url(home_url('/register')); ?>" class="register-link-nav" style="display: none !important; background: #F69710 !important; color: white !important; padding: 0.5rem !important; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 1rem;">Register</a>
                 <?php if (class_exists('FreshDew_Clinic_System')): ?>
                 <div class="nav-auth-links" style="display: none !important;">
                     <?php if (is_user_logged_in()): 

@@ -308,22 +308,9 @@ html body .site-header {
     width: 60%;
 }
 
-/* Register button styling */
+/* Register button styling - Hidden */
 .register-link-nav {
-    background: #F69710 !important;
-    color: white !important;
-    padding: 0.5rem 1rem !important;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: 600;
-    margin-left: 1rem;
-    display: inline-block;
-    transition: background 0.3s;
-}
-
-.register-link-nav:hover {
-    background: #E0870F !important;
-    color: white !important;
+    display: none !important;
 }
 
 /* Emeka Owo card - visible for editing */
@@ -1280,15 +1267,7 @@ html body .site-header {
     
     /* Register button in mobile menu */
     .register-link-nav {
-        display: block !important;
-        width: calc(100% - 2rem) !important;
-        margin: 0.75rem 1rem !important;
-        text-align: center;
-        background: #F69710 !important;
-        color: white !important;
-        padding: 1rem 1.5rem !important;
-        border-radius: 6px;
-        font-size: 1.25rem;
+        display: none !important;
     }
     
     /* Register button visible in mobile menu with yellow background */
