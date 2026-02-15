@@ -81,7 +81,7 @@ $contact_info = freshdew_get_contact_info();
             
             <div style="background: #f0f9ff; border-left: 4px solid #2563eb; padding: 1.5rem; margin: 3rem 0; border-radius: 0.5rem;">
                 <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #1e40af;">Accepting New Patients</h3>
-                <p style="color: #1e40af; margin: 0;">We are currently accepting new patients for our family practice. Contact us to schedule your first appointment.</p>
+                <p style="color: #1e40af; margin: 0;">We are currently accepting new patients for our family practice. click below link to book your first appointment.</p>
             </div>
             
             <div style="text-align: center; margin-top: 3rem;">
