@@ -40,7 +40,7 @@ $contact_info = freshdew_get_contact_info();
             </p>
             
             <div class="hero-buttons">
-                <a href="<?php echo esc_url(home_url('/register')); ?>" class="btn btn-primary-hero">
+                <a href="<?php echo esc_url(home_url('/register')); ?>" class="btn btn-primary-hero" style="display: none !important;">
                     Register as Patient
                 </a>
                 <a href="https://www.myhealthaccess.ca/branded/freshdew-medical-centre" target="_blank" rel="noopener noreferrer" style="display: inline-block;">
