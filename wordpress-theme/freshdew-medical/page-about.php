@@ -130,9 +130,7 @@ $contact_info = freshdew_get_contact_info();
                         <p style="color: #667eea; font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem; width: 100%;">Healthcare Technology Developer</p>
                         <p style="color: #000000; line-height: 1.7; margin-bottom: 1.5rem; font-size: 1.125rem; flex-grow: 1; width: 100%;">
                         Emeka Owo is a Healthcare Technology Developer with years of experience designing and implementing secure, high-performance systems for clinical settings. He brings deep expertise in health information systems, telemedicine integration, clinical workflow optimization, and healthcare data protection. His core strengths include building secure cloud infrastructures, developing scalable application architectures, and ensuring compliance-driven data management for modern medical practices.  
-                        </p>
-                        <p style="color: #000000; line-height: 1.7; margin-bottom: 1.5rem; font-size: 1.125rem; flex-grow: 1; width: 100%;">
-                         Emeka's work focuses on advancing care delivery through resilient digital solutions that enhance operational efficiency and safeguard patient information. Outside of work, he maintains a keen interest in global affairs and practices strategic chess to refine his analytical thinking.
+                        Outside of work, he maintains a keen interest in global affairs and practices strategic chess to refine his analytical thinking.
                         </p>
                         <a href="https://www.myhealthaccess.ca/branded/freshdew-medical-centre" target="_blank" rel="noopener noreferrer" style="display: block; width: 100%;">
                             <img src="https://www.myhealthaccess.ca/build/branded_signup/book_appt_online_big.png" alt="Book Appointment Online" style="max-width: 100%; height: auto; display: block; width: 100%;">
