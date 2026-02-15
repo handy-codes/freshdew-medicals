@@ -26,9 +26,9 @@ $contact_info = freshdew_get_contact_info();
 
 <!-- Chat Window Container - Separate wrapper, no width/height causing overflow -->
 <div id="ai-chat-widget-root" style="position: fixed; top: 0; left: 0; width: 0; height: 0; z-index: 9998; pointer-events: none;">
-<div id="ai-chat-widget" style="position: fixed !important; bottom: 80px !important; right: 16px !important; z-index: 9998 !important; pointer-events: auto !important;">
+<div id="ai-chat-widget" style="position: fixed !important; bottom: 96px !important; right: 16px !important; z-index: 9998 !important; pointer-events: auto !important;">
     <!-- Chat Window -->
-    <div id="ai-chat-window" style="display: none; position: fixed; bottom: 96px; right: 24px; width: 360px; max-width: calc(100vw - 32px); height: 520px; max-height: calc(100vh - 200px); background: white; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.2); flex-direction: column; overflow: hidden; z-index: 100000;">
+    <div id="ai-chat-window" style="display: none; position: fixed; bottom: 96px; right: 24px; width: 360px; max-width: 90vw; height: 520px; max-height: 80vh; background: white; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.2); flex-direction: column; overflow: hidden; z-index: 100000;">
         <!-- Chat Header (Sticky) -->
         <div id="chat-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; position: sticky; top: 0; z-index: 1;">
             <div>
@@ -192,9 +192,9 @@ $contact_info = freshdew_get_contact_info();
     }
 }
 
-/* Responsive: Mobile (< 640px) - Show "Ask Dew" but smaller */
+/* Responsive: Mobile (< 640px) - Standalone positioning like desktop */
 @media (max-width: 639px) {
-    /* Button stays fixed - simple positioning like Next.js */
+    /* Button stays fixed - simple positioning */
     #ai-chat-toggle {
         bottom: 16px !important;
         right: 16px !important;
@@ -205,7 +205,7 @@ $contact_info = freshdew_get_contact_info();
     }
     
     #ai-chat-widget {
-        bottom: 80px !important;
+        bottom: 96px !important;
         right: 16px !important;
         left: auto !important;
         width: auto !important;
@@ -219,21 +219,22 @@ $contact_info = freshdew_get_contact_info();
         display: none !important;
     }
     
+    /* Chat window - standalone like desktop with moderate height */
     #ai-chat-window {
-        bottom: 80px !important;
-        left: 50% !important;
-        transform: translateX(-50%) !important;
-        right: auto !important;
-        width: calc(100vw - 32px) !important;
-        max-width: 360px !important;
-        height: 450px !important;
-        max-height: 450px !important;
+        bottom: 96px !important;
+        right: 16px !important;
+        left: auto !important;
+        transform: none !important;
+        width: 340px !important;
+        max-width: 90vw !important;
+        height: 420px !important;
+        max-height: 420px !important;
         position: fixed !important;
         z-index: 2147483647 !important;
     }
     
     #chat-messages {
-        max-height: 350px !important;
+        max-height: 320px !important;
     }
     
     /* Ensure widget is visible even when menu is open - MAXIMUM PRIORITY */
