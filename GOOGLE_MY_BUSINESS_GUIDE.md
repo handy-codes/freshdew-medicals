@@ -72,9 +72,11 @@ Mark applicable attributes:
 4. Verify ownership using one of these methods:
    - **HTML tag** (recommended): Copy the `<meta>` tag Google provides and add it to your WordPress theme's `header.php` inside `<head>`.
    - **DNS record**: Add a TXT record in Hostinger DNS settings.
-5. Once verified:
-   - Submit your sitemap: `https://freshdewmedicalclinic.com/wp-sitemap.xml`
-   - Click **"Sitemaps"** in the left menu → Enter `wp-sitemap.xml` → Click **Submit**
+5. Once verified, submit your sitemap:
+   - **No plugin needed:** The site uses WordPress’s built-in sitemap (no need to install Yoast SEO or XML Sitemaps on Hostinger).
+   - **Sitemap URL:** `https://freshdewmedicalclinic.com/sitemap.xml` (the theme redirects this to WordPress’s `wp-sitemap.xml`).
+   - In **Google Search Console:** open the left menu → **Sitemaps** → under “Add a new sitemap” type **`sitemap.xml`** → click **Submit**.
+   - You can also submit **`wp-sitemap.xml`** if you prefer; both work.
 
 ## Step 5: Set Up Google Analytics (Optional but Recommended)
 

@@ -318,10 +318,10 @@ function freshdew_page_meta_descriptions() {
 add_action('wp_head', 'freshdew_page_meta_descriptions', 1);
 
 /**
- * SEO: Generate a basic XML sitemap at /sitemap.xml (WordPress 5.5+ has built-in)
+ * SEO: Sitemap (WordPress 5.5+ built-in at /wp-sitemap.xml).
+ * Redirect /sitemap.xml to wp-sitemap.xml so Search Console can use "sitemap.xml".
  */
 function freshdew_add_sitemap_pages($args, $post_type) {
-    // Ensure pages are included in sitemap
     if ($post_type === 'page') {
         $args['orderby'] = 'modified';
         $args['order'] = 'DESC';
@@ -329,6 +329,15 @@ function freshdew_add_sitemap_pages($args, $post_type) {
     return $args;
 }
 add_filter('wp_sitemaps_posts_query_args', 'freshdew_add_sitemap_pages', 10, 2);
+
+/** Redirect /sitemap.xml to WordPress core sitemap (for Google Search Console) */
+function freshdew_sitemap_redirect() {
+    if (isset($_SERVER['REQUEST_URI']) && preg_match('#^/sitemap\.xml$#i', $_SERVER['REQUEST_URI'])) {
+        wp_redirect(home_url('/wp-sitemap.xml'), 301);
+        exit;
+    }
+}
+add_action('template_redirect', 'freshdew_sitemap_redirect');
 
 /**
  * SEO: Output BreadcrumbList structured data for inner pages
