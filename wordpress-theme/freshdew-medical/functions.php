@@ -319,7 +319,7 @@ add_action('wp_head', 'freshdew_page_meta_descriptions', 1);
 
 /**
  * SEO: Sitemap (WordPress 5.5+ built-in at /wp-sitemap.xml).
- * Redirect /sitemap.xml to wp-sitemap.xml so Search Console can use "sitemap.xml".
+ * Keep only posts and pages; exclude user archives and category indexes for a cleaner sitemap.
  */
 function freshdew_add_sitemap_pages($args, $post_type) {
     if ($post_type === 'page') {
@@ -329,6 +329,21 @@ function freshdew_add_sitemap_pages($args, $post_type) {
     return $args;
 }
 add_filter('wp_sitemaps_posts_query_args', 'freshdew_add_sitemap_pages', 10, 2);
+
+/** Exclude user/author sitemap (not useful for clinic site SEO) */
+function freshdew_sitemap_remove_users($provider, $name) {
+    if ($name === 'users') {
+        return false;
+    }
+    return $provider;
+}
+add_filter('wp_sitemaps_add_provider', 'freshdew_sitemap_remove_users', 10, 2);
+
+/** Exclude category (and other taxonomy) sitemaps so only pages/posts are listed */
+function freshdew_sitemap_remove_taxonomies($taxonomies) {
+    return array();
+}
+add_filter('wp_sitemaps_taxonomies', 'freshdew_sitemap_remove_taxonomies');
 
 /** Redirect /sitemap.xml to WordPress core sitemap (for Google Search Console) */
 function freshdew_sitemap_redirect() {
