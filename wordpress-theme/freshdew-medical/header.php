@@ -10,7 +10,7 @@
     $fd_contact = freshdew_get_contact_info();
     $fd_site_title = 'FreshDew Medical Clinic';
     $fd_default_title = 'Quality Healthcare You Can Trust';
-    $fd_description = 'Experience premium medical care with cutting-edge technology, compassionate professionals, and innovative telehealth solutions—all from the comfort of your home.';
+    $fd_description = freshdew_get_meta_description();
     $fd_url = home_url('/');
     $fd_logo_url = get_template_directory_uri() . '/assets/images/freshdew-favicon-logo.png';
     $fd_favicon_url = get_template_directory_uri() . '/assets/images/fmc-favicon.svg';
@@ -33,7 +33,7 @@
     <!-- Open Graph / Facebook / WhatsApp -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="<?php echo esc_url(is_front_page() ? $fd_url : get_permalink()); ?>">
-    <meta property="og:title" content="<?php echo esc_attr($fd_site_title . ' – ' . $fd_default_title); ?>">
+    <meta property="og:title" content="<?php echo esc_attr($fd_page_title); ?>">
     <meta property="og:description" content="<?php echo esc_attr($fd_description); ?>">
     <meta property="og:image" content="<?php echo esc_url($fd_logo_url); ?>">
     <meta property="og:image:width" content="512">
@@ -45,7 +45,7 @@
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:url" content="<?php echo esc_url(is_front_page() ? $fd_url : get_permalink()); ?>">
-    <meta name="twitter:title" content="<?php echo esc_attr($fd_site_title . ' – ' . $fd_default_title); ?>">
+    <meta name="twitter:title" content="<?php echo esc_attr($fd_page_title); ?>">
     <meta name="twitter:description" content="<?php echo esc_attr($fd_description); ?>">
     <meta name="twitter:image" content="<?php echo esc_url($fd_logo_url); ?>">
 
