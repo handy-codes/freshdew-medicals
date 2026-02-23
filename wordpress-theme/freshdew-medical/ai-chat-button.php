@@ -28,7 +28,7 @@ $contact_info = freshdew_get_contact_info();
 <div id="ai-chat-widget-root" style="position: fixed; top: 0; left: 0; width: 0; height: 0; z-index: 9998; pointer-events: none;">
 <div id="ai-chat-widget" style="position: fixed !important; bottom: 96px !important; right: 16px !important; z-index: 9998 !important; pointer-events: auto !important;">
     <!-- Chat Window -->
-    <div id="ai-chat-window" style="display: none; position: fixed; bottom: 96px; right: 24px; width: 360px; max-width: 90vw; height: 520px; max-height: 80vh; background: white; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.2); flex-direction: column; overflow: hidden; z-index: 9998;">
+    <div id="ai-chat-window" style="display: none; position: fixed; bottom: 96px; right: 24px; width: 360px; max-width: 90vw; height: 420px; max-height: 65vh; background: white; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.2); flex-direction: column; overflow: hidden; z-index: 9998;">
         <!-- Chat Header (fixed; does not scroll) -->
         <div id="chat-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; flex-shrink: 0;">
             <div>
@@ -165,12 +165,14 @@ $contact_info = freshdew_get_contact_info();
     pointer-events: auto !important;
 }
 
-/* Desktop: fixed-height chat window; messages scroll inside (no growing) */
+/* Desktop: smaller fixed height, margin from top so content is visible */
 @media (min-width: 640px) {
     #ai-chat-window {
+        top: 80px !important;
+        bottom: auto !important;
         flex-direction: column !important;
-        height: 520px !important;
-        max-height: 80vh !important;
+        height: 380px !important;
+        max-height: calc(100vh - 120px) !important;
         overflow: hidden !important;
         z-index: 9998 !important;
     }

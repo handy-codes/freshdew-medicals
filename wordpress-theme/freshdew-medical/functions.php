@@ -837,21 +837,16 @@ function freshdew_ai_chat_handler($request) {
  */
 function freshdew_call_groq_api($message, $api_key, $contact_info) {
     $emr_link = 'https://www.myhealthaccess.ca/branded/freshdew-medical-centre';
-    $system_prompt = "You are a helpful AI assistant for FreshDew Medical Clinic in Belleville, Ontario, Canada. You help patients with:
-- Booking appointments (use online booking at {$emr_link})
-- Finding doctors and services
-- General health information
-- Hospital hours and contact information
-- Emergency guidance (always direct to 911 for emergencies)
+    $system_prompt = "You are a helpful AI assistant for FreshDew Medical Clinic in Belleville, Ontario, Canada.
 
-Contact Information:
-- Address: {$contact_info['address']}, {$contact_info['city']}, {$contact_info['province']}
-- Phone: {$contact_info['phone_formatted']}
-- Email: {$contact_info['email']}
-- Hours: Monday - Friday: 09:00 - 17:00, Saturday: 10:00 - 14:00, Sunday: Closed. Please check our website and clinic notice for any updates to working hours.
-- Online Booking: {$emr_link}
+STRICT RULES:
+- Keep every reply SHORT: 2–4 sentences maximum, or a brief bullet list. Never write long paragraphs.
+- Stay under 100 words per response. Do not repeat information. This is a chat widget with limited space.
+- For medical emergencies, say to call 911. For appointments, direct to: {$emr_link}
 
-Be concise, friendly, and professional. Always remind users that for medical emergencies, they should call 911. For appointment booking, direct users to the online booking system at {$emr_link}.";
+Contact: {$contact_info['address']}, {$contact_info['city']}. Phone: {$contact_info['phone_formatted']}. Email: {$contact_info['email']}. Hours: Mon–Fri 09:00–17:00, Sat 10:00–14:00, Sun closed. Booking: {$emr_link}
+
+Be friendly and professional. Give only the essential information asked.";
 
     $url = 'https://api.groq.com/openai/v1/chat/completions';
     
@@ -861,8 +856,8 @@ Be concise, friendly, and professional. Always remind users that for medical eme
             array('role' => 'system', 'content' => $system_prompt),
             array('role' => 'user', 'content' => $message)
         ),
-        'temperature' => 0.7,
-        'max_tokens' => 200,
+        'temperature' => 0.5,
+        'max_tokens' => 120,
         'top_p' => 0.9,
     );
     
@@ -898,12 +893,32 @@ Be concise, friendly, and professional. Always remind users that for medical eme
     }
     
     if (isset($data['choices'][0]['message']['content'])) {
-        return trim($data['choices'][0]['message']['content']);
+        $text = trim($data['choices'][0]['message']['content']);
+        return freshdew_trim_chat_response($text, 420);
     }
     
     // Log if response structure is unexpected
     error_log('Groq API Unexpected Response: ' . print_r($data, true));
     return false;
+}
+
+/**
+ * Trim chat response to a character limit at a word boundary so the last sentence never cuts off.
+ * @param string $text Raw response
+ * @param int $max_chars Max characters (default 420 for chat widget)
+ * @return string Trimmed text, with "…" if truncated
+ */
+function freshdew_trim_chat_response($text, $max_chars = 420) {
+    $text = trim($text);
+    if (strlen($text) <= $max_chars) {
+        return $text;
+    }
+    $trimmed = substr($text, 0, $max_chars);
+    $lastSpace = strrpos($trimmed, ' ');
+    if ($lastSpace !== false && $lastSpace > (int) ($max_chars * 0.6)) {
+        $trimmed = substr($trimmed, 0, $lastSpace);
+    }
+    return rtrim($trimmed, " .,;:!?") . '…';
 }
 
 /**
