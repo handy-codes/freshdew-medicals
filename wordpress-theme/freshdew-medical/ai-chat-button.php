@@ -28,9 +28,9 @@ $contact_info = freshdew_get_contact_info();
 <div id="ai-chat-widget-root" style="position: fixed; top: 0; left: 0; width: 0; height: 0; z-index: 9998; pointer-events: none;">
 <div id="ai-chat-widget" style="position: fixed !important; bottom: 96px !important; right: 16px !important; z-index: 9998 !important; pointer-events: auto !important;">
     <!-- Chat Window -->
-    <div id="ai-chat-window" style="display: none; position: fixed; bottom: 96px; right: 24px; width: 360px; max-width: 90vw; height: 520px; max-height: 80vh; background: white; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.2); flex-direction: column; overflow: hidden; z-index: 100000;">
-        <!-- Chat Header (Sticky) -->
-        <div id="chat-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; position: sticky; top: 0; z-index: 1;">
+    <div id="ai-chat-window" style="display: none; position: fixed; bottom: 96px; right: 24px; width: 360px; max-width: 90vw; height: 520px; max-height: 80vh; background: white; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.2); flex-direction: column; overflow: hidden; z-index: 9998;">
+        <!-- Chat Header (fixed; does not scroll) -->
+        <div id="chat-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; flex-shrink: 0;">
             <div>
                 <h3 style="margin: 0; font-size: 1.125rem; font-weight: 600; color: white;">AI Assistant</h3>
                 <p style="margin: 0.25rem 0 0; font-size: 0.875rem; opacity: 0.9; color: white;">FreshDew Medical Clinic</p>
@@ -38,8 +38,8 @@ $contact_info = freshdew_get_contact_info();
             <button id="chat-close-btn" style="background: rgba(255,255,255,0.2); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 20px; font-weight: bold; display: flex; align-items: center; justify-content: center; transition: background 0.3s;">×</button>
         </div>
         
-        <!-- Messages Container (Scrollable) -->
-        <div id="chat-messages" style="flex: 1; overflow-y: auto; padding: 1rem; background: #f9fafb; min-height: 0;">
+        <!-- Messages Container (scrollable; fills remaining height, does not grow window) -->
+        <div id="chat-messages" style="flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; padding: 1rem; background: #f9fafb;">
             <div class="message assistant" style="background: white; padding: 0.75rem 1rem; border-radius: 12px; margin-bottom: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); max-width: 85%;">
                 <p style="margin: 0; color: #1f2937; line-height: 1.6;">Hello! I'm FreshDew Medical Clinic AI Assistant. How can I help you today? You can ask about symptoms, book appointments, find doctors, or get health information.</p>
             </div>
@@ -165,8 +165,27 @@ $contact_info = freshdew_get_contact_info();
     pointer-events: auto !important;
 }
 
-/* Responsive: Desktop/Tablet (640px+) - Show full text, match Next.js md: breakpoint */
+/* Desktop: fixed-height chat window; messages scroll inside (no growing) */
 @media (min-width: 640px) {
+    #ai-chat-window {
+        flex-direction: column !important;
+        height: 520px !important;
+        max-height: 80vh !important;
+        overflow: hidden !important;
+        z-index: 9998 !important;
+    }
+    #chat-messages {
+        flex: 1 !important;
+        min-height: 0 !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        -webkit-overflow-scrolling: touch;
+    }
+    #chat-header,
+    #typing-indicator,
+    #ai-chat-window > div:last-child {
+        flex-shrink: 0 !important;
+    }
     #ai-chat-toggle {
         bottom: 24px !important;
         right: 24px !important;
@@ -177,16 +196,13 @@ $contact_info = freshdew_get_contact_info();
         gap: 8px !important;
         border-radius: 25px !important;
     }
-    
     #ai-chat-widget {
         bottom: 96px !important;
         right: 24px !important;
     }
-    
     #chat-text-full {
         display: inline !important;
     }
-    
     #chat-text-short {
         display: none !important;
     }

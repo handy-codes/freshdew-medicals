@@ -64,6 +64,18 @@ Mark applicable attributes:
 - ✅ Telehealth available
 - ✅ Appointment required (for family practice)
 
+### Fix: Wrong business showing on the right (e.g. “Freshdew Children’s Clinic” / Nigeria)
+
+If when you search **“freshdew medical clinic”** the **right-hand panel (Knowledge Panel / map)** shows a different business (e.g. “Freshdew Children’s Clinic”, Nigeria) instead of your Belleville clinic:
+
+- **That panel is driven by Google Business Profile (GBP), not by your website alone.** Google picks one business to show there; if you don’t have a **verified** profile for “FreshDew Medical Clinic” at 135 Cannifton Road, Belleville, it may show another similarly named business.
+- **What to do:**
+  1. **Create or claim the correct profile** (Steps 1–2 above): [business.google.com](https://business.google.com) → Add your business (or search for “FreshDew Medical Clinic” and claim it if it exists).
+  2. Use the **exact** name **“FreshDew Medical Clinic”**, address **135 Cannifton Road, Unit 2 & 3, Belleville, Ontario K8N 4V4, Canada**, and website **https://freshdewmedicalclinic.com**.
+  3. **Verify** the business (postcard to that address, or another method Google offers).
+  4. After verification, fill in hours, photos, services, and description (Step 3 above).
+- Once your **Belleville** profile is verified and complete, Google can start showing **your** map and details on the right for “freshdew medical clinic” (especially for users in or near Ontario). You cannot force this from the website; it depends on having the correct, verified GBP.
+
 ## Step 4: Add Your Website to Google Search Console
 
 1. Go to **[Google Search Console](https://search.google.com/search-console/about)**
@@ -74,9 +86,30 @@ Mark applicable attributes:
    - **DNS record**: Add a TXT record in Hostinger DNS settings.
 5. Once verified, submit your sitemap:
    - **No plugin needed:** The site uses WordPress’s built-in sitemap (no need to install Yoast SEO or XML Sitemaps on Hostinger).
-   - **Sitemap URL:** `https://freshdewmedicalclinic.com/sitemap.xml` (the theme redirects this to WordPress’s `wp-sitemap.xml`).
-   - In **Google Search Console:** open the left menu → **Sitemaps** → under “Add a new sitemap” type **`sitemap.xml`** → click **Submit**.
-   - You can also submit **`wp-sitemap.xml`** if you prefer; both work.
+   - In **Google Search Console:** open the left menu → **Sitemaps** → under “Add a new sitemap” enter **`wp-sitemap.xml`** (WordPress core sitemap) → click **Submit**.
+   - Full URL for reference: `https://freshdewmedicalclinic.com/wp-sitemap.xml`
+
+### SEO & Search Console checklist (what’s already on the site)
+
+The FreshDew theme already includes the following for search visibility. No extra plugins required.
+
+| Item | Status |
+|------|--------|
+| **Document &lt;title&gt;** | ✅ Per-page (e.g. “About – FreshDew Medical Clinic”) via `pre_get_document_title` |
+| **Meta description** | ✅ One per page (home, about, contact, telehealth, etc.) via `freshdew_get_meta_description()` |
+| **Canonical URL** | ✅ Set on all pages (home and `get_permalink()` on inner pages) |
+| **Robots** | ✅ `index, follow` in `<head>` |
+| **Open Graph** | ✅ og:title, og:description, og:url, og:image, og:site_name, og:locale (per-page title/description) |
+| **Twitter Card** | ✅ title, description, url, image (per-page) |
+| **Structured data** | ✅ JSON-LD MedicalClinic schema (address, hours, phone, services) + BreadcrumbList on inner pages |
+| **Geo / local** | ✅ geo.region, geo.placename, ICBM in `<head>` |
+| **Sitemap** | ✅ `wp-sitemap.xml` (pages/posts only; users & taxonomies excluded) |
+
+**In Search Console (after verification):**
+
+- Submit sitemap: **`https://freshdewmedicalclinic.com/wp-sitemap.xml`** (you’ve done this).
+- Use **URL Inspection** for important URLs (home, About, Contact) to request indexing if they’re “Discovered – currently not indexed.”
+- Check **Pages** and **Experience** (Core Web Vitals, mobile usability) over time.
 
 ## Step 5: Set Up Google Analytics (Optional but Recommended)
 
