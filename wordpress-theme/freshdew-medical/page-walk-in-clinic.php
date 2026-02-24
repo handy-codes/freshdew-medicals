@@ -21,10 +21,19 @@ $contact_info = freshdew_get_contact_info();
 <section style="padding: 4rem 0;">
     <div class="container">
         <div style="max-width: 900px; margin: 0 auto;">
-            <div style="background: #f0f9ff; border-left: 4px solid #2563eb; padding: 1.5rem; margin-bottom: 3rem; border-radius: 0.5rem;">
-                <h2 style="font-size: 1.5rem; margin-bottom: 1rem; color: #1e40af;">Accepting New Patients</h2>
-                <p style="color: #1e40af; margin: 0;">We welcome walk-in patients. No appointment necessary!</p>
-            </div>
+            <?php
+            $page_content = get_post_field('post_content', get_the_ID());
+            if ( ! empty( trim( $page_content ) ) ) {
+                echo '<div class="freshdew-page-content entry-content" style="margin-bottom: 3rem;">';
+                the_content();
+                echo '</div>';
+            } else {
+                echo '<div style="background: #f0f9ff; border-left: 4px solid #2563eb; padding: 1.5rem; margin-bottom: 3rem; border-radius: 0.5rem;">';
+                echo '<h2 style="font-size: 1.5rem; margin-bottom: 1rem; color: #1e40af;">Accepting New Patients</h2>';
+                echo '<p style="color: #1e40af; margin: 0;">We welcome walk-in patients. No appointment necessary!</p>';
+                echo '</div>';
+            }
+            ?>
             
             <h2 style="font-size: 2.5rem; margin-bottom: 2rem; color: #1f2937;">What We Offer</h2>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem; margin-bottom: 3rem;">

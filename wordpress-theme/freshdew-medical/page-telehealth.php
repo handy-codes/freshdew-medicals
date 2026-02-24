@@ -21,11 +21,17 @@ $contact_info = freshdew_get_contact_info();
 <section style="padding: 4rem 0;">
     <div class="container">
         <div style="max-width: 900px; margin: 0 auto;">
-            <h2 style="font-size: 2.5rem; margin-bottom: 2rem; color: #1f2937;">Healthcare at Your Fingertips</h2>
-            <p style="color: #4b5563; line-height: 1.8; margin-bottom: 1.5rem; font-size: 1.125rem;">
-                Our telehealth services allow you to consult with our healthcare professionals from anywhere, at any time. 
-                Perfect for follow-up appointments, prescription renewals, and non-urgent medical consultations.
-            </p>
+            <?php
+            $page_content = get_post_field('post_content', get_the_ID());
+            if ( ! empty( trim( $page_content ) ) ) {
+                echo '<div class="freshdew-page-content entry-content" style="margin-bottom: 3rem;">';
+                the_content();
+                echo '</div>';
+            } else {
+                echo '<h2 style="font-size: 2.5rem; margin-bottom: 2rem; color: #1f2937;">Healthcare at Your Fingertips</h2>';
+                echo '<p style="color: #4b5563; line-height: 1.8; margin-bottom: 3rem; font-size: 1.125rem;">Our telehealth services allow you to consult with our healthcare professionals from anywhere, at any time. Perfect for follow-up appointments, prescription renewals, and non-urgent medical consultations.</p>';
+            }
+            ?>
             
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem; margin: 3rem 0;">
                 <?php

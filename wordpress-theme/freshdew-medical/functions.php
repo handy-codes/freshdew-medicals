@@ -42,6 +42,60 @@ function freshdew_theme_setup() {
 add_action('after_setup_theme', 'freshdew_theme_setup');
 
 /**
+ * One-time: Pre-populate editable page content so staff see current text in wp-admin.
+ * Runs once; then staff edit and save as normal. Right place to edit: Pages → [Page name].
+ */
+function freshdew_populate_editable_pages_once() {
+    if ( ! is_admin() ) {
+        return;
+    }
+    if ( get_option( 'freshdew_editable_pages_populated', false ) ) {
+        return;
+    }
+
+    $defaults = array(
+        'about' => '<h2>Our Mission</h2>
+<p>Freshdew medical clinic is committed to delivering exceptional patient care to persons of all ages in a warm, welcoming environment.</p>
+<p>Our Mission is to provide excellent comprehensive medical care in a timely, compassionate, and patient centred manner.</p>',
+        'walk-in-clinic' => '<h2>Accepting New Patients</h2>
+<p>We welcome walk-in patients. No appointment necessary!</p>',
+        'family-practice' => '<h2>Your Family\'s Health Partner</h2>
+<p>At FreshDew Medical Clinic, we provide comprehensive family healthcare services. Our dedicated family doctors build long-term relationships with you and your family, ensuring continuity of care and personalized treatment plans.</p>',
+        'telehealth' => '<h2>Healthcare at Your Fingertips</h2>
+<p>Our telehealth services allow you to consult with our healthcare professionals from anywhere, at any time. Perfect for follow-up appointments, prescription renewals, and non-urgent medical consultations.</p>',
+        'contact' => '<p>Use the form or details below to get in touch. We look forward to hearing from you.</p>',
+        'home' => '<p>Add any homepage announcements or intro text here. This block appears below the hero and above Our Services.</p>',
+    );
+
+    $updated = 0;
+    foreach ( array( 'about', 'walk-in-clinic', 'family-practice', 'telehealth', 'contact' ) as $slug ) {
+        $page = get_page_by_path( $slug );
+        if ( $page && empty( trim( $page->post_content ) ) && isset( $defaults[ $slug ] ) ) {
+            wp_update_post( array(
+                'ID'           => $page->ID,
+                'post_content' => $defaults[ $slug ],
+            ) );
+            $updated++;
+        }
+    }
+
+    $front_page_id = (int) get_option( 'page_on_front' );
+    if ( $front_page_id && isset( $defaults['home'] ) ) {
+        $page = get_post( $front_page_id );
+        if ( $page && empty( trim( $page->post_content ) ) ) {
+            wp_update_post( array(
+                'ID'           => $front_page_id,
+                'post_content' => $defaults['home'],
+            ) );
+            $updated++;
+        }
+    }
+
+    update_option( 'freshdew_editable_pages_populated', true );
+}
+add_action( 'admin_init', 'freshdew_populate_editable_pages_once' );
+
+/**
  * Customizer Settings
  */
 function freshdew_customize_register($wp_customize) {

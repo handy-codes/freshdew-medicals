@@ -54,6 +54,16 @@ $contact_info = freshdew_get_contact_info();
     </div>
 </section>
 
+<?php
+// Editable in wp-admin: Pages → Home. Optional intro or announcements.
+$home_content = get_post_field('post_content', get_the_ID());
+if ( ! empty( trim( $home_content ) ) ) {
+    echo '<section class="freshdew-page-content" style="padding: 2rem 0;"><div class="container"><div class="entry-content" style="max-width: 900px; margin: 0 auto;">';
+    the_content();
+    echo '</div></div></section>';
+}
+?>
+
 <!-- Services Section -->
 <section style="padding: 4rem 0; background: #f9fafb;">
     <div class="container">

@@ -21,13 +21,19 @@ $contact_info = freshdew_get_contact_info();
 <section style="padding: 4rem 0;">
     <div class="container">
         <div style="max-width: 1200px; margin: 0 auto;">
-            <h2 style="font-size: 2.5rem; margin-bottom: 2rem; color: #1f2937;">Our Mission</h2>
-            <p style="color: #000000; line-height: 1.8; margin-bottom: 1.5rem; font-size: 1.125rem;">
-            Freshdew medical clinic is committed to delivering exceptional patient care to persons of all ages in a warm, welcoming environment.
-            </p>
-            <p style="color: #000000; line-height: 1.8; margin-bottom: 1.5rem; font-size: 1.125rem;">
-             Our Mission is to provide excellent comprehensive medical care in a timely, compassionate, and patient centred manner.
-            </p>
+            <?php
+            // Editable in wp-admin: Pages → About. If empty, show default mission text.
+            $page_content = get_post_field('post_content', get_the_ID());
+            if ( ! empty( trim( $page_content ) ) ) {
+                echo '<div class="freshdew-page-content entry-content" style="margin-bottom: 3rem;">';
+                the_content();
+                echo '</div>';
+            } else {
+                echo '<h2 style="font-size: 2.5rem; margin-bottom: 2rem; color: #1f2937;">Our Mission</h2>';
+                echo '<p style="color: #000000; line-height: 1.8; margin-bottom: 1.5rem; font-size: 1.125rem;">Freshdew medical clinic is committed to delivering exceptional patient care to persons of all ages in a warm, welcoming environment.</p>';
+                echo '<p style="color: #000000; line-height: 1.8; margin-bottom: 3rem; font-size: 1.125rem;">Our Mission is to provide excellent comprehensive medical care in a timely, compassionate, and patient centred manner.</p>';
+            }
+            ?>
             
             <!-- Meet Our Team Section -->
             <h2 style="font-size: 2.5rem; margin: 4rem 0 3rem; color: #1f2937; text-align: center;">Meet Our Team</h2>
