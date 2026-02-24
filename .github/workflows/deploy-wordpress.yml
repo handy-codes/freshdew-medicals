@@ -323,16 +323,18 @@ jobs:
         timeout-minutes: 15
       
       # Final check and error reporting
+      # We use outcome (actual result), not conclusion. With continue-on-error,
+      # a failed step has outcome=failure but conclusion=success (error ignored).
       - name: Check Deployment Status
         run: |
           THEME_SUCCESS=false
           PLUGINS_SUCCESS=false
           
-          if [ "${{ steps.theme-sftp.outcome }}" == "success" ] || [ "${{ steps.theme-ftp.outcome }}" == "success" ] || [ "${{ steps.theme-alt1.outcome }}" == "success" ] || [ "${{ steps.theme-alt2.outcome }}" == "success" ]; then
+          if [ "${{ steps.theme-sftp.outcome }}" = "success" ] || [ "${{ steps.theme-ftp.outcome }}" = "success" ] || [ "${{ steps.theme-alt1.outcome }}" = "success" ] || [ "${{ steps.theme-alt2.outcome }}" = "success" ]; then
             THEME_SUCCESS=true
           fi
           
-          if [ "${{ steps.plugins-sftp.outcome }}" == "success" ] || [ "${{ steps.plugins-ftp.outcome }}" == "success" ] || [ "${{ steps.plugins-alt1.outcome }}" == "success" ] || [ "${{ steps.plugins-alt2.outcome }}" == "success" ]; then
+          if [ "${{ steps.plugins-sftp.outcome }}" = "success" ] || [ "${{ steps.plugins-ftp.outcome }}" = "success" ] || [ "${{ steps.plugins-alt1.outcome }}" = "success" ] || [ "${{ steps.plugins-alt2.outcome }}" = "success" ]; then
             PLUGINS_SUCCESS=true
           fi
           
@@ -345,16 +347,12 @@ jobs:
             echo "   ✅ Success"
           else
             echo "   ❌ Failed (all attempts)"
-            echo "   - SFTP: ${{ steps.theme-sftp.outcome }}"
-            echo "   - FTP/FTPS: ${{ steps.theme-ftp.outcome }}"
-            echo "   - Alt Path 1: ${{ steps.theme-alt1.outcome }}"
-            echo "   - Alt Path 2: ${{ steps.theme-alt2.outcome }}"
+            echo "   - SFTP: ${{ steps.theme-sftp.outcome || 'skipped' }}"
+            echo "   - FTP/FTPS: ${{ steps.theme-ftp.outcome || 'skipped' }}"
+            echo "   - Alt Path 1: ${{ steps.theme-alt1.outcome || 'skipped' }}"
+            echo "   - Alt Path 2: ${{ steps.theme-alt2.outcome || 'skipped' }}"
             echo ""
-            echo "   📋 Detailed Status:"
-            echo "   - SFTP step: ${{ steps.theme-sftp.conclusion || 'not run' }}"
-            echo "   - FTP step: ${{ steps.theme-ftp.conclusion || 'not run' }}"
-            echo "   - Alt Path 1 step: ${{ steps.theme-alt1.conclusion || 'not run' }}"
-            echo "   - Alt Path 2 step: ${{ steps.theme-alt2.conclusion || 'not run' }}"
+            echo "   📋 (outcome = actual result; skipped = step did not run)"
             echo ""
             echo "   💡 Scroll up in the logs to see detailed error messages from each deployment attempt."
             echo "   💡 Common issues:"
