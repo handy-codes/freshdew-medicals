@@ -7,13 +7,14 @@
 
 get_header();
 $contact_info = freshdew_get_contact_info();
+$page_id = get_the_ID();
 ?>
 
 <section style="padding: 4rem 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
     <div class="container">
-        <h1 style="font-size: 3rem; margin-bottom: 1rem; text-align: center; color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.2);">About FreshDew Medical Clinic</h1>
+        <h1 style="font-size: 3rem; margin-bottom: 1rem; text-align: center; color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.2);"><?php echo esc_html( freshdew_get_section( $page_id, 'hero_title', 'About FreshDew Medical Clinic' ) ); ?></h1>
         <p style="font-size: 1.25rem; text-align: center; opacity: 0.95; max-width: 800px; margin: 0 auto; color: white; text-shadow: 0 1px 5px rgba(0,0,0,0.2);">
-            Providing exceptional healthcare services to the Belleville community and surrounding areas.
+            <?php echo esc_html( freshdew_get_section( $page_id, 'hero_subtitle', 'Providing exceptional healthcare services to the Belleville community and surrounding areas.' ) ); ?>
         </p>
     </div>
 </section>
@@ -22,8 +23,7 @@ $contact_info = freshdew_get_contact_info();
     <div class="container">
         <div style="max-width: 1200px; margin: 0 auto;">
             <?php
-            // Editable in wp-admin: Pages → About. If empty, show default mission text.
-            $page_content = get_post_field('post_content', get_the_ID());
+            $page_content = get_post_field('post_content', $page_id);
             if ( ! empty( trim( $page_content ) ) ) {
                 echo '<div class="freshdew-page-content entry-content" style="margin-bottom: 3rem;">';
                 the_content();
@@ -36,7 +36,7 @@ $contact_info = freshdew_get_contact_info();
             ?>
             
             <!-- Meet Our Team Section -->
-            <h2 style="font-size: 2.5rem; margin: 4rem 0 3rem; color: #1f2937; text-align: center;">Meet Our Team</h2>
+            <h2 style="font-size: 2.5rem; margin: 4rem 0 3rem; color: #1f2937; text-align: center;"><?php echo esc_html( freshdew_get_section( $page_id, 'meet_heading', 'Meet Our Team' ) ); ?></h2>
             <div style="display: flex; flex-direction: column; gap: 2.5rem; margin-bottom: 4rem;">
                 
                 <!-- Dr. Joy Kinze Card -->
@@ -174,20 +174,22 @@ $contact_info = freshdew_get_contact_info();
                 
             </div>
             
-            <h2 style="font-size: 2.5rem; margin: 3rem 0 2rem; color: #1f2937;">Our Services</h2>
+            <?php
+            $services_heading = freshdew_get_section( $page_id, 'services_heading', 'Our Services' );
+            $services_list_raw = freshdew_get_section( $page_id, 'services_list', "Walk-in Clinic: No appointment needed. Quality medical care when you need it.\nFamily Practice: Comprehensive family healthcare with dedicated family doctors.\nTelehealth: Virtual consultations from the comfort of your home." );
+            $services_list_lines = array_filter( array_map( 'trim', explode( "\n", $services_list_raw ) ) );
+            if ( empty( $services_list_lines ) ) {
+                $services_list_lines = array( 'Walk-in Clinic: No appointment needed. Quality medical care when you need it.', 'Family Practice: Comprehensive family healthcare with dedicated family doctors.', 'Telehealth: Virtual consultations from the comfort of your home.' );
+            }
+            ?>
+            <h2 style="font-size: 2.5rem; margin: 3rem 0 2rem; color: #1f2937;"><?php echo esc_html( $services_heading ); ?></h2>
             <ul style="color: #000000; line-height: 2; font-size: 1.125rem; list-style: none; padding: 0;">
+                <?php foreach ( $services_list_lines as $line ) : ?>
                 <li style="margin-bottom: 1rem; padding-left: 2rem; position: relative;">
                     <span style="position: absolute; left: 0; color: #2563eb;">✓</span>
-                    <strong>Walk-in Clinic:</strong> No appointment needed. Quality medical care when you need it.
+                    <?php echo wp_kses_post( $line ); ?>
                 </li>
-                <li style="margin-bottom: 1rem; padding-left: 2rem; position: relative;">
-                    <span style="position: absolute; left: 0; color: #2563eb;">✓</span>
-                    <strong>Family Practice:</strong> Comprehensive family healthcare with dedicated family doctors.
-                </li>
-                <li style="margin-bottom: 1rem; padding-left: 2rem; position: relative;">
-                    <span style="position: absolute; left: 0; color: #2563eb;">✓</span>
-                    <strong>Telehealth:</strong> Virtual consultations from the comfort of your home.
-                </li>
+                <?php endforeach; ?>
             </ul>
         </div>
     </div>

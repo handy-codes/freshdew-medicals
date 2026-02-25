@@ -41,9 +41,12 @@ function freshdew_theme_setup() {
 }
 add_action('after_setup_theme', 'freshdew_theme_setup');
 
+// Admin-editable page sections: only Home, About, Walk-in Clinic, Family Practice, Telehealth, Contact.
+require_once get_template_directory() . '/inc/page-content-admin.php';
+
 /**
  * One-time: Pre-populate editable page content so staff see current text in wp-admin.
- * Runs once; then staff edit and save as normal. Right place to edit: Pages → [Page name].
+ * Only the 6 nav pages are editable; no other pages are included.
  */
 function freshdew_populate_editable_pages_once() {
     if ( ! is_admin() ) {
@@ -67,8 +70,9 @@ function freshdew_populate_editable_pages_once() {
         'home' => '<p>Add any homepage announcements or intro text here. This block appears below the hero and above Our Services.</p>',
     );
 
+    $editable_slugs = array( 'about', 'walk-in-clinic', 'family-practice', 'telehealth', 'contact' );
     $updated = 0;
-    foreach ( array( 'about', 'walk-in-clinic', 'family-practice', 'telehealth', 'contact' ) as $slug ) {
+    foreach ( $editable_slugs as $slug ) {
         $page = get_page_by_path( $slug );
         if ( $page && empty( trim( $page->post_content ) ) && isset( $defaults[ $slug ] ) ) {
             wp_update_post( array(

@@ -7,6 +7,7 @@
 
 get_header();
 $contact_info = freshdew_get_contact_info();
+$page_id = get_the_ID();
 ?>
 
 <!-- Hero Section with Medical Team Image -->
@@ -26,17 +27,16 @@ $contact_info = freshdew_get_contact_info();
         <div class="hero-content">
             <div class="hero-badge">
                 <span class="badge-dot"></span>
-                <span class="badge-text">Accepting New Patients</span>
+                <span class="badge-text"><?php echo esc_html( freshdew_get_section( $page_id, 'hero_badge', 'Accepting New Patients' ) ); ?></span>
             </div>
             
             <h1 class="hero-title">
-                Quality Healthcare
-                <span class="hero-title-gradient">You Can Trust</span>
+                <?php echo esc_html( freshdew_get_section( $page_id, 'hero_title', 'Quality Healthcare' ) ); ?>
+                <span class="hero-title-gradient"><?php echo esc_html( freshdew_get_section( $page_id, 'hero_title_highlight', 'You Can Trust' ) ); ?></span>
             </h1>
             
             <p class="hero-subtitle">
-                Experience premium medical care with cutting-edge technology, 
-                compassionate professionals, and innovative telehealth solutions—all from the comfort of your home.
+                <?php echo esc_html( freshdew_get_section( $page_id, 'hero_subtitle', 'Experience premium medical care with cutting-edge technology, compassionate professionals, and innovative telehealth solutions—all from the comfort of your home.' ) ); ?>
             </p>
             
             <div class="hero-buttons">
@@ -55,8 +55,7 @@ $contact_info = freshdew_get_contact_info();
 </section>
 
 <?php
-// Editable in wp-admin: Pages → Home. Optional intro or announcements.
-$home_content = get_post_field('post_content', get_the_ID());
+$home_content = get_post_field('post_content', $page_id);
 if ( ! empty( trim( $home_content ) ) ) {
     echo '<section class="freshdew-page-content" style="padding: 2rem 0;"><div class="container"><div class="entry-content" style="max-width: 900px; margin: 0 auto;">';
     the_content();
@@ -67,27 +66,27 @@ if ( ! empty( trim( $home_content ) ) ) {
 <!-- Services Section -->
 <section style="padding: 4rem 0; background: #f9fafb;">
     <div class="container">
-        <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 3rem;">Our Services</h2>
+        <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 3rem;"><?php echo esc_html( freshdew_get_section( $page_id, 'services_heading', 'Our Services' ) ); ?></h2>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem;">
             <?php
             $services = array(
                 array(
-                    'title' => 'Walk-in Clinic',
-                    'description' => 'No appointment needed. Walk in and receive quality medical care.',
+                    'title' => freshdew_get_section( $page_id, 'service_1_title', 'Walk-in Clinic' ),
+                    'description' => freshdew_get_section( $page_id, 'service_1_description', 'No appointment needed. Walk in and receive quality medical care.' ),
                     'link' => home_url('/walk-in-clinic'),
                     'image' => 'walk-in-clinic.jpg',
                     'initials' => 'WC',
                 ),
                 array(
-                    'title' => 'Family Practice',
-                    'description' => 'Comprehensive family healthcare with dedicated family doctors.',
+                    'title' => freshdew_get_section( $page_id, 'service_2_title', 'Family Practice' ),
+                    'description' => freshdew_get_section( $page_id, 'service_2_description', 'Comprehensive family healthcare with dedicated family doctors.' ),
                     'link' => home_url('/family-practice'),
                     'image' => 'family-practice.jpg',
                     'initials' => 'FP',
                 ),
                 array(
-                    'title' => 'Telehealth',
-                    'description' => 'Virtual consultations from the comfort of your home.',
+                    'title' => freshdew_get_section( $page_id, 'service_3_title', 'Telehealth' ),
+                    'description' => freshdew_get_section( $page_id, 'service_3_description', 'Virtual consultations from the comfort of your home.' ),
                     'link' => home_url('/telehealth'),
                     'image' => 'telehealth.jpg',
                     'initials' => 'TH',
@@ -125,12 +124,12 @@ if ( ! empty( trim( $home_content ) ) ) {
     <div class="container">
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem; align-items: center;">
             <div>
-                <h2 style="font-size: 2.5rem; margin-bottom: 1.5rem;">About FreshDew Medical Clinic</h2>
+                <h2 style="font-size: 2.5rem; margin-bottom: 1.5rem;"><?php echo esc_html( freshdew_get_section( $page_id, 'about_heading', 'About FreshDew Medical Clinic' ) ); ?></h2>
                 <p style="color: #4b5563; line-height: 1.8; margin-bottom: 1rem;">
-                    FreshDew Medical Clinic is committed to providing exceptional healthcare services to the Belleville community and surrounding areas.
+                    <?php echo esc_html( freshdew_get_section( $page_id, 'about_para1', 'FreshDew Medical Clinic is committed to providing exceptional healthcare services to the Belleville community and surrounding areas.' ) ); ?>
                 </p>
                 <p style="color: #4b5563; line-height: 1.8; margin-bottom: 1.5rem;">
-                    Our team of experienced healthcare professionals are dedicated to delivering compassionate, patient-centered care using the latest medical technologies.
+                    <?php echo esc_html( freshdew_get_section( $page_id, 'about_para2', 'Our team of experienced healthcare professionals are dedicated to delivering compassionate, patient-centered care using the latest medical technologies.' ) ); ?>
                 </p>
                 <a href="<?php echo esc_url(home_url('/about')); ?>" class="btn">Learn More About Us</a>
             </div>
@@ -200,9 +199,9 @@ if ( ! empty( trim( $home_content ) ) ) {
 <!-- Location & Map Section -->
 <section style="padding: 4rem 0; background: #f9fafb;">
     <div class="container">
-        <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 1rem;">Visit Us</h2>
+        <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 1rem;"><?php echo esc_html( freshdew_get_section( $page_id, 'visit_heading', 'Visit Us' ) ); ?></h2>
         <p style="text-align: center; color: #6b7280; margin-bottom: 3rem; font-size: 1.125rem;">
-            Conveniently located in Belleville, Ontario
+            <?php echo esc_html( freshdew_get_section( $page_id, 'visit_subtitle', 'Conveniently located in Belleville, Ontario' ) ); ?>
         </p>
         
         <!-- Hours of Operation -->

@@ -7,13 +7,14 @@
 
 get_header();
 $contact_info = freshdew_get_contact_info();
+$page_id = get_the_ID();
 ?>
 
 <section style="padding: 4rem 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
     <div class="container">
-        <h1 style="font-size: 3rem; margin-bottom: 1rem; text-align: center; color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.2);">Walk-in Clinic</h1>
+        <h1 style="font-size: 3rem; margin-bottom: 1rem; text-align: center; color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.2);"><?php echo esc_html( freshdew_get_section( $page_id, 'hero_title', 'Walk-in Clinic' ) ); ?></h1>
         <p style="font-size: 1.25rem; text-align: center; opacity: 0.95; max-width: 800px; margin: 0 auto; color: white; text-shadow: 0 1px 5px rgba(0,0,0,0.2);">
-            No appointment needed. Quality medical care when you need it.
+            <?php echo esc_html( freshdew_get_section( $page_id, 'hero_subtitle', 'No appointment needed. Quality medical care when you need it.' ) ); ?>
         </p>
     </div>
 </section>
@@ -22,7 +23,7 @@ $contact_info = freshdew_get_contact_info();
     <div class="container">
         <div style="max-width: 900px; margin: 0 auto;">
             <?php
-            $page_content = get_post_field('post_content', get_the_ID());
+            $page_content = get_post_field('post_content', $page_id);
             if ( ! empty( trim( $page_content ) ) ) {
                 echo '<div class="freshdew-page-content entry-content" style="margin-bottom: 3rem;">';
                 the_content();
@@ -35,25 +36,25 @@ $contact_info = freshdew_get_contact_info();
             }
             ?>
             
-            <h2 style="font-size: 2.5rem; margin-bottom: 2rem; color: #1f2937;">What We Offer</h2>
+            <h2 style="font-size: 2.5rem; margin-bottom: 2rem; color: #1f2937;"><?php echo esc_html( freshdew_get_section( $page_id, 'what_we_offer_heading', 'What We Offer' ) ); ?></h2>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem; margin-bottom: 3rem;">
                 <?php
                 $walkin_services = array(
                     array(
-                        'title' => 'General Medical Care',
-                        'description' => 'Treatment for common illnesses and minor injuries.',
+                        'title' => freshdew_get_section( $page_id, 'service_1_title', 'General Medical Care' ),
+                        'description' => freshdew_get_section( $page_id, 'service_1_description', 'Treatment for common illnesses and minor injuries.' ),
                         'image' => 'general-medical-care.jpg',
                         'initials' => 'GM',
                     ),
                     array(
-                        'title' => 'Prescriptions',
-                        'description' => 'Prescription renewals and new prescriptions as needed.',
+                        'title' => freshdew_get_section( $page_id, 'service_2_title', 'Prescriptions' ),
+                        'description' => freshdew_get_section( $page_id, 'service_2_description', 'Prescription renewals and new prescriptions as needed.' ),
                         'image' => 'prescriptions.jpg',
                         'initials' => 'PR',
                     ),
                     array(
-                        'title' => 'Health Assessments',
-                        'description' => 'Basic health check-ups and assessments.',
+                        'title' => freshdew_get_section( $page_id, 'service_3_title', 'Health Assessments' ),
+                        'description' => freshdew_get_section( $page_id, 'service_3_description', 'Basic health check-ups and assessments.' ),
                         'image' => 'health-assessments.jpg',
                         'initials' => 'HA',
                     ),

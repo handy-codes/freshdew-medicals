@@ -7,13 +7,14 @@
 
 get_header();
 $contact_info = freshdew_get_contact_info();
+$page_id = get_the_ID();
 ?>
 
 <section style="padding: 4rem 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
     <div class="container">
-        <h1 style="font-size: 3rem; margin-bottom: 1rem; text-align: center; color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.2);">Telehealth Services</h1>
+        <h1 style="font-size: 3rem; margin-bottom: 1rem; text-align: center; color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.2);"><?php echo esc_html( freshdew_get_section( $page_id, 'hero_title', 'Telehealth Services' ) ); ?></h1>
         <p style="font-size: 1.25rem; text-align: center; opacity: 0.95; max-width: 800px; margin: 0 auto; color: white; text-shadow: 0 1px 5px rgba(0,0,0,0.2);">
-            Virtual consultations from the comfort of your home.
+            <?php echo esc_html( freshdew_get_section( $page_id, 'hero_subtitle', 'Virtual consultations from the comfort of your home.' ) ); ?>
         </p>
     </div>
 </section>
@@ -22,14 +23,16 @@ $contact_info = freshdew_get_contact_info();
     <div class="container">
         <div style="max-width: 900px; margin: 0 auto;">
             <?php
-            $page_content = get_post_field('post_content', get_the_ID());
+            $page_content = get_post_field('post_content', $page_id);
             if ( ! empty( trim( $page_content ) ) ) {
                 echo '<div class="freshdew-page-content entry-content" style="margin-bottom: 3rem;">';
                 the_content();
                 echo '</div>';
             } else {
-                echo '<h2 style="font-size: 2.5rem; margin-bottom: 2rem; color: #1f2937;">Healthcare at Your Fingertips</h2>';
-                echo '<p style="color: #4b5563; line-height: 1.8; margin-bottom: 3rem; font-size: 1.125rem;">Our telehealth services allow you to consult with our healthcare professionals from anywhere, at any time. Perfect for follow-up appointments, prescription renewals, and non-urgent medical consultations.</p>';
+                $intro_heading = freshdew_get_section( $page_id, 'intro_heading', 'Healthcare at Your Fingertips' );
+                $intro_text = freshdew_get_section( $page_id, 'intro_text', 'Our telehealth services allow you to consult with our healthcare professionals from anywhere, at any time. Perfect for follow-up appointments, prescription renewals, and non-urgent medical consultations.' );
+                echo '<h2 style="font-size: 2.5rem; margin-bottom: 2rem; color: #1f2937;">' . esc_html( $intro_heading ) . '</h2>';
+                echo '<p style="color: #4b5563; line-height: 1.8; margin-bottom: 3rem; font-size: 1.125rem;">' . esc_html( $intro_text ) . '</p>';
             }
             ?>
             
@@ -37,20 +40,20 @@ $contact_info = freshdew_get_contact_info();
                 <?php
                 $telehealth_services = array(
                     array(
-                        'title' => 'Video Consultations',
-                        'description' => 'Secure video calls with your doctor from your computer or mobile device.',
+                        'title' => freshdew_get_section( $page_id, 'service_1_title', 'Video Consultations' ),
+                        'description' => freshdew_get_section( $page_id, 'service_1_description', 'Secure video calls with your doctor from your computer or mobile device.' ),
                         'image' => 'video-consultations.jpg',
                         'initials' => 'VC',
                     ),
                     array(
-                        'title' => 'Phone Consultations',
-                        'description' => 'Speak with a healthcare professional over the phone.',
+                        'title' => freshdew_get_section( $page_id, 'service_2_title', 'Phone Consultations' ),
+                        'description' => freshdew_get_section( $page_id, 'service_2_description', 'Speak with a healthcare professional over the phone.' ),
                         'image' => 'phone-consultations.jpg',
                         'initials' => 'PC',
                     ),
                     array(
-                        'title' => 'Follow-up Care',
-                        'description' => 'Convenient follow-up appointments without leaving home.',
+                        'title' => freshdew_get_section( $page_id, 'service_3_title', 'Follow-up Care' ),
+                        'description' => freshdew_get_section( $page_id, 'service_3_description', 'Convenient follow-up appointments without leaving home.' ),
                         'image' => 'follow-up-care.jpg',
                         'initials' => 'FC',
                     ),
@@ -77,28 +80,22 @@ $contact_info = freshdew_get_contact_info();
                 <?php endforeach; ?>
             </div>
             
-            <h2 style="font-size: 2.5rem; margin: 3rem 0 2rem; color: #1f2937;">When to Use Telehealth</h2>
+            <?php
+            $when_heading = freshdew_get_section( $page_id, 'when_to_use_heading', 'When to Use Telehealth' );
+            $when_list = freshdew_get_section( $page_id, 'when_to_use_list', "Follow-up appointments for ongoing conditions\nPrescription renewals\nGeneral health questions and advice\nMental health consultations\nNon-urgent medical concerns" );
+            $when_items = array_filter( array_map( 'trim', explode( "\n", $when_list ) ) );
+            if ( empty( $when_items ) ) {
+                $when_items = array( 'Follow-up appointments for ongoing conditions', 'Prescription renewals', 'General health questions and advice', 'Mental health consultations', 'Non-urgent medical concerns' );
+            }
+            ?>
+            <h2 style="font-size: 2.5rem; margin: 3rem 0 2rem; color: #1f2937;"><?php echo esc_html( $when_heading ); ?></h2>
             <ul style="color: #4b5563; line-height: 2; font-size: 1.125rem; list-style: none; padding: 0;">
+                <?php foreach ( $when_items as $item ) : ?>
                 <li style="margin-bottom: 1rem; padding-left: 2rem; position: relative;">
                     <span style="position: absolute; left: 0; color: #2563eb;">✓</span>
-                    Follow-up appointments for ongoing conditions
+                    <?php echo esc_html( $item ); ?>
                 </li>
-                <li style="margin-bottom: 1rem; padding-left: 2rem; position: relative;">
-                    <span style="position: absolute; left: 0; color: #2563eb;">✓</span>
-                    Prescription renewals
-                </li>
-                <li style="margin-bottom: 1rem; padding-left: 2rem; position: relative;">
-                    <span style="position: absolute; left: 0; color: #2563eb;">✓</span>
-                    General health questions and advice
-                </li>
-                <li style="margin-bottom: 1rem; padding-left: 2rem; position: relative;">
-                    <span style="position: absolute; left: 0; color: #2563eb;">✓</span>
-                    Mental health consultations
-                </li>
-                <li style="margin-bottom: 1rem; padding-left: 2rem; position: relative;">
-                    <span style="position: absolute; left: 0; color: #2563eb;">✓</span>
-                    Non-urgent medical concerns
-                </li>
+                <?php endforeach; ?>
             </ul>
             
             <div style="text-align: center; margin-top: 3rem;">
@@ -106,10 +103,10 @@ $contact_info = freshdew_get_contact_info();
                     <img src="https://www.myhealthaccess.ca/build/branded_signup/book_appt_online_big.png" alt="Book Appointment Online" style="max-width: 100%; height: auto; display: block;">
                 </a>
             </div>
+            <?php $disclaimer = freshdew_get_section( $page_id, 'disclaimer', 'For medical emergencies, please call 911 or visit your nearest emergency room. Telehealth is not suitable for life-threatening situations.' ); ?>
             <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1.5rem; margin: 3rem 0; border-radius: 0.5rem;">
                 <p style="color: #92400e; margin: 0; font-weight: 600;">
-                    ⚠️ <strong>Note:</strong> For medical emergencies, please call 911 or visit your nearest emergency room. 
-                    Telehealth is not suitable for life-threatening situations.
+                    ⚠️ <strong>Note:</strong> <?php echo esc_html( $disclaimer ); ?>
                 </p>
             </div>
             
@@ -121,9 +118,19 @@ $contact_info = freshdew_get_contact_info();
 <section style="padding: 4rem 0; background: #f9fafb;">
     <div class="container">
         <div class="telehealth-consultation-section" style="max-width: 900px; margin: 0 auto;">
-            <h2 style="font-size: 2.5rem; margin-bottom: 1rem; text-align: center; color: #1f2937;">Start Your Virtual Consultation</h2>
+            <?php
+            $virtual_heading = freshdew_get_section( $page_id, 'virtual_heading', 'Start Your Virtual Consultation' );
+            $virtual_subtitle = freshdew_get_section( $page_id, 'virtual_subtitle', 'Connect with our healthcare professionals via secure video or voice call' );
+            $video_title = freshdew_get_section( $page_id, 'video_title', 'Video Consultation' );
+            $video_description = freshdew_get_section( $page_id, 'video_description', 'Face-to-face consultation with your doctor via secure video call' );
+            $video_button = freshdew_get_section( $page_id, 'video_button', 'Start Video Call' );
+            $voice_title = freshdew_get_section( $page_id, 'voice_title', 'Voice Call' );
+            $voice_description = freshdew_get_section( $page_id, 'voice_description', 'Speak with your doctor over a secure phone call' );
+            $voice_button = freshdew_get_section( $page_id, 'voice_button', 'Start Voice Call' );
+            ?>
+            <h2 style="font-size: 2.5rem; margin-bottom: 1rem; text-align: center; color: #1f2937;"><?php echo esc_html( $virtual_heading ); ?></h2>
             <p style="text-align: center; color: #6b7280; margin-bottom: 3rem; font-size: 1.125rem;">
-                Connect with our healthcare professionals via secure video or voice call
+                <?php echo esc_html( $virtual_subtitle ); ?>
             </p>
             
             <div class="telehealth-buttons" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin-bottom: 3rem; align-items: stretch;">
@@ -134,13 +141,13 @@ $contact_info = freshdew_get_contact_info();
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                             </svg>
                         </div>
-                        <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #1f2937;">Video Consultation</h3>
+                        <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #1f2937;"><?php echo esc_html( $video_title ); ?></h3>
                         <p style="color: #6b7280; margin-bottom: 1.5rem; line-height: 1.6;">
-                            Face-to-face consultation with your doctor via secure video call
+                            <?php echo esc_html( $video_description ); ?>
                         </p>
                     </div>
                     <button id="start-video-call" class="btn" style="width: 100%; margin-top: auto;">
-                        Start Video Call
+                        <?php echo esc_html( $video_button ); ?>
                     </button>
                 </div>
                 
@@ -151,13 +158,13 @@ $contact_info = freshdew_get_contact_info();
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                             </svg>
                         </div>
-                        <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #1f2937;">Voice Call</h3>
+                        <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #1f2937;"><?php echo esc_html( $voice_title ); ?></h3>
                         <p style="color: #6b7280; margin-bottom: 1.5rem; line-height: 1.6;">
-                            Speak with your doctor over a secure phone call
+                            <?php echo esc_html( $voice_description ); ?>
                         </p>
                     </div>
                     <button id="start-voice-call" class="btn" style="width: 100%; margin-top: auto;">
-                        Start Voice Call
+                        <?php echo esc_html( $voice_button ); ?>
                     </button>
                 </div>
             </div>

@@ -7,13 +7,14 @@
 
 get_header();
 $contact_info = freshdew_get_contact_info();
+$page_id = get_the_ID();
 ?>
 
 <section style="padding: 4rem 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
     <div class="container">
-        <h1 style="font-size: 3rem; margin-bottom: 1rem; text-align: center; color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.2);">Family Practice</h1>
+        <h1 style="font-size: 3rem; margin-bottom: 1rem; text-align: center; color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.2);"><?php echo esc_html( freshdew_get_section( $page_id, 'hero_title', 'Family Practice' ) ); ?></h1>
         <p style="font-size: 1.25rem; text-align: center; opacity: 0.95; max-width: 800px; margin: 0 auto; color: white; text-shadow: 0 1px 5px rgba(0,0,0,0.2);">
-            Comprehensive family healthcare with dedicated family doctors.
+            <?php echo esc_html( freshdew_get_section( $page_id, 'hero_subtitle', 'Comprehensive family healthcare with dedicated family doctors.' ) ); ?>
         </p>
     </div>
 </section>
@@ -22,7 +23,7 @@ $contact_info = freshdew_get_contact_info();
     <div class="container">
         <div style="max-width: 900px; margin: 0 auto;">
             <?php
-            $page_content = get_post_field('post_content', get_the_ID());
+            $page_content = get_post_field('post_content', $page_id);
             if ( ! empty( trim( $page_content ) ) ) {
                 echo '<div class="freshdew-page-content entry-content" style="margin-bottom: 3rem;">';
                 the_content();
@@ -33,31 +34,31 @@ $contact_info = freshdew_get_contact_info();
             }
             ?>
             
-            <h2 style="font-size: 2.5rem; margin: 3rem 0 2rem; color: #1f2937;">Services We Provide</h2>
+            <h2 style="font-size: 2.5rem; margin: 3rem 0 2rem; color: #1f2937;"><?php echo esc_html( freshdew_get_section( $page_id, 'services_heading', 'Services We Provide' ) ); ?></h2>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem; margin-bottom: 3rem;">
                 <?php
                 $family_services = array(
                     array(
-                        'title' => 'Pediatric Care',
-                        'description' => 'Comprehensive healthcare for children of all ages.',
+                        'title' => freshdew_get_section( $page_id, 'service_1_title', 'Pediatric Care' ),
+                        'description' => freshdew_get_section( $page_id, 'service_1_description', 'Comprehensive healthcare for children of all ages.' ),
                         'image' => 'pediatric-care.jpg',
                         'initials' => 'PC',
                     ),
                     array(
-                        'title' => 'Family Health',
-                        'description' => 'Preventive care and health maintenance for the whole family.',
+                        'title' => freshdew_get_section( $page_id, 'service_2_title', 'Family Health' ),
+                        'description' => freshdew_get_section( $page_id, 'service_2_description', 'Preventive care and health maintenance for the whole family.' ),
                         'image' => 'family-health.jpg',
                         'initials' => 'FH',
                     ),
                     array(
-                        'title' => 'Chronic Disease Management',
-                        'description' => 'Ongoing care for diabetes, hypertension, and other chronic conditions.',
+                        'title' => freshdew_get_section( $page_id, 'service_3_title', 'Chronic Disease Management' ),
+                        'description' => freshdew_get_section( $page_id, 'service_3_description', 'Ongoing care for diabetes, hypertension, and other chronic conditions.' ),
                         'image' => 'chronic-disease.jpg',
                         'initials' => 'CD',
                     ),
                     array(
-                        'title' => 'Vaccinations',
-                        'description' => 'Immunizations for children and adults.',
+                        'title' => freshdew_get_section( $page_id, 'service_4_title', 'Vaccinations' ),
+                        'description' => freshdew_get_section( $page_id, 'service_4_description', 'Immunizations for children and adults.' ),
                         'image' => 'vaccinations.jpg',
                         'initials' => 'VA',
                     ),
@@ -84,9 +85,10 @@ $contact_info = freshdew_get_contact_info();
                 <?php endforeach; ?>
             </div>
             
+            <?php $accepting_heading = freshdew_get_section( $page_id, 'accepting_heading', 'Accepting New Patients' ); $accepting_text = freshdew_get_section( $page_id, 'accepting_text', 'We are currently accepting new patients for our family practice. Please click below link to book your first appointment.' ); ?>
             <div style="background: #f0f9ff; border-left: 4px solid #2563eb; padding: 1.5rem; margin: 3rem 0; border-radius: 0.5rem;">
-                <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #1e40af;">Accepting New Patients</h3>
-                <p style="color: #1e40af; margin: 0;">We are currently accepting new patients for our family practice. Please click below link to book your first appointment.</p>
+                <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #1e40af;"><?php echo esc_html( $accepting_heading ); ?></h3>
+                <p style="color: #1e40af; margin: 0;"><?php echo esc_html( $accepting_text ); ?></p>
             </div>
             
             <div style="text-align: center; margin-top: 3rem;">

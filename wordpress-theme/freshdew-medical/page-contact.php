@@ -7,13 +7,14 @@
 
 get_header();
 $contact_info = freshdew_get_contact_info();
+$page_id = get_the_ID();
 ?>
 
 <main id="main" class="site-main">
     <div class="container" style="padding: 4rem 20px;">
-        <h1 style="text-align: center; font-size: 3rem; margin-bottom: 1.5rem;">Contact Us</h1>
+        <h1 style="text-align: center; font-size: 3rem; margin-bottom: 1.5rem;"><?php echo esc_html( freshdew_get_section( $page_id, 'title', 'Contact Us' ) ); ?></h1>
         <?php
-        $page_content = get_post_field('post_content', get_the_ID());
+        $page_content = get_post_field('post_content', $page_id);
         if ( ! empty( trim( $page_content ) ) ) {
             echo '<div class="freshdew-page-content entry-content" style="max-width: 800px; margin: 0 auto 3rem; text-align: center;">';
             the_content();
@@ -24,7 +25,7 @@ $contact_info = freshdew_get_contact_info();
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto;">
             <!-- Contact Form -->
             <div style="background: #f9fafb; padding: 2rem; border-radius: 0.5rem;">
-                <h2 style="margin-bottom: 1.5rem;">Get in Touch</h2>
+                <h2 style="margin-bottom: 1.5rem;"><?php echo esc_html( freshdew_get_section( $page_id, 'get_in_touch_heading', 'Get in Touch' ) ); ?></h2>
                 
                 <?php
                 // Display success/error messages
@@ -154,7 +155,7 @@ $contact_info = freshdew_get_contact_info();
         
         <!-- Map -->
         <div style="margin-top: 3rem; max-width: 1200px; margin-left: auto; margin-right: auto;">
-            <h2 style="text-align: center; margin-bottom: 2rem;">Find Us</h2>
+            <h2 style="text-align: center; margin-bottom: 2rem;"><?php echo esc_html( freshdew_get_section( $page_id, 'find_us_heading', 'Find Us' ) ); ?></h2>
             <div class="map-container">
                 <?php
                 $lat = $contact_info['latitude'];
