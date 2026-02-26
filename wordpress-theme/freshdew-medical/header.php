@@ -175,6 +175,7 @@
                     'fallback_cb' => 'freshdew_default_menu',
                 ));
                 ?>
+                <a href="https://freshdewmedicalclinic.com/wp-admin" class="nav-admin-link" target="_blank" rel="noopener noreferrer" style="background: #F97316; color: white !important; padding: 0.5rem 1rem; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 1rem; margin-left: 0.5rem;">Admin</a>
                 <a href="<?php echo esc_url(home_url('/register')); ?>" class="register-link-nav" style="display: none !important; background: #F69710 !important; color: white !important; padding: 0.5rem !important; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 1rem;">Register</a>
                 <?php if (class_exists('FreshDew_Clinic_System')): ?>
                 <div class="nav-auth-links" style="display: none !important;">
@@ -204,6 +205,7 @@ function freshdew_default_menu() {
     echo '<li><a href="' . esc_url(home_url('/family-practice')) . '">Family Practice</a></li>';
     echo '<li><a href="' . esc_url(home_url('/telehealth')) . '">Telehealth</a></li>';
     echo '<li><a href="' . esc_url(home_url('/contact')) . '">Contact</a></li>';
+    echo '<li><a href="https://freshdewmedicalclinic.com/wp-admin" class="nav-admin-link" target="_blank" rel="noopener noreferrer" style="background: #F97316; color: white !important; padding: 0.5rem 1rem; border-radius: 6px; text-decoration: none; font-weight: 600;">Admin</a></li>';
     echo '</ul>';
 }
 ?>
