@@ -120,6 +120,18 @@ jobs:
           echo "protocol=ftp" >> $GITHUB_OUTPUT
           exit 0
 
+      - name: Set deployment paths
+        id: paths
+        run: |
+          THEME_PATH="${{ secrets.HOSTINGER_FTP_THEME_PATH }}"
+          PLUGINS_PATH="${{ secrets.HOSTINGER_FTP_PLUGINS_PATH }}"
+          if [ -z "$THEME_PATH" ]; then THEME_PATH="/public_html/wp-content/themes/freshdew-medical/"; fi
+          if [ -z "$PLUGINS_PATH" ]; then PLUGINS_PATH="/public_html/wp-content/plugins/"; fi
+          echo "theme_path=$THEME_PATH" >> $GITHUB_OUTPUT
+          echo "plugins_path=$PLUGINS_PATH" >> $GITHUB_OUTPUT
+          echo "Theme path: $THEME_PATH"
+          echo "Plugins path: $PLUGINS_PATH"
+
       - name: Detect SFTP configuration
         id: sftp-config
         run: |
@@ -154,7 +166,7 @@ jobs:
           REMOTE_USER: ${{ secrets.HOSTINGER_SSH_USER }}
           REMOTE_PORT: ${{ secrets.HOSTINGER_SSH_PORT || '22' }}
           SOURCE: "wordpress-theme/freshdew-medical/"
-          TARGET: "/public_html/wp-content/themes/freshdew-medical/"
+          TARGET: ${{ steps.paths.outputs.theme_path }}
           ARGS: "-rlgoD --chmod=755"
         timeout-minutes: 10
       
@@ -168,7 +180,7 @@ jobs:
           server: ${{ secrets.HOSTINGER_FTP_SERVER }}
           username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
           password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
-          server-dir: /public_html/wp-content/themes/freshdew-medical/
+          server-dir: ${{ steps.paths.outputs.theme_path }}
           local-dir: ./wordpress-theme/freshdew-medical/
           protocol: ${{ steps.test-ftp.outputs.protocol == 'ftps' && 'ftps' || 'ftp' }}
           dangerous-clean-slate: false
@@ -190,7 +202,7 @@ jobs:
           echo "error=true" >> $GITHUB_OUTPUT
         continue-on-error: true
       
-      # Theme Deployment - Alternative paths (fallback)
+      # Theme Deployment - Alternative paths (fallback: no leading slash)
       - name: Deploy Theme (Alternative Path 1)
         id: theme-alt1
         if: steps.theme-ftp.outcome == 'failure'
@@ -249,7 +261,7 @@ jobs:
           REMOTE_USER: ${{ secrets.HOSTINGER_SSH_USER }}
           REMOTE_PORT: ${{ secrets.HOSTINGER_SSH_PORT || '22' }}
           SOURCE: "wordpress-plugins/"
-          TARGET: "/public_html/wp-content/plugins/"
+          TARGET: ${{ steps.paths.outputs.plugins_path }}
           ARGS: "-rlgoD --chmod=755"
       
       # Plugins Deployment - FTP
@@ -262,7 +274,7 @@ jobs:
           server: ${{ secrets.HOSTINGER_FTP_SERVER }}
           username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
           password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
-          server-dir: /public_html/wp-content/plugins/
+          server-dir: ${{ steps.paths.outputs.plugins_path }}
           local-dir: ./wordpress-plugins/
           protocol: ${{ steps.test-ftp.outputs.protocol == 'ftps' && 'ftps' || 'ftp' }}
           dangerous-clean-slate: false
@@ -428,5 +440,7 @@ jobs:
             echo "   → Verify FTP server address format"
             echo "   → Request SFTP access if not available"
             echo "   → Ask about firewall restrictions"
+            echo ""
+            echo "   📄 Full guide: docs/DEPLOY_TROUBLESHOOTING.md (optional path secrets, SFTP setup)"
             exit 1
           fi
