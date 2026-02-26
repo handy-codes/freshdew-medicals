@@ -334,6 +334,27 @@ jobs:
           log-level: verbose
         timeout-minutes: 15
       
+      # When deployment failed, run a quick FTP diagnostic so the error is visible at end of log
+      - name: FTP diagnostic (run when deploy failed)
+        if: steps.theme-ftp.outcome == 'failure' || steps.theme-sftp.outcome == 'failure'
+        run: |
+          echo ""
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "🔬 FTP CONNECTION DIAGNOSTIC"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "Server: ${{ secrets.HOSTINGER_FTP_SERVER }}"
+          echo "User:   ${{ secrets.HOSTINGER_FTP_USERNAME }}"
+          echo ""
+          echo "Testing FTP (plain)..."
+          timeout 10 lftp -c "set ftp:ssl-force false; set ftp:ssl-protect-data false; open -u ${{ secrets.HOSTINGER_FTP_USERNAME }},${{ secrets.HOSTINGER_FTP_PASSWORD }} ${{ secrets.HOSTINGER_FTP_SERVER }}; pwd; ls; quit" 2>&1 || true
+          echo ""
+          echo "Testing FTPS (if FTP failed)..."
+          timeout 10 lftp -c "set ftp:ssl-force true; set ftp:ssl-protect-data true; open -u ${{ secrets.HOSTINGER_FTP_USERNAME }},${{ secrets.HOSTINGER_FTP_PASSWORD }} ${{ secrets.HOSTINGER_FTP_SERVER }}; pwd; quit" 2>&1 || true
+          echo ""
+          echo "💡 Use the error lines above: connection refused = wrong host or blocked; login incorrect = wrong user/pass; No such file = set HOSTINGER_FTP_THEME_PATH in Secrets."
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+        continue-on-error: true
+      
       # Final check and error reporting
       # We use outcome (actual result), not conclusion. With continue-on-error,
       # a failed step has outcome=failure but conclusion=success (error ignored).
