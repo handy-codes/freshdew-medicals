@@ -160,7 +160,8 @@ if ( ! empty( trim( $home_content ) ) ) {
         <div style="max-width: 900px; margin: 0 auto;">
             <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1.5rem; border-radius: 0.5rem;">
                 <p style="color: #92400e; margin: 0 0 1rem 0; font-weight: 600; font-size: 1rem;">
-                    ⚠️ <strong>Important Notice:</strong> All first appointments with Dr. Kinze will be a "Meet and Greet" to enrol patients into her family practice.
+                    ⚠️ <strong>Important Notice:</strong> All first appointments with Dr. Kinze will be a "Meet and Greet" to enrol patients into her family practice. This will
+                    only be conducted face to face and cannot be done virtually.
                 </p>
                 <p style="color: #92400e; margin: 0 0 1rem 0; font-weight: 600; font-size: 1rem;">
                     Please note that no medical complaints will be discussed during this visit.
