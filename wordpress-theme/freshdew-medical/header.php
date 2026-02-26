@@ -205,7 +205,6 @@ function freshdew_default_menu() {
     echo '<li><a href="' . esc_url(home_url('/family-practice')) . '">Family Practice</a></li>';
     echo '<li><a href="' . esc_url(home_url('/telehealth')) . '">Telehealth</a></li>';
     echo '<li><a href="' . esc_url(home_url('/contact')) . '">Contact</a></li>';
-    echo '<li><a href="https://freshdewmedicalclinic.com/wp-admin" class="nav-admin-link" target="_blank" rel="noopener noreferrer" style="background: #F97316; color: white !important; padding: 0.5rem 1rem; border-radius: 6px; text-decoration: none; font-weight: 600;">Admin</a></li>';
     echo '</ul>';
 }
 ?>
