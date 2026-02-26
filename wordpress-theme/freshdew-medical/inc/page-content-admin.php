@@ -63,6 +63,11 @@ function freshdew_get_page_sections_config() {
 			array( 'key' => 'about_para2', 'label' => 'About paragraph 2', 'default' => "Our team of experienced healthcare professionals are dedicated to delivering compassionate, patient-centered care using the latest medical technologies.", 'type' => 'textarea' ),
 			array( 'key' => 'visit_heading', 'label' => 'Visit Us heading', 'default' => 'Visit Us', 'type' => 'text' ),
 			array( 'key' => 'visit_subtitle', 'label' => 'Visit Us subtitle', 'default' => 'Conveniently located in Belleville, Ontario', 'type' => 'text' ),
+			array( 'key' => 'hero_image', 'label' => 'Hero background image', 'default' => '', 'type' => 'image' ),
+			array( 'key' => 'service_1_image', 'label' => 'Service 1 (Walk-in) image', 'default' => '', 'type' => 'image' ),
+			array( 'key' => 'service_2_image', 'label' => 'Service 2 (Family Practice) image', 'default' => '', 'type' => 'image' ),
+			array( 'key' => 'service_3_image', 'label' => 'Service 3 (Telehealth) image', 'default' => '', 'type' => 'image' ),
+			array( 'key' => 'about_image', 'label' => 'About section image', 'default' => '', 'type' => 'image' ),
 		),
 		'about' => array(
 			array( 'key' => 'hero_title', 'label' => 'Hero title', 'default' => 'About FreshDew Medical Clinic', 'type' => 'text' ),
@@ -70,6 +75,11 @@ function freshdew_get_page_sections_config() {
 			array( 'key' => 'meet_heading', 'label' => 'Meet Our Team heading', 'default' => 'Meet Our Team', 'type' => 'text' ),
 			array( 'key' => 'services_heading', 'label' => 'Our Services heading', 'default' => 'Our Services', 'type' => 'text' ),
 			array( 'key' => 'services_list', 'label' => 'Services list (one per line)', 'default' => "Walk-in Clinic: No appointment needed. Quality medical care when you need it.\nFamily Practice: Comprehensive family healthcare with dedicated family doctors.\nTelehealth: Virtual consultations from the comfort of your home.", 'type' => 'textarea' ),
+			array( 'key' => 'team_1_image', 'label' => 'Team member 1 (Dr. Joy Kinze) image', 'default' => '', 'type' => 'image' ),
+			array( 'key' => 'team_2_image', 'label' => 'Team member 2 (Dr. Kalu N. Ukoha) image', 'default' => '', 'type' => 'image' ),
+			array( 'key' => 'team_3_image', 'label' => 'Team member 3 (Karen Howald) image', 'default' => '', 'type' => 'image' ),
+			array( 'key' => 'team_4_image', 'label' => 'Team member 4 (Emeka Owo) image', 'default' => '', 'type' => 'image' ),
+			array( 'key' => 'team_5_image', 'label' => 'Team member 5 (Rejoice Obioha) image', 'default' => '', 'type' => 'image' ),
 		),
 		'walk-in-clinic' => array(
 			array( 'key' => 'hero_title', 'label' => 'Hero title', 'default' => 'Walk-in Clinic', 'type' => 'text' ),
@@ -81,6 +91,9 @@ function freshdew_get_page_sections_config() {
 			array( 'key' => 'service_2_description', 'label' => 'Service 2 description', 'default' => 'Prescription renewals and new prescriptions as needed.', 'type' => 'textarea' ),
 			array( 'key' => 'service_3_title', 'label' => 'Service 3 title', 'default' => 'Health Assessments', 'type' => 'text' ),
 			array( 'key' => 'service_3_description', 'label' => 'Service 3 description', 'default' => 'Basic health check-ups and assessments.', 'type' => 'textarea' ),
+			array( 'key' => 'service_1_image', 'label' => 'Service 1 image', 'default' => '', 'type' => 'image' ),
+			array( 'key' => 'service_2_image', 'label' => 'Service 2 image', 'default' => '', 'type' => 'image' ),
+			array( 'key' => 'service_3_image', 'label' => 'Service 3 image', 'default' => '', 'type' => 'image' ),
 		),
 		'family-practice' => array(
 			array( 'key' => 'hero_title', 'label' => 'Hero title', 'default' => 'Family Practice', 'type' => 'text' ),
@@ -96,6 +109,10 @@ function freshdew_get_page_sections_config() {
 			array( 'key' => 'service_4_description', 'label' => 'Service 4 description', 'default' => 'Immunizations for children and adults.', 'type' => 'textarea' ),
 			array( 'key' => 'accepting_heading', 'label' => 'Accepting New Patients heading', 'default' => 'Accepting New Patients', 'type' => 'text' ),
 			array( 'key' => 'accepting_text', 'label' => 'Accepting New Patients text', 'default' => 'We are currently accepting new patients for our family practice. Please click below link to book your first appointment.', 'type' => 'textarea' ),
+			array( 'key' => 'service_1_image', 'label' => 'Service 1 image', 'default' => '', 'type' => 'image' ),
+			array( 'key' => 'service_2_image', 'label' => 'Service 2 image', 'default' => '', 'type' => 'image' ),
+			array( 'key' => 'service_3_image', 'label' => 'Service 3 image', 'default' => '', 'type' => 'image' ),
+			array( 'key' => 'service_4_image', 'label' => 'Service 4 image', 'default' => '', 'type' => 'image' ),
 		),
 		'telehealth' => array(
 			array( 'key' => 'hero_title', 'label' => 'Hero title', 'default' => 'Telehealth Services', 'type' => 'text' ),
@@ -119,6 +136,9 @@ function freshdew_get_page_sections_config() {
 			array( 'key' => 'voice_title', 'label' => 'Voice Call card title', 'default' => 'Voice Call', 'type' => 'text' ),
 			array( 'key' => 'voice_description', 'label' => 'Voice Call card description', 'default' => 'Speak with your doctor over a secure phone call', 'type' => 'textarea' ),
 			array( 'key' => 'voice_button', 'label' => 'Voice button text', 'default' => 'Start Voice Call', 'type' => 'text' ),
+			array( 'key' => 'service_1_image', 'label' => 'Service 1 (Video Consultations) image', 'default' => '', 'type' => 'image' ),
+			array( 'key' => 'service_2_image', 'label' => 'Service 2 (Phone Consultations) image', 'default' => '', 'type' => 'image' ),
+			array( 'key' => 'service_3_image', 'label' => 'Service 3 (Follow-up Care) image', 'default' => '', 'type' => 'image' ),
 		),
 		'contact' => array(
 			array( 'key' => 'title', 'label' => 'Page title', 'default' => 'Contact Us', 'type' => 'text' ),
@@ -141,6 +161,22 @@ function freshdew_get_section( $post_id, $section_key, $default = '' ) {
 	return $val !== '' && $val !== null ? (string) $val : (string) $default;
 }
 
+/**
+ * Get section image attachment ID for the front end. Use with wp_get_attachment_image_url() or wp_get_attachment_image().
+ *
+ * @param int    $post_id Page post ID.
+ * @param string $section_key Section key (e.g. hero_image).
+ * @return int 0 if not set or invalid.
+ */
+function freshdew_get_section_image_id( $post_id, $section_key ) {
+	$val = get_post_meta( $post_id, 'freshdew_section_' . $section_key, true );
+	$id = absint( $val );
+	if ( $id && wp_attachment_is_image( $id ) ) {
+		return $id;
+	}
+	return 0;
+}
+
 /** Meta box: Page Sections (only for the 6 editable pages) */
 function freshdew_add_page_sections_meta_box() {
 	$screen = get_current_screen();
@@ -151,6 +187,7 @@ function freshdew_add_page_sections_meta_box() {
 	if ( ! $post || freshdew_get_editable_page_key( $post ) === null ) {
 		return;
 	}
+	wp_enqueue_media();
 	add_meta_box(
 		'freshdew_page_sections',
 		__( 'Page sections (editable content)', 'freshdew-medical' ),
@@ -171,7 +208,7 @@ function freshdew_render_page_sections_meta_box( $post ) {
 		return;
 	}
 	wp_nonce_field( 'freshdew_save_page_sections', 'freshdew_sections_nonce' );
-	echo '<p class="description">Only these pages are editable: Home, About, Walk-in Clinic, Family Practice, Telehealth, Contact. Edit sections below and Update the page.</p>';
+	echo '<p class="description">Only these pages are editable: Home, About, Walk-in Clinic, Family Practice, Telehealth, Contact. Edit text and images below, then Update the page. Use "Select/Update" to change an image, "Remove" to delete it.</p>';
 	echo '<div style="display: grid; gap: 1rem;">';
 	foreach ( $config[ $page_key ] as $section ) {
 		$meta_key = 'freshdew_section_' . $section['key'];
@@ -179,9 +216,26 @@ function freshdew_render_page_sections_meta_box( $post ) {
 		if ( $value === '' || $value === null ) {
 			$value = $section['default'];
 		}
-		echo '<div>';
+		echo '<div class="freshdew-section-field" data-type="' . esc_attr( $section['type'] ) . '">';
 		echo '<label for="' . esc_attr( $meta_key ) . '" style="display:block; font-weight: 600; margin-bottom: 0.25rem;">' . esc_html( $section['label'] ) . '</label>';
-		if ( $section['type'] === 'textarea' ) {
+		if ( $section['type'] === 'image' ) {
+			$img_id = absint( $value );
+			$img_url = $img_id ? wp_get_attachment_image_url( $img_id, 'thumbnail' ) : '';
+			echo '<div class="freshdew-image-field" style="display: flex; align-items: flex-start; gap: 10px; flex-wrap: wrap;">';
+			echo '<input type="hidden" id="' . esc_attr( $meta_key ) . '" name="' . esc_attr( $meta_key ) . '" value="' . esc_attr( $img_id ) . '">';
+			echo '<div class="freshdew-image-preview" style="min-width: 100px; min-height: 80px; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; background: #f5f5f5;">';
+			if ( $img_url ) {
+				echo '<img src="' . esc_url( $img_url ) . '" alt="" style="display: block; max-width: 120px; height: auto;">';
+			} else {
+				echo '<span style="display: flex; align-items: center; justify-content: center; height: 80px; color: #999; font-size: 12px;">No image</span>';
+			}
+			echo '</div>';
+			echo '<div style="display: flex; flex-direction: column; gap: 4px;">';
+			echo '<button type="button" class="button freshdew-select-image">Select / Update image</button>';
+			echo '<button type="button" class="button freshdew-remove-image">Remove image</button>';
+			echo '</div>';
+			echo '</div>';
+		} elseif ( $section['type'] === 'textarea' ) {
 			echo '<textarea id="' . esc_attr( $meta_key ) . '" name="' . esc_attr( $meta_key ) . '" rows="3" class="large-text" style="width:100%;">' . esc_textarea( $value ) . '</textarea>';
 		} else {
 			echo '<input type="text" id="' . esc_attr( $meta_key ) . '" name="' . esc_attr( $meta_key ) . '" value="' . esc_attr( $value ) . '" class="large-text" style="width:100%;">';
@@ -189,6 +243,42 @@ function freshdew_render_page_sections_meta_box( $post ) {
 		echo '</div>';
 	}
 	echo '</div>';
+	// Inline script for media picker (runs only when this meta box is present).
+	?>
+	<script>
+	(function() {
+		function initFreshdewImageFields() {
+			document.querySelectorAll('.freshdew-image-field').forEach(function(wrap) {
+				if (wrap.dataset.initialized) return;
+				wrap.dataset.initialized = '1';
+				var input = wrap.querySelector('input[type="hidden"]');
+				var preview = wrap.querySelector('.freshdew-image-preview');
+				var selectBtn = wrap.querySelector('.freshdew-select-image');
+				var removeBtn = wrap.querySelector('.freshdew-remove-image');
+				if (!input || !selectBtn || !removeBtn) return;
+				selectBtn.addEventListener('click', function() {
+					var frame = wp.media({ library: { type: 'image' }, multiple: false });
+					frame.on('select', function() {
+						var att = frame.state().get('selection').first().toJSON();
+						input.value = att.id;
+						preview.innerHTML = '<img src="' + (att.sizes && att.sizes.thumbnail ? att.sizes.thumbnail.url : att.url) + '" alt="" style="display: block; max-width: 120px; height: auto;">';
+					});
+					frame.open();
+				});
+				removeBtn.addEventListener('click', function() {
+					input.value = '';
+					preview.innerHTML = '<span style="display: flex; align-items: center; justify-content: center; height: 80px; color: #999; font-size: 12px;">No image</span>';
+				});
+			});
+		}
+		if (typeof wp !== 'undefined' && wp.media) {
+			initFreshdewImageFields();
+		} else {
+			document.addEventListener('DOMContentLoaded', function() { setTimeout(initFreshdewImageFields, 100); });
+		}
+	})();
+	</script>
+	<?php
 }
 
 function freshdew_save_page_sections( $post_id ) {
@@ -209,8 +299,17 @@ function freshdew_save_page_sections( $post_id ) {
 	}
 	foreach ( $config[ $page_key ] as $section ) {
 		$meta_key = 'freshdew_section_' . $section['key'];
-		if ( isset( $_POST[ $meta_key ] ) ) {
-			$value = $section['type'] === 'textarea' ? sanitize_textarea_field( wp_unslash( $_POST[ $meta_key ] ) ) : sanitize_text_field( wp_unslash( $_POST[ $meta_key ] ) );
+		if ( ! isset( $_POST[ $meta_key ] ) ) {
+			continue;
+		}
+		if ( $section['type'] === 'image' ) {
+			$value = absint( $_POST[ $meta_key ] );
+			update_post_meta( $post_id, $meta_key, $value );
+		} elseif ( $section['type'] === 'textarea' ) {
+			$value = sanitize_textarea_field( wp_unslash( $_POST[ $meta_key ] ) );
+			update_post_meta( $post_id, $meta_key, $value );
+		} else {
+			$value = sanitize_text_field( wp_unslash( $_POST[ $meta_key ] ) );
 			update_post_meta( $post_id, $meta_key, $value );
 		}
 	}

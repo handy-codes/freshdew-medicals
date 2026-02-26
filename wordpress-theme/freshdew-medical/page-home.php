@@ -13,11 +13,12 @@ $page_id = get_the_ID();
 <!-- Hero Section with Medical Team Image -->
 <section class="hero-section">
     <div class="hero-background-wrapper">
-        <!-- Previous image: https://media.istockphoto.com/id/2218491828/photo/medical-team-smiling-at-camera-in-hospital-corridor.webp -->
-        <img src="https://images.unsplash.com/photo-1725870953863-4ad4db0acfc2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cGF0aWVudCUyMGNhcmV8ZW58MHx8MHx8fDA%3D" 
-             alt="Medical Team" 
-         class="hero-background"
-         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+        <?php
+        $hero_img_id = freshdew_get_section_image_id( $page_id, 'hero_image' );
+        $hero_src = $hero_img_id ? wp_get_attachment_image_url( $hero_img_id, 'full' ) : 'https://images.unsplash.com/photo-1725870953863-4ad4db0acfc2?w=500&auto=format&fit=crop&q=60';
+        ?>
+        <img src="<?php echo esc_url( $hero_src ); ?>" alt="Medical Team" class="hero-background"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
     <div class="hero-background" style="display: none; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
         <!-- Professional gradient overlay matching TSX version - lighter for better clarity -->
         <div class="hero-overlay" style="position: absolute; inset: 0; background: linear-gradient(to right, rgba(30, 58, 138, 0.5), rgba(30, 58, 138, 0.25), transparent); z-index: 10;"></div>
@@ -74,35 +75,42 @@ if ( ! empty( trim( $home_content ) ) ) {
                     'title' => freshdew_get_section( $page_id, 'service_1_title', 'Walk-in Clinic' ),
                     'description' => freshdew_get_section( $page_id, 'service_1_description', 'No appointment needed. Walk in and receive quality medical care.' ),
                     'link' => home_url('/walk-in-clinic'),
-                    'image' => 'walk-in-clinic.jpg',
+                    'image_key' => 'service_1_image',
+                    'theme_image' => 'walk-in-clinic.jpg',
                     'initials' => 'WC',
                 ),
                 array(
                     'title' => freshdew_get_section( $page_id, 'service_2_title', 'Family Practice' ),
                     'description' => freshdew_get_section( $page_id, 'service_2_description', 'Comprehensive family healthcare with dedicated family doctors.' ),
                     'link' => home_url('/family-practice'),
-                    'image' => 'family-practice.jpg',
+                    'image_key' => 'service_2_image',
+                    'theme_image' => 'family-practice.jpg',
                     'initials' => 'FP',
                 ),
                 array(
                     'title' => freshdew_get_section( $page_id, 'service_3_title', 'Telehealth' ),
                     'description' => freshdew_get_section( $page_id, 'service_3_description', 'Virtual consultations from the comfort of your home.' ),
                     'link' => home_url('/telehealth'),
-                    'image' => 'telehealth.jpg',
+                    'image_key' => 'service_3_image',
+                    'theme_image' => 'telehealth.jpg',
                     'initials' => 'TH',
                 ),
             );
             foreach ($services as $service) :
+                $service_img_id = freshdew_get_section_image_id( $page_id, $service['image_key'] );
+                $service_img_url = $service_img_id ? wp_get_attachment_image_url( $service_img_id, 'large' ) : '';
+                if ( ! $service_img_url ) {
+                    $service_image_path = get_template_directory() . '/assets/images/services/' . $service['theme_image'];
+                    $service_img_url = file_exists( $service_image_path ) ? get_template_directory_uri() . '/assets/images/services/' . $service['theme_image'] : '';
+                }
             ?>
             <div style="background: white; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 12px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)';">
                 <div style="width: 100%; height: 300px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); position: relative; overflow: hidden;">
                     <?php
-                    $service_image = get_template_directory_uri() . '/assets/images/services/' . $service['image'];
-                    $service_image_path = get_template_directory() . '/assets/images/services/' . $service['image'];
-                    if (file_exists($service_image_path)) {
-                        echo '<img src="' . esc_url($service_image) . '" alt="' . esc_attr($service['title']) . '" style="width: 100%; height: 100%; object-fit: cover; display: block; margin: 0; padding: 0;">';
+                    if ( $service_img_url ) {
+                        echo '<img src="' . esc_url( $service_img_url ) . '" alt="' . esc_attr( $service['title'] ) . '" style="width: 100%; height: 100%; object-fit: cover; display: block; margin: 0; padding: 0;">';
                     } else {
-                        echo '<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: 600;">' . esc_html($service['initials']) . '</div>';
+                        echo '<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: 600;">' . esc_html( $service['initials'] ) . '</div>';
                     }
                     ?>
                 </div>
@@ -134,8 +142,11 @@ if ( ! empty( trim( $home_content ) ) ) {
                 <a href="<?php echo esc_url(home_url('/about')); ?>" class="btn">Learn More About Us</a>
             </div>
             <div>
-                <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/fresh-leaf-hero.jpg'); ?>" 
-                     alt="Fresh Healthcare" 
+                <?php
+                $about_img_id = freshdew_get_section_image_id( $page_id, 'about_image' );
+                $about_img_url = $about_img_id ? wp_get_attachment_image_url( $about_img_id, 'large' ) : get_template_directory_uri() . '/assets/images/fresh-leaf-hero.jpg';
+                ?>
+                <img src="<?php echo esc_url( $about_img_url ); ?>" alt="Fresh Healthcare"
                      style="width: 100%; height: auto; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1);"
                      onerror="this.style.display='none';">
             </div>

@@ -40,17 +40,21 @@ $page_id = get_the_ID();
             <div style="display: flex; flex-direction: column; gap: 2.5rem; margin-bottom: 4rem;">
                 
                 <!-- Dr. Joy Kinze Card -->
+                <?php
+                $team1_img_id = freshdew_get_section_image_id( $page_id, 'team_1_image' );
+                $team1_img_url = $team1_img_id ? wp_get_attachment_image_url( $team1_img_id, 'large' ) : '';
+                if ( ! $team1_img_url ) {
+                    $p = get_template_directory() . '/assets/images/doctors/dr-joy-kinze.jpg';
+                    $team1_img_url = ( file_exists( $p ) && filesize( $p ) > 0 ) ? get_template_directory_uri() . '/assets/images/doctors/dr-joy-kinze.jpg' : '';
+                }
+                ?>
                 <div class="team-card" style="background: white; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 12px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)';">
                     <div class="team-card-image" style="width: 100%; height: 300px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); position: relative; overflow: hidden; border-radius: 0.75rem 0.75rem 0 0; display: flex; align-items: center; justify-content: center;">
-                        <?php
-                        $doctor1_image_path = get_template_directory() . '/assets/images/doctors/dr-joy-kinze.jpg';
-                        $doctor1_image_url = get_template_directory_uri() . '/assets/images/doctors/dr-joy-kinze.jpg';
-                        if (file_exists($doctor1_image_path) && filesize($doctor1_image_path) > 0) {
-                            echo '<img src="' . esc_url($doctor1_image_url) . '" alt="Dr. Joy Kinze" style="width: 100%; height: 100%; object-fit: cover; object-position: center top;">';
-                        } else {
-                            echo '<div style="width: 100%; height: 100%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: 600;">JK</div>';
-                        }
-                        ?>
+                        <?php if ( $team1_img_url ) : ?>
+                            <img src="<?php echo esc_url( $team1_img_url ); ?>" alt="Dr. Joy Kinze" style="width: 100%; height: 100%; object-fit: cover; object-position: center top;">
+                        <?php else : ?>
+                            <div style="width: 100%; height: 100%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: 600;">JK</div>
+                        <?php endif; ?>
                     </div>
                     <div class="team-card-content" style="padding: 2rem; display: flex; flex-direction: column; width: 100%;">
                         <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem; width: 100%;">Dr. Joy Kinze</h3>
@@ -66,18 +70,22 @@ $page_id = get_the_ID();
                     </div>
                 </div>
                 
-                <!-- Dr. Jamal Doe Card -->
+                <!-- Dr. Kalu N. Ukoha Card -->
+                <?php
+                $team2_img_id = freshdew_get_section_image_id( $page_id, 'team_2_image' );
+                $team2_img_url = $team2_img_id ? wp_get_attachment_image_url( $team2_img_id, 'large' ) : '';
+                if ( ! $team2_img_url ) {
+                    $p = get_template_directory() . '/assets/images/doctors/dr-jamal-doe.jpg';
+                    $team2_img_url = ( file_exists( $p ) && filesize( $p ) > 0 ) ? get_template_directory_uri() . '/assets/images/doctors/dr-jamal-doe.jpg' : '';
+                }
+                ?>
                 <div class="team-card" style="background: white; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 12px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)';">
                     <div class="team-card-image" style="width: 100%; height: 300px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); position: relative; overflow: hidden; border-radius: 0.75rem 0.75rem 0 0; display: flex; align-items: center; justify-content: center;">
-                        <?php
-                        $doctor2_image_path = get_template_directory() . '/assets/images/doctors/dr-jamal-doe.jpg';
-                        $doctor2_image_url = get_template_directory_uri() . '/assets/images/doctors/dr-jamal-doe.jpg';
-                        if (file_exists($doctor2_image_path) && filesize($doctor2_image_path) > 0) {
-                            echo '<img src="' . esc_url($doctor2_image_url) . '" alt="Dr. Jamal Doe" style="width: 100%; height: 100%; object-fit: cover; object-position: center top;">';
-                        } else {
-                            echo '<div style="width: 100%; height: 100%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: 600;">JD</div>';
-                        }
-                        ?>
+                        <?php if ( $team2_img_url ) : ?>
+                            <img src="<?php echo esc_url( $team2_img_url ); ?>" alt="Dr. Kalu N. Ukoha" style="width: 100%; height: 100%; object-fit: cover; object-position: center top;">
+                        <?php else : ?>
+                            <div style="width: 100%; height: 100%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: 600;">JD</div>
+                        <?php endif; ?>
                     </div>
                     <div class="team-card-content" style="padding: 2rem; display: flex; flex-direction: column; width: 100%;">
                         <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem; width: 100%;">Dr. Kalu N. Ukoha</h3>
@@ -93,18 +101,22 @@ $page_id = get_the_ID();
                     </div>
                 </div>
                 
-                <!-- Template Card 1 - Karen Howald -->
+                <!-- Karen Howald Card -->
+                <?php
+                $team3_img_id = freshdew_get_section_image_id( $page_id, 'team_3_image' );
+                $team3_img_url = $team3_img_id ? wp_get_attachment_image_url( $team3_img_id, 'large' ) : '';
+                if ( ! $team3_img_url ) {
+                    $p = get_template_directory() . '/assets/images/doctors/karen-howald.jpg';
+                    $team3_img_url = ( file_exists( $p ) && filesize( $p ) > 0 ) ? get_template_directory_uri() . '/assets/images/doctors/karen-howald.jpg' : '';
+                }
+                ?>
                 <div class="team-card" style="background: white; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 12px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)';">
                     <div class="team-card-image" style="width: 100%; height: 300px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); position: relative; overflow: hidden; border-radius: 0.75rem 0.75rem 0 0; display: flex; align-items: center; justify-content: center;">
-                        <?php
-                        $doctor3_image_path = get_template_directory() . '/assets/images/doctors/karen-howald.jpg';
-                        $doctor3_image_url = get_template_directory_uri() . '/assets/images/doctors/karen-howald.jpg';
-                        if (file_exists($doctor3_image_path) && filesize($doctor3_image_path) > 0) {
-                            echo '<img src="' . esc_url($doctor3_image_url) . '" alt="Karen Howald" style="width: 100%; height: 100%; object-fit: cover; object-position: center 20%;">';
-                        } else {
-                            echo '<div style="width: 100%; height: 100%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: 600;">KH</div>';
-                        }
-                        ?>
+                        <?php if ( $team3_img_url ) : ?>
+                            <img src="<?php echo esc_url( $team3_img_url ); ?>" alt="Karen Howald" style="width: 100%; height: 100%; object-fit: cover; object-position: center 20%;">
+                        <?php else : ?>
+                            <div style="width: 100%; height: 100%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: 600;">KH</div>
+                        <?php endif; ?>
                     </div>
                     <div class="team-card-content" style="padding: 2rem; display: flex; flex-direction: column; width: 100%;">
                         <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem; width: 100%;">Karen Howald</h3>
@@ -118,18 +130,22 @@ $page_id = get_the_ID();
                     </div>
                 </div>
                 
-                <!-- Template Card 2 - Emeka Owo -->
+                <!-- Emeka Owo Card -->
+                <?php
+                $team4_img_id = freshdew_get_section_image_id( $page_id, 'team_4_image' );
+                $team4_img_url = $team4_img_id ? wp_get_attachment_image_url( $team4_img_id, 'large' ) : '';
+                if ( ! $team4_img_url ) {
+                    $p = get_template_directory() . '/assets/images/doctors/emeka-owo.jpg';
+                    $team4_img_url = ( file_exists( $p ) && filesize( $p ) > 0 ) ? get_template_directory_uri() . '/assets/images/doctors/emeka-owo.jpg' : '';
+                }
+                ?>
                 <div class="team-card emeka-owo-card" style="background: white; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 12px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)';">
                     <div class="team-card-image" style="width: 100%; height: 300px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); position: relative; overflow: hidden; border-radius: 0.75rem 0.75rem 0 0; display: flex; align-items: center; justify-content: center;">
-                        <?php
-                        $doctor4_image_path = get_template_directory() . '/assets/images/doctors/emeka-owo.jpg';
-                        $doctor4_image_url = get_template_directory_uri() . '/assets/images/doctors/emeka-owo.jpg';
-                        if (file_exists($doctor4_image_path) && filesize($doctor4_image_path) > 0) {
-                            echo '<img src="' . esc_url($doctor4_image_url) . '" alt="Emeka Owo" style="width: 100%; height: 100%; object-fit: cover; object-position: center top;">';
-                        } else {
-                            echo '<div style="width: 100%; height: 100%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: 600;">EO</div>';
-                        }
-                        ?>
+                        <?php if ( $team4_img_url ) : ?>
+                            <img src="<?php echo esc_url( $team4_img_url ); ?>" alt="Emeka Owo" style="width: 100%; height: 100%; object-fit: cover; object-position: center top;">
+                        <?php else : ?>
+                            <div style="width: 100%; height: 100%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: 600;">EO</div>
+                        <?php endif; ?>
                     </div>
                     <div class="team-card-content" style="padding: 2rem; display: flex; flex-direction: column; width: 100%;">
                         <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem; width: 100%;">Emeka Owo</h3>
@@ -144,18 +160,22 @@ $page_id = get_the_ID();
                     </div>
                 </div>
                 
-                <!-- Template Card 3 - Rejoice Obioha -->
+                <!-- Rejoice Obioha Card -->
+                <?php
+                $team5_img_id = freshdew_get_section_image_id( $page_id, 'team_5_image' );
+                $team5_img_url = $team5_img_id ? wp_get_attachment_image_url( $team5_img_id, 'large' ) : '';
+                if ( ! $team5_img_url ) {
+                    $p = get_template_directory() . '/assets/images/doctors/rejoice-obioha.jpg';
+                    $team5_img_url = ( file_exists( $p ) && filesize( $p ) > 0 ) ? get_template_directory_uri() . '/assets/images/doctors/rejoice-obioha.jpg' : '';
+                }
+                ?>
                 <div class="team-card" style="background: white; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 12px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)';">
                     <div class="team-card-image" style="width: 100%; height: 300px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); position: relative; overflow: hidden; border-radius: 0.75rem 0.75rem 0 0; display: flex; align-items: center; justify-content: center;">
-                        <?php
-                        $doctor5_image_path = get_template_directory() . '/assets/images/doctors/rejoice-obioha.jpg';
-                        $doctor5_image_url = get_template_directory_uri() . '/assets/images/doctors/rejoice-obioha.jpg';
-                        if (file_exists($doctor5_image_path) && filesize($doctor5_image_path) > 0) {
-                            echo '<img src="' . esc_url($doctor5_image_url) . '" alt="Rejoice Obioha" style="width: 100%; height: 100%; object-fit: cover; object-position: center top;">';
-                        } else {
-                            echo '<div style="width: 100%; height: 100%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: 600;">RO</div>';
-                        }
-                        ?>
+                        <?php if ( $team5_img_url ) : ?>
+                            <img src="<?php echo esc_url( $team5_img_url ); ?>" alt="Rejoice Obioha" style="width: 100%; height: 100%; object-fit: cover; object-position: center top;">
+                        <?php else : ?>
+                            <div style="width: 100%; height: 100%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: 600;">RO</div>
+                        <?php endif; ?>
                     </div>
                     <div class="team-card-content" style="padding: 2rem; display: flex; flex-direction: column; width: 100%;">
                         <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem; width: 100%;">Rejoice Obioha</h3>

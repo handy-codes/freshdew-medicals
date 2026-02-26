@@ -38,44 +38,26 @@ $page_id = get_the_ID();
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem; margin-bottom: 3rem;">
                 <?php
                 $family_services = array(
-                    array(
-                        'title' => freshdew_get_section( $page_id, 'service_1_title', 'Pediatric Care' ),
-                        'description' => freshdew_get_section( $page_id, 'service_1_description', 'Comprehensive healthcare for children of all ages.' ),
-                        'image' => 'pediatric-care.jpg',
-                        'initials' => 'PC',
-                    ),
-                    array(
-                        'title' => freshdew_get_section( $page_id, 'service_2_title', 'Family Health' ),
-                        'description' => freshdew_get_section( $page_id, 'service_2_description', 'Preventive care and health maintenance for the whole family.' ),
-                        'image' => 'family-health.jpg',
-                        'initials' => 'FH',
-                    ),
-                    array(
-                        'title' => freshdew_get_section( $page_id, 'service_3_title', 'Chronic Disease Management' ),
-                        'description' => freshdew_get_section( $page_id, 'service_3_description', 'Ongoing care for diabetes, hypertension, and other chronic conditions.' ),
-                        'image' => 'chronic-disease.jpg',
-                        'initials' => 'CD',
-                    ),
-                    array(
-                        'title' => freshdew_get_section( $page_id, 'service_4_title', 'Vaccinations' ),
-                        'description' => freshdew_get_section( $page_id, 'service_4_description', 'Immunizations for children and adults.' ),
-                        'image' => 'vaccinations.jpg',
-                        'initials' => 'VA',
-                    ),
+                    array( 'title' => freshdew_get_section( $page_id, 'service_1_title', 'Pediatric Care' ), 'description' => freshdew_get_section( $page_id, 'service_1_description', 'Comprehensive healthcare for children of all ages.' ), 'image_key' => 'service_1_image', 'theme_image' => 'pediatric-care.jpg', 'initials' => 'PC' ),
+                    array( 'title' => freshdew_get_section( $page_id, 'service_2_title', 'Family Health' ), 'description' => freshdew_get_section( $page_id, 'service_2_description', 'Preventive care and health maintenance for the whole family.' ), 'image_key' => 'service_2_image', 'theme_image' => 'family-health.jpg', 'initials' => 'FH' ),
+                    array( 'title' => freshdew_get_section( $page_id, 'service_3_title', 'Chronic Disease Management' ), 'description' => freshdew_get_section( $page_id, 'service_3_description', 'Ongoing care for diabetes, hypertension, and other chronic conditions.' ), 'image_key' => 'service_3_image', 'theme_image' => 'chronic-disease.jpg', 'initials' => 'CD' ),
+                    array( 'title' => freshdew_get_section( $page_id, 'service_4_title', 'Vaccinations' ), 'description' => freshdew_get_section( $page_id, 'service_4_description', 'Immunizations for children and adults.' ), 'image_key' => 'service_4_image', 'theme_image' => 'vaccinations.jpg', 'initials' => 'VA' ),
                 );
-                foreach ($family_services as $service) :
+                foreach ( $family_services as $service ) :
+                    $svc_img_id = freshdew_get_section_image_id( $page_id, $service['image_key'] );
+                    $svc_img_url = $svc_img_id ? wp_get_attachment_image_url( $svc_img_id, 'large' ) : '';
+                    if ( ! $svc_img_url ) {
+                        $path = get_template_directory() . '/assets/images/services/' . $service['theme_image'];
+                        $svc_img_url = file_exists( $path ) ? get_template_directory_uri() . '/assets/images/services/' . $service['theme_image'] : '';
+                    }
                 ?>
                 <div style="background: white; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 12px rgba(0,0,0,0.15)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)';">
                     <div style="width: 100%; height: 300px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); position: relative; overflow: hidden;">
-                        <?php
-                        $service_image = get_template_directory_uri() . '/assets/images/services/' . $service['image'];
-                        $service_image_path = get_template_directory() . '/assets/images/services/' . $service['image'];
-                        if (file_exists($service_image_path)) {
-                            echo '<img src="' . esc_url($service_image) . '" alt="' . esc_attr($service['title']) . '" style="width: 100%; height: 100%; object-fit: cover; display: block; margin: 0; padding: 0;">';
-                        } else {
-                            echo '<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: 600;">' . esc_html($service['initials']) . '</div>';
-                        }
-                        ?>
+                        <?php if ( $svc_img_url ) : ?>
+                            <img src="<?php echo esc_url( $svc_img_url ); ?>" alt="<?php echo esc_attr( $service['title'] ); ?>" style="width: 100%; height: 100%; object-fit: cover; display: block; margin: 0; padding: 0;">
+                        <?php else : ?>
+                            <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: 600;"><?php echo esc_html( $service['initials'] ); ?></div>
+                        <?php endif; ?>
                     </div>
                     <div style="padding: 2rem;">
                         <h3 style="font-size: 1.5rem; font-weight: 700; color: #2563eb; margin-bottom: 0.5rem;"><?php echo esc_html($service['title']); ?></h3>
