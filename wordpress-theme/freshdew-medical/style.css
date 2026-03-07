@@ -195,11 +195,13 @@ html body .site-header {
     letter-spacing: -0.5px;
 }
 
-/* Mobile Menu Toggle Button */
+/* Mobile Menu Toggle Button - no border ever */
 .mobile-menu-toggle {
     display: none;
     background: none;
-    border: none;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
     border-radius: 4px;
     cursor: pointer;
     padding: 0.5rem;
@@ -214,11 +216,22 @@ html body .site-header {
 
 .mobile-menu-toggle:hover {
     background: #fff7ed;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
 }
 
-.mobile-menu-toggle:focus {
-    outline: 2px solid #F97316;
-    outline-offset: 2px;
+.mobile-menu-toggle:focus,
+.mobile-menu-toggle:hover,
+.mobile-menu-toggle:active,
+.mobile-menu-toggle:focus-visible {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+.mobile-menu-toggle::-moz-focus-inner {
+    border: 0 !important;
+    padding: 0 !important;
 }
 
 .mobile-menu-toggle .hamburger-icon {
@@ -232,11 +245,13 @@ html body .site-header {
     width: 100%;
     height: 3px;
     background: #F97316;
+    border: none !important;
     border-radius: 2px;
     transition: all 0.3s ease;
 }
 
 .mobile-menu-toggle .close-icon {
+    border: none !important;
     font-size: 36px;
     color: #F97316;
     font-weight: bold;

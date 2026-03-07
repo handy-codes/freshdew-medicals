@@ -162,14 +162,14 @@ $contact_info = freshdew_get_contact_info();
     pointer-events: auto !important;
 }
 
-/* Desktop: smaller fixed height, margin from top so content is visible */
+/* Desktop: space from header, taller chat window */
 @media (min-width: 640px) {
     #ai-chat-window {
-        top: auto !important;
-        bottom: 80px !important;
+        top: 130px !important;
+        bottom: auto !important;
         flex-direction: column !important;
-        height: 420px !important;
-        max-height: calc(100vh - 120px) !important;
+        height: 580px !important;
+        max-height: calc(100vh - 170px) !important;
         overflow: hidden !important;
         z-index: 9998 !important;
     }
