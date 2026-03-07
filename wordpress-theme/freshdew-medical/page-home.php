@@ -10,7 +10,7 @@ $contact_info = freshdew_get_contact_info();
 $page_id = get_the_ID();
 ?>
 
-<!-- Hero Section with Medical Team Image -->
+<!-- Hero Section with Medical Team *** Image -->
 <section class="hero-section">
     <div class="hero-background-wrapper">
         <?php
