@@ -55,15 +55,6 @@ $page_id = get_the_ID();
     </div>
 </section>
 
-<?php
-$home_content = get_post_field('post_content', $page_id);
-if ( ! empty( trim( $home_content ) ) ) {
-    echo '<section class="freshdew-page-content" style="padding: 2rem 0;"><div class="container"><div class="entry-content" style="max-width: 900px; margin: 0 auto;">';
-    the_content();
-    echo '</div></div></section>';
-}
-?>
-
 <!-- Services Section -->
 <section style="padding: 4rem 0; background: #f9fafb;">
     <div class="container">
