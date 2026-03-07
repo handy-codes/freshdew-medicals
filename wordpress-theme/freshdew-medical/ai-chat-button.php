@@ -162,14 +162,14 @@ $contact_info = freshdew_get_contact_info();
     pointer-events: auto !important;
 }
 
-/* Desktop: space from header, taller chat window */
+/* Desktop: space from header, reduced height so it doesn't touch header */
 @media (min-width: 640px) {
     #ai-chat-window {
-        top: 130px !important;
+        top: 140px !important;
         bottom: auto !important;
         flex-direction: column !important;
-        height: 580px !important;
-        max-height: calc(100vh - 170px) !important;
+        height: 500px !important;
+        max-height: calc(100vh - 200px) !important;
         overflow: hidden !important;
         z-index: 9998 !important;
     }
@@ -234,11 +234,11 @@ $contact_info = freshdew_get_contact_info();
         display: none !important;
     }
     
-    /* Chat window - standalone like desktop, taller on mobile but never touches header */
+    /* Chat window - mobile: horizontal margin (mx) so it doesn't touch edges */
     #ai-chat-window {
         bottom: 70px !important;
-        right: 8px !important;
-        left: 8px !important;
+        right: 16px !important;
+        left: 16px !important;
         transform: none !important;
         width: auto !important;
         max-width: none !important;
