@@ -898,13 +898,16 @@ function freshdew_call_groq_api($message, $api_key, $contact_info) {
     $system_prompt = "You are a helpful AI assistant for FreshDew Medical Clinic in Belleville, Ontario, Canada.
 
 STRICT RULES:
-- Keep every reply SHORT: 2–4 sentences maximum, or a brief bullet list. Never write long paragraphs.
-- Stay under 100 words per response. Do not repeat information. This is a chat widget with limited space.
-- For medical emergencies, say to call 911. For appointments, direct to: {$emr_link}
+- Keep every reply SHORT: 2–4 sentences maximum. Never write long paragraphs.
+- Stay under 80 words per response. Do not repeat information. This is a chat widget with limited space.
+- Always finish your response with a complete sentence. NEVER end mid-sentence or with '...' or '…'.
+- For medical emergencies, say to call 911.
+- For appointments, say 'Book Appointment Online' and do NOT paste the raw URL. The system will auto-link it.
+- NEVER output raw URLs like https://www.myhealthaccess.ca/... — instead say 'Book Appointment Online' or 'visit our booking page'.
 
-Contact: {$contact_info['address']}, {$contact_info['city']}. Phone: {$contact_info['phone_formatted']}. Email: {$contact_info['email']}. Hours: Mon–Fri 09:00–17:00, Sat 10:00–14:00, Sun closed. Booking: {$emr_link}
+Contact: {$contact_info['address']}, {$contact_info['city']}. Phone: {$contact_info['phone_formatted']}. Email: {$contact_info['email']}. Hours: Mon–Fri 09:00–17:00, Sat 10:00–14:00, Sun closed.
 
-Be friendly and professional. Give only the essential information asked.";
+Be friendly and professional. Give only the essential information asked. End every reply with a complete sentence.";
 
     $url = 'https://api.groq.com/openai/v1/chat/completions';
     
@@ -915,7 +918,7 @@ Be friendly and professional. Give only the essential information asked.";
             array('role' => 'user', 'content' => $message)
         ),
         'temperature' => 0.5,
-        'max_tokens' => 120,
+        'max_tokens' => 180,
         'top_p' => 0.9,
     );
     
@@ -952,6 +955,7 @@ Be friendly and professional. Give only the essential information asked.";
     
     if (isset($data['choices'][0]['message']['content'])) {
         $text = trim($data['choices'][0]['message']['content']);
+        $text = freshdew_linkify_booking_url($text);
         return freshdew_trim_chat_response($text, 420);
     }
     
@@ -961,22 +965,51 @@ Be friendly and professional. Give only the essential information asked.";
 }
 
 /**
- * Trim chat response to a character limit at a word boundary so the last sentence never cuts off.
- * @param string $text Raw response
- * @param int $max_chars Max characters (default 420 for chat widget)
- * @return string Trimmed text, with "…" if truncated
+ * Replace raw myhealthaccess URLs in AI responses with a styled link.
+ */
+function freshdew_linkify_booking_url($text) {
+    $emr_url = 'https://www.myhealthaccess.ca/branded/freshdew-medical-centre';
+    $link_html = '<a href="' . esc_url($emr_url) . '" target="_blank" rel="noopener noreferrer" style="color: #667eea; text-decoration: underline; font-weight: 600;">Book Appointment Online</a>';
+    $text = str_replace($emr_url, $link_html, $text);
+    $text = preg_replace('#https?://(?:www\.)?myhealthaccess\.ca\S*#i', $link_html, $text);
+    return $text;
+}
+
+/**
+ * Trim chat response to a character limit at the last complete sentence.
+ * Never cuts off mid-sentence or appends "…".
  */
 function freshdew_trim_chat_response($text, $max_chars = 420) {
     $text = trim($text);
-    if (strlen($text) <= $max_chars) {
+    if (mb_strlen($text) <= $max_chars) {
         return $text;
     }
-    $trimmed = substr($text, 0, $max_chars);
-    $lastSpace = strrpos($trimmed, ' ');
-    if ($lastSpace !== false && $lastSpace > (int) ($max_chars * 0.6)) {
-        $trimmed = substr($trimmed, 0, $lastSpace);
+    $trimmed = mb_substr($text, 0, $max_chars);
+
+    $last_period = mb_strrpos($trimmed, '. ');
+    $last_excl   = mb_strrpos($trimmed, '! ');
+    $last_quest  = mb_strrpos($trimmed, '? ');
+
+    $positions = array_filter(array($last_period, $last_excl, $last_quest), function($v) { return $v !== false; });
+
+    if (empty($positions)) {
+        $end_period = mb_strrpos($trimmed, '.');
+        $end_excl   = mb_strrpos($trimmed, '!');
+        $end_quest  = mb_strrpos($trimmed, '?');
+        $positions  = array_filter(array($end_period, $end_excl, $end_quest), function($v) { return $v !== false; });
     }
-    return rtrim($trimmed, " .,;:!?") . '…';
+
+    if (!empty($positions)) {
+        $cut = max($positions) + 1;
+        return trim(mb_substr($text, 0, $cut));
+    }
+
+    $lastSpace = mb_strrpos($trimmed, ' ');
+    if ($lastSpace !== false && $lastSpace > (int) ($max_chars * 0.5)) {
+        return trim(mb_substr($text, 0, $lastSpace)) . '.';
+    }
+
+    return $trimmed . '.';
 }
 
 /**

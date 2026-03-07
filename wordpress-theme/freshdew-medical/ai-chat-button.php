@@ -40,9 +40,6 @@ $contact_info = freshdew_get_contact_info();
         
         <!-- Messages Container (scrollable; fills remaining height, does not grow window) -->
         <div id="chat-messages" style="flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; padding: 1rem; background: #f9fafb;">
-            <div class="message assistant" style="background: white; padding: 0.75rem 1rem; border-radius: 12px; margin-bottom: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); max-width: 85%;">
-                <p style="margin: 0; color: #1f2937; line-height: 1.6;">Hello! I'm FreshDew Medical Clinic AI Assistant. How can I help you today? You can ask about symptoms, book appointments, find doctors, or get health information.</p>
-            </div>
         </div>
         
         <!-- Typing Indicator -->
@@ -168,10 +165,10 @@ $contact_info = freshdew_get_contact_info();
 /* Desktop: smaller fixed height, margin from top so content is visible */
 @media (min-width: 640px) {
     #ai-chat-window {
-        top: 80px !important;
-        bottom: auto !important;
+        top: auto !important;
+        bottom: 80px !important;
         flex-direction: column !important;
-        height: 380px !important;
+        height: 420px !important;
         max-height: calc(100vh - 120px) !important;
         overflow: hidden !important;
         z-index: 9998 !important;
@@ -237,22 +234,24 @@ $contact_info = freshdew_get_contact_info();
         display: none !important;
     }
     
-    /* Chat window - standalone like desktop with moderate height */
+    /* Chat window - standalone like desktop, taller on mobile but never touches header */
     #ai-chat-window {
-        bottom: 96px !important;
-        right: 16px !important;
-        left: auto !important;
+        bottom: 70px !important;
+        right: 8px !important;
+        left: 8px !important;
         transform: none !important;
-        width: 340px !important;
-        max-width: 90vw !important;
-        height: 420px !important;
-        max-height: 420px !important;
+        width: auto !important;
+        max-width: none !important;
+        height: calc(100vh - 150px) !important;
+        max-height: calc(100dvh - 150px) !important;
         position: fixed !important;
         z-index: 2147483647 !important;
     }
     
     #chat-messages {
-        max-height: 320px !important;
+        max-height: none !important;
+        flex: 1 !important;
+        min-height: 0 !important;
     }
     
     /* Ensure widget is visible even when menu is open - MAXIMUM PRIORITY */
