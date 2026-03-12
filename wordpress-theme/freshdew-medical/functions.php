@@ -848,7 +848,7 @@ function freshdew_ai_chat_handler($request) {
         'book appointment' => 'To book an appointment, please visit our online booking system: ' . $emr_link_html . ' or call us at ' . $contact_info['phone_formatted'] . '.',
         'find doctor' => 'You can find our doctors by visiting the family practice page or contacting our office at ' . $contact_info['phone_formatted'] . '.',
         'symptoms' => 'If you are experiencing symptoms, please book an appointment online: ' . $emr_link_html . ' or call us. For emergencies, call 911.',
-        'hours' => '🕐 Hours<br>Monday - Friday: 09:00 - 17:00<br>Saturday: 10:00 - 14:00<br>Sunday: Closed<br><br>Please check our website and clinic notice for any updates to working hours.',
+        'hours' => '🕐 Hours<br>Monday 09:00 - 16:00 OPEN<br>Tuesday CLOSED<br>Wednesday 09:00 - 16:00 OPEN<br>Thursday 09:00 - 16:00 OPEN<br>Friday 09:00 - 13:00 OPEN<br>Saturday CLOSED<br>Sunday CLOSED<br><br>Please check our website and clinic notice for any updates to working hours.',
         'emergency' => 'For life-threatening emergencies, please call 911 immediately.',
         'location' => 'We are located at ' . $contact_info['address'] . ', ' . $contact_info['city'] . ', ' . $contact_info['province'] . '.',
         'phone' => 'You can reach us at ' . $contact_info['phone_formatted'] . '.',

@@ -213,16 +213,32 @@ $page_id = get_the_ID();
             <div style="background: white; padding: 2rem; border-radius: 0.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                 <table style="width: 100%; border-collapse: collapse;">
                     <tr style="border-bottom: 1px solid #e5e7eb;">
-                        <td style="padding: 1rem 0; font-weight: 600; color: #1f2937;">Monday - Friday</td>
-                        <td style="padding: 1rem 0; text-align: right; color: #4b5563;">09:00 - 17:00</td>
+                        <td style="padding: 1rem 0; font-weight: 600; color: #1f2937;">Monday</td>
+                        <td style="padding: 1rem 0; text-align: right; color: #4b5563;">09:00 - 16:00 OPEN</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #e5e7eb;">
+                        <td style="padding: 1rem 0; font-weight: 600; color: #1f2937;">Tuesday</td>
+                        <td style="padding: 1rem 0; text-align: right; color: #4b5563;">CLOSED</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #e5e7eb;">
+                        <td style="padding: 1rem 0; font-weight: 600; color: #1f2937;">Wednesday</td>
+                        <td style="padding: 1rem 0; text-align: right; color: #4b5563;">09:00 - 16:00 OPEN</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #e5e7eb;">
+                        <td style="padding: 1rem 0; font-weight: 600; color: #1f2937;">Thursday</td>
+                        <td style="padding: 1rem 0; text-align: right; color: #4b5563;">09:00 - 16:00 OPEN</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #e5e7eb;">
+                        <td style="padding: 1rem 0; font-weight: 600; color: #1f2937;">Friday</td>
+                        <td style="padding: 1rem 0; text-align: right; color: #4b5563;">09:00 - 13:00 OPEN</td>
                     </tr>
                     <tr style="border-bottom: 1px solid #e5e7eb;">
                         <td style="padding: 1rem 0; font-weight: 600; color: #1f2937;">Saturday</td>
-                        <td style="padding: 1rem 0; text-align: right; color: #4b5563;">10:00 - 14:00</td>
+                        <td style="padding: 1rem 0; text-align: right; color: #4b5563;">CLOSED</td>
                     </tr>
                     <tr>
                         <td style="padding: 1rem 0; font-weight: 600; color: #1f2937;">Sunday</td>
-                        <td style="padding: 1rem 0; text-align: right; color: #4b5563;">Closed</td>
+                        <td style="padding: 1rem 0; text-align: right; color: #4b5563;">CLOSED</td>
                     </tr>
                 </table>
                 <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e5e7eb;">
