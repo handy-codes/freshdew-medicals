@@ -829,6 +829,46 @@ function freshdew_handle_register_form() {
 add_action('admin_post_freshdew_register_form', 'freshdew_handle_register_form');
 add_action('admin_post_nopriv_freshdew_register_form', 'freshdew_handle_register_form');
 
+/**
+ * Detect user questions about doctors, physicians, or clinic team (Meet Our Team).
+ *
+ * @param string $lower_message Message lowercased.
+ * @return bool
+ */
+function freshdew_message_asks_about_team_doctors( $lower_message ) {
+    if ( strpos( $lower_message, 'meet our team' ) !== false ) {
+        return true;
+    }
+    if ( strpos( $lower_message, 'find doctor' ) !== false ) {
+        return true;
+    }
+    if ( preg_match( '/\b(your|our|the)\s+(doctors?|physicians?|team|staff|providers?)\b/', $lower_message ) ) {
+        return true;
+    }
+    if ( preg_match( '/\bwho\s+(are|is)\s+(the\s+)?(doctors?|physicians?|team|staff)\b/', $lower_message ) ) {
+        return true;
+    }
+    if ( preg_match( '/\b(team members?|clinic staff|staff members?|people\s+who\s+work)\b/', $lower_message ) ) {
+        return true;
+    }
+    if ( preg_match( '/\bdoctors?\b/', $lower_message ) && preg_match( '/\b(who|list|names?|have|work(s|ing)?\s+here|at\s+(the\s+)?clinic)\b/', $lower_message ) ) {
+        return true;
+    }
+    return false;
+}
+
+/**
+ * HTML reply: send users to About — Meet Our Team (no names in chat).
+ *
+ * @return string
+ */
+function freshdew_get_meet_our_team_chat_reply_html() {
+    $about_url = home_url( '/about/' );
+    $about_link = '<a href="' . esc_url( $about_url ) . '" target="_blank" rel="noopener noreferrer" style="color: #667eea; text-decoration: underline; font-weight: 600;">About page</a>';
+
+    return 'For information about our doctors and team members, please visit our ' . $about_link . ' and scroll to the <strong>Meet Our Team</strong> section. That page has the full, up-to-date details.';
+}
+
 function freshdew_ai_chat_handler($request) {
     $message = $request->get_param('message');
     
@@ -846,7 +886,6 @@ function freshdew_ai_chat_handler($request) {
     $emr_link_html = '<a href="' . esc_url($emr_link) . '" target="_blank" rel="noopener noreferrer" style="color: #667eea; text-decoration: underline; font-weight: 600;">Book Appointment Online</a>';
     $responses = array(
         'book appointment' => 'To book an appointment, please visit our online booking system: ' . $emr_link_html . ' or call us at ' . $contact_info['phone_formatted'] . '.',
-        'find doctor' => 'You can find our doctors by visiting the family practice page or contacting our office at ' . $contact_info['phone_formatted'] . '.',
         'symptoms' => 'If you are experiencing symptoms, please book an appointment online: ' . $emr_link_html . ' or call us. For emergencies, call 911.',
         'hours' => '🕐 Hours<br>Monday 09:00 - 16:00 OPEN<br>Tuesday CLOSED<br>Wednesday 09:00 - 16:00 OPEN<br>Thursday 09:00 - 16:00 OPEN<br>Friday 09:00 - 13:00 OPEN<br>Saturday CLOSED<br>Sunday CLOSED<br><br>Please check our website and clinic notice for any updates to working hours.',
         'emergency' => 'For life-threatening emergencies, please call 911 immediately.',
@@ -856,6 +895,10 @@ function freshdew_ai_chat_handler($request) {
     );
     
     $lowerMessage = strtolower(trim($message));
+
+    if ( freshdew_message_asks_about_team_doctors( $lowerMessage ) ) {
+        return rest_ensure_response( array( 'response' => freshdew_get_meet_our_team_chat_reply_html() ) );
+    }
     
     // Check for rule-based matches first
     $response = null;
@@ -886,7 +929,7 @@ function freshdew_ai_chat_handler($request) {
     // Default response only if both rule-based and Groq fail
     $emr_link = 'https://www.myhealthaccess.ca/branded/freshdew-medical-centre';
     $emr_link_html = '<a href="' . esc_url($emr_link) . '" target="_blank" rel="noopener noreferrer" style="color: #667eea; text-decoration: underline; font-weight: 600;">Book Appointment Online</a>';
-    $response = 'I can help you with booking appointments (' . $emr_link_html . '), finding doctors, and general health information. How can I assist you today?';
+    $response = 'I can help you with booking appointments (' . $emr_link_html . ') and general clinic information. For our doctors and team, please see the About page — Meet Our Team. How can I assist you today?';
     return rest_ensure_response(array('response' => $response));
 }
 
@@ -905,7 +948,9 @@ STRICT RULES:
 - For appointments, say 'Book Appointment Online' and do NOT paste the raw URL. The system will auto-link it.
 - NEVER output raw URLs like https://www.myhealthaccess.ca/... — instead say 'Book Appointment Online' or 'visit our booking page'.
 
-Contact: {$contact_info['address']}, {$contact_info['city']}. Phone: {$contact_info['phone_formatted']}. Email: {$contact_info['email']}. Hours: Mon–Fri 09:00–17:00, Sat 10:00–14:00, Sun closed.
+DOCTORS AND TEAM — If the user asks about doctors, physicians, staff, or team members, do NOT list names or describe individuals. Say to visit the website About page and read the Meet Our Team section for accurate information. NEVER invent, guess, or substitute names (no placeholders).
+
+Contact: {$contact_info['address']}, {$contact_info['city']}. Phone: {$contact_info['phone_formatted']}. Email: {$contact_info['email']}. Hours: Monday 09:00–16:00 OPEN; Tuesday CLOSED; Wednesday 09:00–16:00 OPEN; Thursday 09:00–16:00 OPEN; Friday 09:00–13:00 OPEN; Saturday–Sunday CLOSED.
 
 Be friendly and professional. Give only the essential information asked. End every reply with a complete sentence.";
 

@@ -11,7 +11,8 @@ $page_id = get_the_ID();
 ?>
 
 <!-- Hero Section with Medical Team *** Image -->
-<section class="hero-section">
+<section class="hero-section hero-section--marquee">
+    <?php get_template_part( 'inc/hero-news-marquee' ); ?>
     <div class="hero-background-wrapper">
         <?php
         $hero_img_id = freshdew_get_section_image_id( $page_id, 'hero_image' );
