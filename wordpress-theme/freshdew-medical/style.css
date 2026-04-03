@@ -426,7 +426,7 @@ html body .site-header {
 
 /* Space for vacation marquee strip at top of hero (absolute). */
 .hero-section--marquee {
-    padding-top: clamp(1.95rem, 7vw, 2.85rem);
+    padding-top: clamp(2.35rem, 8.5vw, 3.2rem);
     box-sizing: border-box;
 }
 
@@ -1343,7 +1343,7 @@ html body .site-header {
     }
 
     .hero-section--marquee {
-        padding-top: clamp(1.85rem, 9vw, 2.75rem) !important;
+        padding-top: clamp(2.3rem, 10vw, 3.2rem) !important;
     }
     
     .hero-background-wrapper,

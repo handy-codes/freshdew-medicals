@@ -863,7 +863,10 @@ function freshdew_message_asks_about_team_doctors( $lower_message ) {
  * @return string
  */
 function freshdew_get_meet_our_team_chat_reply_html() {
-    return 'For information about our doctors and team members, please visit our About page and scroll to the <strong>Meet Our Team</strong> section. That page has the full, up-to-date details.';
+    $about_url = home_url( '/about/' );
+    $about_link = '<a href="' . esc_url( $about_url ) . '" target="_blank" rel="noopener noreferrer" style="color: #667eea; text-decoration: underline; font-weight: 600;">About page</a>';
+
+    return 'For information about our doctors and team members, please visit our ' . $about_link . ' and scroll to the <strong>Meet Our Team</strong> section. That page has the full, up-to-date details.';
 }
 
 function freshdew_ai_chat_handler($request) {
