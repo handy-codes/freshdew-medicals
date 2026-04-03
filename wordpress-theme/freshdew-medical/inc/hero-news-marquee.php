@@ -9,7 +9,7 @@ $fd_marquee_text = 'This is to notify all patients that Dr.Kinze will be away on
 ?>
 <div class="fd-hero-marquee" role="region" aria-label="<?php echo esc_attr__( 'Vacation notice', 'freshdew-medical' ); ?>">
 	<style>
-		/* Inset: mobile ml-4vw mr-0 (+ mb); sm+ ml-40vw mr-10vw */
+		/* Inset: mobile ml-4vw mr-0 (+ mb); 640px+ ml-20vw mr-5vw */
 		.hero-section--marquee .fd-hero-marquee {
 			position: absolute;
 			top: 0;
@@ -29,8 +29,8 @@ $fd_marquee_text = 'This is to notify all patients that Dr.Kinze will be away on
 		}
 		@media (min-width: 640px) {
 			.hero-section--marquee .fd-hero-marquee {
-				left: 40vw;
-				right: 10vw;
+				left: 20vw;
+				right: 5vw;
 			}
 		}
 		.fd-hero-marquee__row {
@@ -68,14 +68,21 @@ $fd_marquee_text = 'This is to notify all patients that Dr.Kinze will be away on
 			animation: fd-marquee-scroll 68s linear infinite;
 			backface-visibility: hidden;
 		}
+		/* Match .site-header .main-navigation .nav-menu > li > a + .main-navigation a */
+		.fd-hero-marquee__track span,
+		.fd-hero-marquee__badge {
+			font-family: inherit;
+			font-size: 1rem;
+			font-weight: 600;
+			line-height: 1.5;
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+		}
 		.fd-hero-marquee__track span {
 			display: inline-block;
 			margin-right: 3rem;
-			font-weight: 700;
-			color: #000;
-			font-size: clamp(0.8125rem, 3.1vw, 1.0625rem);
-			line-height: 1.3;
 			padding: 0.28rem 0.45rem 0.28rem 0.55rem;
+			color: #000000;
 		}
 		.fd-hero-marquee__badge {
 			flex: 0 0 auto;
@@ -84,10 +91,7 @@ $fd_marquee_text = 'This is to notify all patients that Dr.Kinze will be away on
 			align-items: center;
 			justify-content: center;
 			background: #FF0000;
-			color: #fff;
-			font-weight: 700;
-			font-size: clamp(0.75rem, 2.9vw, 0.9375rem);
-			line-height: 1.15;
+			color: #ffffff;
 			text-align: center;
 			white-space: nowrap;
 			clip-path: polygon(12% 0, 100% 0, 100% 100%, 0% 100%);
