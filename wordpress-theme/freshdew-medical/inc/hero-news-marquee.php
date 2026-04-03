@@ -1,6 +1,6 @@
 <?php
 /**
- * Vacation notice marquee — full width at top of hero (techxos-style: navy bar, white track, red badge right).
+ * Vacation notice marquee — hero top strip (techxos-style: navy bar, white track, badge right).
  *
  * @package FreshDewMedical
  */
@@ -9,7 +9,6 @@ $fd_marquee_text = 'This is to notify all patients that Dr.Kinze will be away on
 ?>
 <div class="fd-hero-marquee" role="region" aria-label="<?php echo esc_attr__( 'Vacation notice', 'freshdew-medical' ); ?>">
 	<style>
-		/* Full-bleed bar at top of hero; flush to viewport edges when hero is full width */
 		.hero-section--marquee .fd-hero-marquee {
 			position: absolute;
 			top: 0;
@@ -21,15 +20,26 @@ $fd_marquee_text = 'This is to notify all patients that Dr.Kinze will be away on
 			box-sizing: border-box;
 			background: #00468D;
 			overflow: hidden;
-			padding: 0.35rem 0;
+			padding: 0.2rem 0;
 		}
+		/* Mobile: ml 10vw, mr 0. sm+: ml 40vw, mr 10vw (matches Tailwind sm = 640px). */
 		.fd-hero-marquee__row {
 			display: flex;
 			flex-direction: row;
 			align-items: stretch;
-			width: 100%;
-			min-height: 2.35rem;
+			width: auto;
+			max-width: none;
+			min-height: 1.65rem;
+			margin-left: 10vw;
+			margin-right: 0;
 			gap: 0;
+		}
+		@media (min-width: 640px) {
+			.fd-hero-marquee__row {
+				margin-left: 40vw;
+				margin-right: 10vw;
+				min-height: 1.75rem;
+			}
 		}
 		.fd-hero-marquee__track-outer {
 			flex: 1 1 auto;
@@ -39,6 +49,7 @@ $fd_marquee_text = 'This is to notify all patients that Dr.Kinze will be away on
 			align-items: center;
 			background: #fff;
 			margin: 0;
+			padding: 0;
 			border: none;
 			border-radius: 0;
 		}
@@ -46,17 +57,24 @@ $fd_marquee_text = 'This is to notify all patients that Dr.Kinze will be away on
 			display: inline-flex;
 			white-space: nowrap;
 			will-change: transform;
-			animation: fd-marquee-scroll 75s linear infinite;
+			/* Same duration at all breakpoints so scroll matches desktop feel (content width is intrinsic). */
+			animation: fd-marquee-scroll 52s linear infinite;
 			align-items: center;
+			transform: translateZ(0);
 		}
 		.fd-hero-marquee__track span {
 			display: inline-block;
-			margin-right: 3.5rem;
+			margin-right: 3.25rem;
 			font-weight: 700;
 			color: #000;
-			font-size: clamp(0.7rem, 2.6vw, 0.9rem);
-			line-height: 1.35;
-			padding: 0.4rem 0.5rem 0.4rem 0.65rem;
+			font-size: clamp(0.82rem, 2.85vw, 1.05rem);
+			line-height: 1.3;
+			padding: 0.2rem 0.45rem 0.2rem 0.55rem;
+		}
+		@media (min-width: 640px) {
+			.fd-hero-marquee__track span {
+				font-size: clamp(0.9rem, 1.15vw, 1.08rem);
+			}
 		}
 		.fd-hero-marquee__badge {
 			flex: 0 0 auto;
@@ -64,21 +82,27 @@ $fd_marquee_text = 'This is to notify all patients that Dr.Kinze will be away on
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			background: #FF0000;
+			background: #161206;
 			color: #fff;
 			font-weight: 700;
-			font-size: clamp(0.65rem, 2.4vw, 0.8125rem);
-			padding: 0.2rem 0.85rem 0.2rem 1.35rem;
-			line-height: 1.2;
+			font-size: clamp(0.78rem, 2.5vw, 0.98rem);
+			padding: 0.2rem 0.75rem 0.2rem 1.15rem;
+			line-height: 1.25;
 			text-align: center;
-			clip-path: polygon(14% 0, 100% 0, 100% 100%, 0% 100%);
-			max-width: 38vw;
+			clip-path: polygon(16% 0, 100% 0, 100% 100%, 0% 100%);
+			max-width: 42vw;
+			position: relative;
+			/* Overlap white track so blue never shows in the seam */
+			margin-left: -0.65rem;
+			z-index: 2;
 		}
-		@media (min-width: 768px) {
+		@media (min-width: 640px) {
 			.fd-hero-marquee__badge {
-				max-width: 11rem;
-				padding-left: 1.5rem;
-				padding-right: 1rem;
+				max-width: 11.5rem;
+				padding-left: 1.35rem;
+				padding-right: 0.9rem;
+				margin-left: -0.7rem;
+				font-size: clamp(0.85rem, 0.95vw, 1rem);
 			}
 		}
 		@media (prefers-reduced-motion: reduce) {
@@ -87,7 +111,7 @@ $fd_marquee_text = 'This is to notify all patients that Dr.Kinze will be away on
 				flex-wrap: wrap;
 				white-space: normal;
 				justify-content: flex-start;
-				padding: 0.35rem 0.5rem;
+				padding: 0.25rem 0.45rem;
 			}
 			.fd-hero-marquee__track span {
 				margin-right: 0;
@@ -98,8 +122,8 @@ $fd_marquee_text = 'This is to notify all patients that Dr.Kinze will be away on
 			}
 		}
 		@keyframes fd-marquee-scroll {
-			0% { transform: translateX(0); }
-			100% { transform: translateX(-50%); }
+			0% { transform: translate3d(0, 0, 0); }
+			100% { transform: translate3d(-50%, 0, 0); }
 		}
 		.fd-hero-marquee .fd-sr-only {
 			position: absolute;
