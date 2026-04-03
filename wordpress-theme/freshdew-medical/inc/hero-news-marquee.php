@@ -6,8 +6,10 @@
  */
 
 $fd_marquee_text = 'This is to notify all patients that Dr.Kinze will be away on vacation from April 15 to April 24, 2026. The clinic will resume fully on April 29, 2026. Please find local walk-in clinics if needed and in emergency, please call 911.';
+$fd_marquee_build = function_exists( 'freshdew_hero_marquee_build' ) ? freshdew_hero_marquee_build() : '0';
 ?>
-<div class="fd-hero-marquee fd-hero-marquee--v5" role="region" aria-label="<?php echo esc_attr__( 'Vacation notice', 'freshdew-medical' ); ?>">
+<!-- fd-marquee-build: <?php echo esc_attr( $fd_marquee_build ); ?> -->
+<div class="fd-hero-marquee fd-hero-marquee--v5" role="region" aria-label="<?php echo esc_attr__( 'Vacation notice', 'freshdew-medical' ); ?>" data-fd-marquee-build="<?php echo esc_attr( $fd_marquee_build ); ?>">
 	<div class="fd-hero-marquee__row">
 		<div class="fd-hero-marquee__track-outer">
 			<div class="fd-hero-marquee__track" aria-hidden="true">
