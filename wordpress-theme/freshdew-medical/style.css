@@ -4,7 +4,7 @@ Theme URI: https://www.freshdewmedicalclinic.com
 Author: FreshDew Medical Clinic
 Author URI: https://www.freshdewmedicalclinic.com
 Description: A modern, responsive WordPress theme for FreshDew Medical Clinic with full hospital management system integration.
-Version: 1.0.0
+Version: 1.0.1
 Requires at least: 6.0
 Tested up to: 6.4
 Requires PHP: 8.0
@@ -428,6 +428,12 @@ html body .site-header {
 .hero-section--marquee {
     padding-top: clamp(2.35rem, 8.5vw, 3.2rem);
     box-sizing: border-box;
+}
+
+/* Marquee v4: mirrors inc/hero-news-marquee.php — helps when page cache serves old HTML */
+.hero-section--marquee .fd-hero-marquee.fd-hero-marquee--v4 .fd-hero-marquee__badge {
+    background: #FF0000 !important;
+    color: #ffffff !important;
 }
 
 .hero-background-wrapper {
