@@ -1,6 +1,6 @@
 <?php
 /**
- * Vacation notice marquee — techxos-style: inset bar, white track + dark badge, no seam gap.
+ * Vacation notice marquee — techxos-style: inset bar, white track + badge, no seam gap.
  *
  * @package FreshDewMedical
  */
@@ -9,11 +9,11 @@ $fd_marquee_text = 'This is to notify all patients that Dr.Kinze will be away on
 ?>
 <div class="fd-hero-marquee" role="region" aria-label="<?php echo esc_attr__( 'Vacation notice', 'freshdew-medical' ); ?>">
 	<style>
-		/* Inset from viewport: mobile ml-10vw mr-0; sm+ ml-40vw mr-10vw */
+		/* Inset: mobile ml-4vw mr-0 (+ mb); sm+ ml-40vw mr-10vw */
 		.hero-section--marquee .fd-hero-marquee {
 			position: absolute;
 			top: 0;
-			left: 10vw;
+			left: 4vw;
 			right: 0;
 			width: auto;
 			z-index: 30;
@@ -21,6 +21,11 @@ $fd_marquee_text = 'This is to notify all patients that Dr.Kinze will be away on
 			background: #00468D;
 			overflow: visible;
 			padding: 0.2rem 0;
+		}
+		@media (max-width: 639.98px) {
+			.hero-section--marquee .fd-hero-marquee {
+				margin-bottom: 0.65rem;
+			}
 		}
 		@media (min-width: 640px) {
 			.hero-section--marquee .fd-hero-marquee {
@@ -59,15 +64,9 @@ $fd_marquee_text = 'This is to notify all patients that Dr.Kinze will be away on
 			white-space: nowrap;
 			will-change: transform;
 			align-items: center;
-			/* Desktop / sm+: moderate speed */
+			/* Same duration on all viewports (68s) */
 			animation: fd-marquee-scroll 68s linear infinite;
 			backface-visibility: hidden;
-		}
-		/* Mobile: same perceived motion as desktop (shorter duration = visibly moving) */
-		@media (max-width: 639.98px) {
-			.fd-hero-marquee__track {
-				animation-duration: 52s;
-			}
 		}
 		.fd-hero-marquee__track span {
 			display: inline-block;
@@ -84,7 +83,7 @@ $fd_marquee_text = 'This is to notify all patients that Dr.Kinze will be away on
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			background: #161206;
+			background: #FF0000;
 			color: #fff;
 			font-weight: 700;
 			font-size: clamp(0.75rem, 2.9vw, 0.9375rem);
@@ -104,12 +103,6 @@ $fd_marquee_text = 'This is to notify all patients that Dr.Kinze will be away on
 				max-width: 12rem;
 				padding-left: 1.35rem;
 				padding-right: 1rem;
-			}
-		}
-		/* Slower scroll instead of none — avoids "frozen" ticker when OS Reduce Motion is on (common on phones). */
-		@media (prefers-reduced-motion: reduce) {
-			.fd-hero-marquee__track {
-				animation-duration: 110s;
 			}
 		}
 		@keyframes fd-marquee-scroll {
