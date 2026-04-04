@@ -1,9 +1,9 @@
 /**
  * Home hero vacation marquee (v8).
  *
- * ≥640px: flex-end row — white track ~60vw (capped), red badge flush beside it (no clip-path;
- * vertical join). No extra white extension under the badge.
- * <640px: track margin-left 3vw; badge absolute top-right over track; faster scroll; single-line spans.
+ * ≥640px: flex-end row — white track ~60vw; red badge with slanted left (clip-path), straight right.
+ * <640px: track ml 3vw; overlaid badge; faster scroll. Marquee spans must not use overflow:hidden
+ * (flex would shrink them and truncate the message).
  */
 
 @keyframes fdMarqueeV8 {
@@ -83,9 +83,10 @@
 	}
 }
 
-/* —— Desktop: flex, ~60vw track, rectangular red (straight left edge) —— */
+/* —— Desktop: flex, ~60vw track; red with slanted left (same polygon as mobile / Top News) —— */
 @media (min-width: 640px) {
 	.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__row-inner {
+		--fd-marquee-track-w: min(60vw, calc(100% - 10.5rem));
 		display: flex;
 		flex-direction: row;
 		flex-wrap: nowrap;
@@ -97,9 +98,9 @@
 
 	.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__track-outer {
 		margin-left: 0;
-		width: min(60vw, calc(100% - 10.5rem));
-		flex: 0 0 min(60vw, calc(100% - 10.5rem));
-		max-width: 60vw;
+		width: calc(var(--fd-marquee-track-w) + 0.7rem);
+		flex: 0 0 calc(var(--fd-marquee-track-w) + 0.7rem);
+		max-width: calc(60vw + 0.7rem);
 	}
 
 	.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__badge {
@@ -108,10 +109,11 @@
 		right: auto;
 		flex: 0 0 auto;
 		z-index: 2;
-		clip-path: none;
-		box-shadow: none;
+		clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
+		box-shadow: -4px 0 0 #ffffff;
 		margin: 0;
-		margin-left: -6px;
+		margin-left: -10px;
+		padding-left: 1rem;
 	}
 }
 
@@ -147,12 +149,14 @@
 
 @media (max-width: 639.98px) {
 	.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__track {
-		animation-duration: 9s;
+		animation-duration: 5.5s;
 	}
 }
 
 .hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__track span {
 	flex: 0 0 auto;
+	flex-shrink: 0;
+	min-width: max-content;
 	display: block;
 	white-space: nowrap;
 	margin-right: 3rem;
@@ -163,7 +167,6 @@
 	height: 2rem;
 	padding: 0 0.5rem 0 0.25rem;
 	box-sizing: border-box;
-	overflow: hidden;
 	-webkit-text-size-adjust: 100%;
 	text-size-adjust: 100%;
 }
@@ -196,7 +199,7 @@
 @media (min-width: 640px) {
 	.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__badge {
 		font-size: 1rem;
-		padding: 0 0.85rem 0 0.65rem;
+		padding: 0 0.85rem 0 1rem;
 		max-width: none;
 	}
 }
