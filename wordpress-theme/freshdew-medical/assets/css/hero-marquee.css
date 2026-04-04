@@ -1,11 +1,9 @@
 /**
- * Home hero vacation marquee — single source (v8). Load with filemtime version.
+ * Home hero vacation marquee (v8).
  *
- * Layout aligned with components/NewsMarquee.tsx / Techxos: full-width blue bar, fixed h-8 white
- * track, red label position:absolute top-right over the track (no flex overlap / mobile stacking).
- * ≥640px: blue edge-to-edge (mr 0); inner strip inset from the right with 5vw; white track widened
- * slightly under the red badge to hide the blue notch by the diagonal clip. Mobile: horizontal
- * padding 0; marquee ~22s (desktop 60s).
+ * ≥640px: flex-end row — white track ~60vw (capped), red badge flush beside it (no clip-path;
+ * vertical join). No extra white extension under the badge.
+ * <640px: track margin-left 3vw; badge absolute top-right over track; faster scroll; single-line spans.
  */
 
 @keyframes fdMarqueeV8 {
@@ -17,7 +15,6 @@
 	}
 }
 
-/* Blue bar — full bleed, letterboxed like NewsMarquee md:py-2 + h-8 inner */
 .hero-section--marquee .fd-hero-marquee.fd-hero-marquee--v8 {
 	position: absolute;
 	top: 0;
@@ -31,6 +28,7 @@
 	padding: 0.5rem 0;
 	color-scheme: light;
 	margin-bottom: 0.65rem;
+	-webkit-font-smoothing: antialiased;
 }
 
 @media (min-width: 640px) {
@@ -39,7 +37,6 @@
 	}
 }
 
-/* Mobile: full width for white + red; desktop: left gutter + 5vw right on content only */
 .hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__center {
 	display: block;
 	width: 100%;
@@ -61,7 +58,6 @@
 	box-sizing: border-box;
 }
 
-/* Same idea as NewsMarquee: relative wrapper + absolute badge */
 .hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__row-inner {
 	position: relative;
 	width: 100%;
@@ -69,15 +65,57 @@
 	box-sizing: border-box;
 }
 
-@media (min-width: 640px) {
-	.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__row-inner {
-		overflow: visible;
+/* —— Mobile: inset track, badge overlaid —— */
+@media (max-width: 639.98px) {
+	.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__track-outer {
+		margin-left: 3vw;
+		width: calc(100% - 3vw);
+		box-sizing: border-box;
+	}
+
+	.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__badge {
+		position: absolute;
+		top: 0;
+		right: 0;
+		z-index: 10;
+		clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
+		box-shadow: -4px 0 0 #ffffff;
 	}
 }
 
-/* h-8 (2rem) white track — matches NewsMarquee marquee container */
+/* —— Desktop: flex, ~60vw track, rectangular red (straight left edge) —— */
+@media (min-width: 640px) {
+	.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__row-inner {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		justify-content: flex-end;
+		align-items: stretch;
+		overflow: visible;
+		gap: 0;
+	}
+
+	.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__track-outer {
+		margin-left: 0;
+		width: min(60vw, calc(100% - 10.5rem));
+		flex: 0 0 min(60vw, calc(100% - 10.5rem));
+		max-width: 60vw;
+	}
+
+	.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__badge {
+		position: relative;
+		top: auto;
+		right: auto;
+		flex: 0 0 auto;
+		z-index: 2;
+		clip-path: none;
+		box-shadow: none;
+		margin: 0;
+		margin-left: -6px;
+	}
+}
+
 .hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__track-outer {
-	width: 100%;
 	height: 2rem;
 	min-height: 2rem;
 	max-height: 2rem;
@@ -92,44 +130,42 @@
 	box-sizing: border-box;
 }
 
-/* ≥640px: extend white under the badge’s diagonal clip so blue does not show in the notch */
-@media (min-width: 640px) {
-	.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__track-outer {
-		width: calc(100% + 1.25rem);
-		max-width: none;
-	}
-}
-
 .hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__track {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: nowrap;
 	align-items: center;
+	align-content: center;
 	width: max-content;
 	max-width: none;
 	white-space: nowrap;
 	will-change: transform;
 	animation: fdMarqueeV8 60s linear infinite;
 	backface-visibility: hidden;
+	transform: translateZ(0);
 }
 
 @media (max-width: 639.98px) {
 	.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__track {
-		animation-duration: 22s;
+		animation-duration: 9s;
 	}
 }
 
 .hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__track span {
 	flex: 0 0 auto;
-	display: inline-block;
+	display: block;
 	white-space: nowrap;
 	margin-right: 3rem;
 	font-size: 0.875rem;
 	font-weight: 700;
 	color: #000000;
-	line-height: 1.2;
+	line-height: 2rem;
+	height: 2rem;
 	padding: 0 0.5rem 0 0.25rem;
 	box-sizing: border-box;
+	overflow: hidden;
+	-webkit-text-size-adjust: 100%;
+	text-size-adjust: 100%;
 }
 
 @media (min-width: 640px) {
@@ -138,29 +174,21 @@
 	}
 }
 
-/* Red badge over the right end of the track (straight right edge via clip-path) */
 .hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__badge {
-	position: absolute;
-	top: 0;
-	right: 0;
-	z-index: 10;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	box-sizing: border-box;
 	height: 2rem;
 	min-height: 2rem;
-	margin: 0;
-	padding: 0.125rem 0.65rem 0.125rem 1rem;
+	padding: 0 0.75rem 0 0.75rem;
 	background-color: #ff0000 !important;
 	background: #ff0000 !important;
 	color: #ffffff !important;
 	font-size: 0.875rem;
 	font-weight: 700;
-	line-height: 1.2;
+	line-height: 1.15;
 	white-space: nowrap;
-	clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
-	box-shadow: -4px 0 0 #ffffff;
 	-webkit-print-color-adjust: exact;
 	print-color-adjust: exact;
 }
@@ -168,8 +196,8 @@
 @media (min-width: 640px) {
 	.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__badge {
 		font-size: 1rem;
-		padding: 0.125rem 0.75rem 0.125rem 1rem;
-		max-width: 11rem;
+		padding: 0 0.85rem 0 0.65rem;
+		max-width: none;
 	}
 }
 
