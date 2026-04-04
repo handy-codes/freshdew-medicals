@@ -1,7 +1,7 @@
 /**
  * Home hero vacation marquee (v8).
  * Slim strip (~1.5rem) like Techxos. Desktop: extra white + badge pull-in kills blue gap.
- * Mobile: inline-flex track, no span shrink; scroll ~17s for readability.
+ * Mobile: scroll ~21s; ≥640px ~54s (slightly faster than 60s base).
  */
 
 @keyframes fdMarqueeV8 {
@@ -148,9 +148,15 @@
 	transform: translateZ(0);
 }
 
+@media (min-width: 640px) {
+	.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__track {
+		animation-duration: 54s;
+	}
+}
+
 @media (max-width: 639.98px) {
 	.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__track {
-		animation-duration: 17s;
+		animation-duration: 21s;
 	}
 }
 
@@ -164,7 +170,7 @@
 	display: inline-block;
 	white-space: nowrap;
 	margin-right: 3rem;
-	font-size: 0.75rem;
+	font-size: 0.875rem;
 	font-weight: 600;
 	color: #000000;
 	line-height: var(--fd-marquee-h);
@@ -173,12 +179,6 @@
 	box-sizing: border-box;
 	-webkit-text-size-adjust: 100%;
 	text-size-adjust: 100%;
-}
-
-@media (min-width: 640px) {
-	.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__track span {
-		font-size: 0.875rem;
-	}
 }
 
 .hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__badge {
