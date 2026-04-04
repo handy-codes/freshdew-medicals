@@ -85,7 +85,7 @@ const NewsMarquee = () => {
         </div>
       </div>
 
-      {/* Tailwind Custom Styles */}
+      {/* Tailwind Custom Styles applied */}
       <style jsx>{`
         .marquee-track {
           animation: marquee 60s linear infinite;
