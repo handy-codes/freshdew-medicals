@@ -56,6 +56,28 @@ $page_id = get_the_ID();
     </div>
 </section>
 
+<!-- Meet and Greet Notice -->
+<section class="fd-home-meet-greet-notice" style="padding: 3rem 0; background: #f9fafb;">
+    <div class="container">
+        <div style="max-width: 900px; margin: 0 auto;">
+            <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1.5rem; border-radius: 0.5rem;">
+                <p style="color: #92400e; margin: 0 0 1rem 0; font-weight: 600; font-size: 1rem;">
+                    <?php echo esc_html( '⚠️ Important Notice: All first appointments with Dr. Kinze will be a "Meet and Greet" to enrol patients into her family practice. This will only be conducted face to face and cannot be done virtually.' ); ?>
+                </p>
+                <p style="color: #92400e; margin: 0 0 1rem 0; font-weight: 600; font-size: 1rem;">
+                    <?php echo esc_html( 'Please note that no medical complaints will be discussed during this visit.' ); ?>
+                </p>
+                <p style="color: #92400e; margin: 0 0 1rem 0; font-weight: 600; font-size: 1rem;">
+                    <?php echo esc_html( 'You are welcome to book other appointments to discuss medical concerns.' ); ?>
+                </p>
+                <p style="color: #92400e; margin: 0; font-weight: 600; font-size: 1rem;">
+                    <?php echo esc_html( 'Please take note of the clinic policies on the website.' ); ?>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- Services Section -->
 <section style="padding: 4rem 0; background: #f9fafb;">
     <div class="container">
@@ -141,29 +163,6 @@ $page_id = get_the_ID();
                 <img src="<?php echo esc_url( $about_img_url ); ?>" alt="Fresh Healthcare"
                      style="width: 100%; height: auto; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1);"
                      onerror="this.style.display='none';">
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Meet and Greet Notice Section -->
-<section style="padding: 4rem 0; background: #f9fafb;">
-    <div class="container">
-        <div style="max-width: 900px; margin: 0 auto;">
-            <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1.5rem; border-radius: 0.5rem;">
-                <p style="color: #92400e; margin: 0 0 1rem 0; font-weight: 600; font-size: 1rem;">
-                    ⚠️ <strong>Important Notice:</strong> All first appointments with Dr. Kinze will be a "Meet and Greet" to enrol patients into her family practice. This will
-                    only be conducted face to face and cannot be done virtually.
-                </p>
-                <p style="color: #92400e; margin: 0 0 1rem 0; font-weight: 600; font-size: 1rem;">
-                    Please note that no medical complaints will be discussed during this visit.
-                </p>
-                <p style="color: #92400e; margin: 0 0 1rem 0; font-weight: 600; font-size: 1rem;">
-                    You are welcome to book other appointments to discuss medical concerns.
-                </p>
-                <p style="color: #92400e; margin: 0; font-weight: 600; font-size: 1rem;">
-                    Please take note of the clinic policies on the website.
-                </p>
             </div>
         </div>
     </div>
