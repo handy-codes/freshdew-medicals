@@ -1,6 +1,7 @@
 <?php
 /**
  * Vacation notice marquee — markup only; styles in assets/css/hero-marquee.css (v8).
+ * Layout mirrors components/NewsMarquee.tsx: relative strip + absolute red badge over the track.
  *
  * @package FreshDewMedical
  */
@@ -12,20 +13,22 @@ $fd_marquee_build = function_exists( 'freshdew_hero_marquee_build' ) ? freshdew_
 <div class="fd-hero-marquee fd-hero-marquee--v8" role="region" aria-label="<?php echo esc_attr__( 'Vacation notice', 'freshdew-medical' ); ?>" data-fd-marquee-v="8" data-fd-marquee-build="<?php echo esc_attr( $fd_marquee_build ); ?>">
 	<div class="fd-hero-marquee__center">
 		<div class="fd-hero-marquee__row">
-			<div class="fd-hero-marquee__track-outer">
-				<div class="fd-hero-marquee__track" aria-hidden="true">
-					<?php
-					for ( $i = 0; $i < 4; $i++ ) :
-						?>
-						<span><?php echo esc_html( $fd_marquee_text ); ?></span>
-						<?php
-					endfor;
-					?>
+			<div class="fd-hero-marquee__row-inner">
+				<div class="fd-hero-marquee__badge">
+					<span class="fd-hero-marquee__badge-text fd-hero-marquee__badge-text--desktop"><?php echo esc_html__( 'Vacation Notice', 'freshdew-medical' ); ?></span>
+					<span class="fd-hero-marquee__badge-text fd-hero-marquee__badge-text--mobile"><?php echo esc_html__( 'Vacation', 'freshdew-medical' ); ?></span>
 				</div>
-			</div>
-			<div class="fd-hero-marquee__badge">
-				<span class="fd-hero-marquee__badge-text fd-hero-marquee__badge-text--desktop"><?php echo esc_html__( 'Vacation Notice', 'freshdew-medical' ); ?></span>
-				<span class="fd-hero-marquee__badge-text fd-hero-marquee__badge-text--mobile"><?php echo esc_html__( 'Vacation', 'freshdew-medical' ); ?></span>
+				<div class="fd-hero-marquee__track-outer">
+					<div class="fd-hero-marquee__track" aria-hidden="true">
+						<?php
+						for ( $i = 0; $i < 4; $i++ ) :
+							?>
+							<span><?php echo esc_html( $fd_marquee_text ); ?></span>
+							<?php
+						endfor;
+						?>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

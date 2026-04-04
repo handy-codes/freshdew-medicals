@@ -424,9 +424,9 @@ html body .site-header {
     overflow: hidden;
 }
 
-/* Space for vacation marquee strip at top of hero (absolute). */
+/* Space for vacation marquee strip at top of hero (absolute); matches compact h-8 strip + blue letterbox. */
 .hero-section--marquee {
-    padding-top: clamp(2.35rem, 8.5vw, 3.2rem);
+    padding-top: clamp(2rem, 6.5vw, 2.75rem);
     box-sizing: border-box;
 }
 
@@ -1395,7 +1395,7 @@ html body .site-header {
     }
 
     .hero-section--marquee {
-        padding-top: clamp(2.3rem, 10vw, 3.2rem) !important;
+        padding-top: clamp(1.95rem, 8vw, 2.7rem) !important;
     }
 
     .hero-section--important-notice {
