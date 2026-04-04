@@ -142,13 +142,13 @@ $page_id = get_the_ID();
                         <span style="font-size: 1.25rem;">🕐</span> Hours
                     </h3>
                     <div style="color: #4b5563; line-height: 1.8;">
-                        <p>Monday 09:00 - 16:00 OPEN</p>
+                        <p>Monday 09:00 - 17:00 OPEN</p>
                         <p>Tuesday CLOSED</p>
-                        <p>Wednesday 09:00 - 16:00 OPEN</p>
-                        <p>Thursday 09:00 - 16:00 OPEN</p>
-                        <p>Friday 09:00 - 13:00 OPEN</p>
+                        <p>Wednesday 09:00 - 17:00 OPEN</p>
+                        <p>Thursday 09:00 - 17:00 OPEN</p>
+                        <p>Friday 09:00 - 17:00 OPEN</p>
                         <p>Saturday CLOSED</p>
-                        <p>Sunday CLOSED</p>
+                        <p>SUNDAY CLOSED</p>
                     </div>
                     <div style="color: #4b5563; line-height: 1.8;">
                         <p>Please check our website and clinic notice for any updates to working hours.</p>

@@ -129,6 +129,12 @@ function freshdew_enqueue_assets() {
 
     // Styles
     wp_enqueue_style('freshdew-style', get_stylesheet_uri(), array(), $asset_ver);
+    wp_enqueue_style(
+        'freshdew-hero-marquee',
+        get_template_directory_uri() . '/assets/css/hero-marquee.css',
+        array('freshdew-style'),
+        $asset_ver
+    );
     wp_enqueue_style('freshdew-main', get_template_directory_uri() . '/assets/css/main.css', array(), $asset_ver);
     
     // Scripts
@@ -845,7 +851,7 @@ function freshdew_ai_chat_handler($request) {
     $responses = array(
         'book appointment' => 'To book an appointment, please visit our online booking system: ' . $emr_link_html . ' or call us at ' . $contact_info['phone_formatted'] . '.',
         'symptoms' => 'If you are experiencing symptoms, please book an appointment online: ' . $emr_link_html . ' or call us. For emergencies, call 911.',
-        'hours' => '🕐 Hours<br>Monday 09:00 - 16:00 OPEN<br>Tuesday CLOSED<br>Wednesday 09:00 - 16:00 OPEN<br>Thursday 09:00 - 16:00 OPEN<br>Friday 09:00 - 13:00 OPEN<br>Saturday CLOSED<br>Sunday CLOSED<br><br>Please check our website and clinic notice for any updates to working hours.',
+        'hours' => '🕐 Hours<br>Monday 09:00 - 17:00 OPEN<br>Tuesday CLOSED<br>Wednesday 09:00 - 17:00 OPEN<br>Thursday 09:00 - 17:00 OPEN<br>Friday 09:00 - 17:00 OPEN<br>Saturday CLOSED<br>SUNDAY CLOSED<br><br>Please check our website and clinic notice for any updates to working hours.',
         'emergency' => 'For life-threatening emergencies, please call 911 immediately.',
         'location' => 'We are located at ' . $contact_info['address'] . ', ' . $contact_info['city'] . ', ' . $contact_info['province'] . '.',
         'phone' => 'You can reach us at ' . $contact_info['phone_formatted'] . '.',
@@ -908,7 +914,7 @@ STRICT RULES:
 
 DOCTORS AND TEAM — If the user asks about doctors, physicians, staff, or team members, do NOT list names or describe individuals. Say to visit the website About page and read the Meet Our Team section for accurate information. NEVER invent, guess, or substitute names (no placeholders).
 
-Contact: {$contact_info['address']}, {$contact_info['city']}. Phone: {$contact_info['phone_formatted']}. Email: {$contact_info['email']}. Hours: Monday 09:00–16:00 OPEN; Tuesday CLOSED; Wednesday 09:00–16:00 OPEN; Thursday 09:00–16:00 OPEN; Friday 09:00–13:00 OPEN; Saturday–Sunday CLOSED.
+Contact: {$contact_info['address']}, {$contact_info['city']}. Phone: {$contact_info['phone_formatted']}. Email: {$contact_info['email']}. Hours: Monday 09:00–17:00 OPEN; Tuesday CLOSED; Wednesday 09:00–17:00 OPEN; Thursday 09:00–17:00 OPEN; Friday 09:00–17:00 OPEN; Saturday CLOSED; Sunday CLOSED.
 
 Be friendly and professional. Give only the essential information asked. End every reply with a complete sentence.";
 

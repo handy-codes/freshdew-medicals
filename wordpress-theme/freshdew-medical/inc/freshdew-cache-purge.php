@@ -18,6 +18,7 @@ function freshdew_theme_critical_files_mtime() {
 	$files = array(
 		get_stylesheet_directory() . '/style.css',
 		get_template_directory() . '/assets/css/main.css',
+		get_template_directory() . '/assets/css/hero-marquee.css',
 		get_template_directory() . '/inc/hero-news-marquee.php',
 		get_template_directory() . '/inc/hero-important-notice.php',
 		get_template_directory() . '/page-home.php',
@@ -56,8 +57,17 @@ function freshdew_get_assets_version() {
  * @return string
  */
 function freshdew_hero_marquee_build() {
-	$f = get_template_directory() . '/inc/hero-news-marquee.php';
-	return is_readable( $f ) ? (string) filemtime( $f ) : '0';
+	$paths = array(
+		get_template_directory() . '/inc/hero-news-marquee.php',
+		get_template_directory() . '/assets/css/hero-marquee.css',
+	);
+	$max = 0;
+	foreach ( $paths as $f ) {
+		if ( is_readable( $f ) ) {
+			$max = max( $max, (int) filemtime( $f ) );
+		}
+	}
+	return (string) $max;
 }
 
 /**
