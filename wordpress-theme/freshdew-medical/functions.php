@@ -149,6 +149,31 @@ function freshdew_enqueue_assets() {
 add_action('wp_enqueue_scripts', 'freshdew_enqueue_assets');
 
 /**
+ * Cloudflare Rocket Loader can reorder or defer jQuery and theme scripts, which may break the
+ * front end or contribute to repeated verification flows. Opt those scripts out of automatic deferral.
+ *
+ * Browser integrity / managed challenges are controlled in the Cloudflare dashboard (Security → Bots,
+ * WAF, etc.); WordPress cannot disable those interstitials. If challenges persist, lower sensitivity or
+ * add a cache rule for your HTML as Cloudflare documents for your plan.
+ *
+ * @param string $tag    Full script tag HTML.
+ * @param string $handle WordPress script handle.
+ * @param string $src    Script source URL.
+ * @return string
+ */
+function freshdew_cloudflare_rocket_loader_opt_out( $tag, $handle, $src ) {
+	if ( is_admin() || strpos( $tag, 'data-cfasync' ) !== false ) {
+		return $tag;
+	}
+	$handles = array( 'jquery', 'jquery-core', 'jquery-migrate', 'freshdew-main' );
+	if ( in_array( $handle, $handles, true ) ) {
+		$tag = preg_replace( '/<script\s/i', '<script data-cfasync="false" ', $tag, 1 );
+	}
+	return $tag;
+}
+add_filter( 'script_loader_tag', 'freshdew_cloudflare_rocket_loader_opt_out', 10, 3 );
+
+/**
  * Add aria-current="page" to active menu link (for reliable active styling).
  */
 function freshdew_nav_menu_link_attributes($atts, $item) {

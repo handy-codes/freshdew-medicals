@@ -1,9 +1,11 @@
 /**
- * Home hero vacation marquee — single source (v7). Load with filemtime version.
- * Same layout rules on phone and desktop; only outer bar width differs at <640px.
+ * Home hero vacation marquee — single source (v8). Load with filemtime version.
+ * Marquee motion matches components/NewsMarquee.tsx: translate3d(-50%) + linear loop;
+ * desktop duration 60s; mobile 7.2s (5× faster than prior 36s). Red badge: clip-path diagonal on left only,
+ * vertical right edge (no skew).
  */
 
-@keyframes fdMarqueeV7 {
+@keyframes fdMarqueeV8 {
 	from {
 		transform: translate3d(0, 0, 0);
 	}
@@ -12,7 +14,7 @@
 	}
 }
 
-.hero-section--marquee .fd-hero-marquee.fd-hero-marquee--v7 {
+.hero-section--marquee .fd-hero-marquee.fd-hero-marquee--v8 {
 	position: absolute;
 	top: 0;
 	z-index: 30;
@@ -23,28 +25,29 @@
 	color-scheme: light;
 }
 
+/* Viewport inset on the right: tight on small screens, 5vw from 640px up */
 @media (max-width: 639.98px) {
-	.hero-section--marquee .fd-hero-marquee.fd-hero-marquee--v7 {
-		left: 50%;
-		right: auto;
-		transform: translateX(-50%);
-		width: 100vw;
-		max-width: 100vw;
+	.hero-section--marquee .fd-hero-marquee.fd-hero-marquee--v8 {
+		left: 0;
+		right: 1vw;
+		width: auto;
+		max-width: none;
+		transform: none;
 		margin-bottom: 0.65rem;
 	}
 }
 
 @media (min-width: 640px) {
-	.hero-section--marquee .fd-hero-marquee.fd-hero-marquee--v7 {
+	.hero-section--marquee .fd-hero-marquee.fd-hero-marquee--v8 {
 		left: 0;
-		right: 0;
-		width: 100%;
-		max-width: 100%;
+		right: 5vw;
+		width: auto;
+		max-width: none;
 		transform: none;
 	}
 }
 
-.hero-section--marquee .fd-hero-marquee--v7 .fd-hero-marquee__center {
+.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__center {
 	display: flex;
 	justify-content: center;
 	align-items: stretch;
@@ -53,7 +56,7 @@
 	padding: 0 clamp(1rem, 4.2vw, 4.5rem);
 }
 
-.hero-section--marquee .fd-hero-marquee--v7 .fd-hero-marquee__row {
+.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__row {
 	display: flex;
 	flex-direction: row;
 	align-items: stretch;
@@ -65,7 +68,7 @@
 	max-width: 100%;
 }
 
-.hero-section--marquee .fd-hero-marquee--v7 .fd-hero-marquee__track-outer {
+.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__track-outer {
 	flex: 0 1 auto;
 	overflow: hidden;
 	display: flex;
@@ -81,15 +84,31 @@
 	max-width: calc(100vw - 6rem);
 }
 
-.hero-section--marquee .fd-hero-marquee--v7 .fd-hero-marquee__track {
+@media (max-width: 639.98px) {
+	.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__track-outer {
+		flex: 1 1 auto;
+		min-width: 0;
+		max-width: calc(100% - 5.25rem);
+		width: auto;
+	}
+}
+
+/* Same keyframe pattern as NewsMarquee.tsx; fixed duration = consistent px/s for a given content width */
+.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__track {
 	display: inline-flex;
 	white-space: nowrap;
 	align-items: center;
 	will-change: transform;
-	animation: fdMarqueeV7 36s linear infinite;
+	animation: fdMarqueeV8 60s linear infinite;
 }
 
-.hero-section--marquee .fd-hero-marquee--v7 .fd-hero-marquee__track span {
+@media (max-width: 639.98px) {
+	.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__track {
+		animation-duration: 7.2s;
+	}
+}
+
+.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__track span {
 	display: inline-block;
 	margin-right: 3rem;
 	font-size: 1rem;
@@ -99,7 +118,7 @@
 	padding: 0.35rem 0.5rem 0.35rem 0.25rem;
 }
 
-.hero-section--marquee .fd-hero-marquee--v7 .fd-hero-marquee__badge {
+.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__badge {
 	flex: 0 0 auto;
 	align-self: stretch;
 	display: flex;
@@ -107,7 +126,7 @@
 	justify-content: center;
 	box-sizing: border-box;
 	margin: 0 0 0 -12px;
-	padding: 0.35rem 0.4rem 0.35rem 0.9rem;
+	padding: 0.35rem 0.65rem 0.35rem 1rem;
 	background-color: #ff0000 !important;
 	background: #ff0000 !important;
 	color: #ffffff !important;
@@ -117,41 +136,55 @@
 	white-space: nowrap;
 	position: relative;
 	z-index: 2;
-	transform: skewX(-14deg);
-	transform-origin: center center;
+	/* Diagonal join on the left only; right edge stays vertical (matches NewsMarquee clip-news) */
+	clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
 	box-shadow: -5px 0 0 #ffffff;
 	-webkit-print-color-adjust: exact;
 	print-color-adjust: exact;
 }
 
-.hero-section--marquee .fd-hero-marquee--v7 .fd-hero-marquee__badge-text {
+.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__badge-text {
 	display: inline-block;
-	transform: skewX(14deg);
+}
+
+.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__badge-text--mobile {
+	display: none;
+}
+
+@media (max-width: 639.98px) {
+	.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__badge-text--desktop {
+		display: none;
+	}
+
+	.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__badge-text--mobile {
+		display: inline;
+	}
 }
 
 @media (min-width: 640px) {
-	.hero-section--marquee .fd-hero-marquee--v7 .fd-hero-marquee__badge {
+	.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__badge {
 		max-width: 11rem;
 		padding: 0.35rem 0.5rem 0.35rem 1rem;
 	}
 }
 
 @media (max-width: 639.98px) {
-	.hero-section--marquee .fd-hero-marquee--v7 .fd-hero-marquee__badge {
-		max-width: 46vw;
-		padding: 0.35rem 0.32rem 0.35rem 0.75rem;
+	.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__badge {
+		max-width: none;
+		min-width: 0;
+		padding: 0.35rem 0.5rem 0.35rem 0.85rem;
 	}
 }
 
 @media (forced-colors: active) {
-	.hero-section--marquee .fd-hero-marquee--v7 .fd-hero-marquee__badge {
+	.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__badge {
 		forced-color-adjust: none;
 		background-color: #ff0000 !important;
 		color: #ffffff !important;
 	}
 }
 
-.hero-section--marquee .fd-hero-marquee--v7 .fd-sr-only {
+.hero-section--marquee .fd-hero-marquee--v8 .fd-sr-only {
 	position: absolute;
 	width: 1px;
 	height: 1px;
