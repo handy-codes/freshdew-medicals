@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <?php
-    // --- SEO & Open Graph Meta Tags ---
+    // --- SEO & Open Graph Meta Tag ---
     $fd_contact = freshdew_get_contact_info();
     $fd_site_title = 'FreshDew Medical Clinic';
     $fd_default_title = 'Quality Healthcare You Can Trust';
