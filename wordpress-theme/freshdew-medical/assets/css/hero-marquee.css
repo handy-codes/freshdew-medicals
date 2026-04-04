@@ -1,9 +1,7 @@
 /**
  * Home hero vacation marquee (v8).
- *
- * ≥640px: flex-end row — white track ~60vw; red badge with slanted left (clip-path), straight right.
- * <640px: track ml 3vw; overlaid badge; faster scroll. Marquee spans must not use overflow:hidden
- * (flex would shrink them and truncate the message).
+ * Slim strip (~1.5rem) like Techxos. Desktop: extra white + badge pull-in kills blue gap.
+ * Mobile: inline-flex track, no span shrink; faster animation only on small screens.
  */
 
 @keyframes fdMarqueeV8 {
@@ -16,6 +14,7 @@
 }
 
 .hero-section--marquee .fd-hero-marquee.fd-hero-marquee--v8 {
+	--fd-marquee-h: 1.5rem;
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -25,7 +24,7 @@
 	box-sizing: border-box;
 	background-color: #00468d;
 	overflow: hidden;
-	padding: 0.5rem 0;
+	padding: 0.35rem 0;
 	color-scheme: light;
 	margin-bottom: 0.65rem;
 	-webkit-font-smoothing: antialiased;
@@ -65,7 +64,6 @@
 	box-sizing: border-box;
 }
 
-/* —— Mobile: inset track, badge overlaid —— */
 @media (max-width: 639.98px) {
 	.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__track-outer {
 		margin-left: 3vw;
@@ -79,14 +77,14 @@
 		right: 0;
 		z-index: 10;
 		clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
-		box-shadow: -4px 0 0 #ffffff;
+		box-shadow: -6px 0 0 #ffffff;
 	}
 }
 
-/* —— Desktop: flex, ~60vw track; red with slanted left (same polygon as mobile / Top News) —— */
 @media (min-width: 640px) {
 	.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__row-inner {
 		--fd-marquee-track-w: min(60vw, calc(100% - 10.5rem));
+		--fd-marquee-overlap: 1.35rem;
 		display: flex;
 		flex-direction: row;
 		flex-wrap: nowrap;
@@ -98,9 +96,9 @@
 
 	.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__track-outer {
 		margin-left: 0;
-		width: calc(var(--fd-marquee-track-w) + 0.7rem);
-		flex: 0 0 calc(var(--fd-marquee-track-w) + 0.7rem);
-		max-width: calc(60vw + 0.7rem);
+		width: calc(var(--fd-marquee-track-w) + var(--fd-marquee-overlap));
+		flex: 0 0 calc(var(--fd-marquee-track-w) + var(--fd-marquee-overlap));
+		max-width: calc(60vw + var(--fd-marquee-overlap));
 	}
 
 	.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__badge {
@@ -110,22 +108,23 @@
 		flex: 0 0 auto;
 		z-index: 2;
 		clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
-		box-shadow: -4px 0 0 #ffffff;
+		box-shadow: -8px 0 0 #ffffff;
 		margin: 0;
-		margin-left: -10px;
-		padding-left: 1rem;
+		margin-left: calc(-1 * var(--fd-marquee-overlap) - 2px);
+		padding-left: 1.05rem;
 	}
 }
 
 .hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__track-outer {
-	height: 2rem;
-	min-height: 2rem;
-	max-height: 2rem;
+	height: var(--fd-marquee-h);
+	min-height: var(--fd-marquee-h);
+	max-height: var(--fd-marquee-h);
 	overflow: hidden;
 	display: flex;
 	align-items: center;
+	justify-content: flex-start;
 	background: #ffffff;
-	padding: 0 0 0 4px;
+	padding: 0 0 0 3px;
 	border: 0;
 	position: relative;
 	z-index: 1;
@@ -133,12 +132,14 @@
 }
 
 .hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__track {
-	display: flex;
+	display: inline-flex;
 	flex-direction: row;
 	flex-wrap: nowrap;
 	align-items: center;
-	align-content: center;
+	flex: 0 0 auto;
+	flex-shrink: 0;
 	width: max-content;
+	min-width: max-content;
 	max-width: none;
 	white-space: nowrap;
 	will-change: transform;
@@ -149,23 +150,26 @@
 
 @media (max-width: 639.98px) {
 	.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__track {
-		animation-duration: 5.5s;
+		animation-duration: 3.75s;
 	}
 }
 
 .hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__track span {
-	flex: 0 0 auto;
+	flex: none;
 	flex-shrink: 0;
+	flex-grow: 0;
+	min-width: -moz-max-content;
 	min-width: max-content;
-	display: block;
+	width: max-content;
+	display: inline-block;
 	white-space: nowrap;
 	margin-right: 3rem;
-	font-size: 0.875rem;
+	font-size: 0.8125rem;
 	font-weight: 700;
 	color: #000000;
-	line-height: 2rem;
-	height: 2rem;
-	padding: 0 0.5rem 0 0.25rem;
+	line-height: var(--fd-marquee-h);
+	height: var(--fd-marquee-h);
+	padding: 0 0.45rem 0 0.2rem;
 	box-sizing: border-box;
 	-webkit-text-size-adjust: 100%;
 	text-size-adjust: 100%;
@@ -173,7 +177,7 @@
 
 @media (min-width: 640px) {
 	.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__track span {
-		font-size: 1rem;
+		font-size: 0.9375rem;
 	}
 }
 
@@ -182,15 +186,15 @@
 	align-items: center;
 	justify-content: center;
 	box-sizing: border-box;
-	height: 2rem;
-	min-height: 2rem;
-	padding: 0 0.75rem 0 0.75rem;
+	height: var(--fd-marquee-h);
+	min-height: var(--fd-marquee-h);
+	padding: 0 0.65rem 0 0.65rem;
 	background-color: #ff0000 !important;
 	background: #ff0000 !important;
 	color: #ffffff !important;
-	font-size: 0.875rem;
+	font-size: 0.8125rem;
 	font-weight: 700;
-	line-height: 1.15;
+	line-height: 1.1;
 	white-space: nowrap;
 	-webkit-print-color-adjust: exact;
 	print-color-adjust: exact;
@@ -198,8 +202,8 @@
 
 @media (min-width: 640px) {
 	.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__badge {
-		font-size: 1rem;
-		padding: 0 0.85rem 0 1rem;
+		font-size: 0.9375rem;
+		padding: 0 0.75rem 0 1.05rem;
 		max-width: none;
 	}
 }
@@ -207,7 +211,7 @@
 @media (max-width: 639.98px) {
 	.hero-section--marquee .fd-hero-marquee--v8 .fd-hero-marquee__badge {
 		max-width: none;
-		padding: 0.125rem 0.5rem 0.125rem 0.85rem;
+		padding: 0 0.45rem 0 0.8rem;
 	}
 }
 
