@@ -35,7 +35,7 @@ export default function MapComponent() {
           <MapPin className="w-5 h-5 text-blue-600 flex-shrink-0" />
           <div>
             <p className="font-semibold text-sm">FreshDew Medical Clinic</p>
-            <p className="text-xs text-gray-600">135 Cannifton Road, Unit 2 & 3, Belleville, ON K8N 4V4</p>
+            <p className="text-xs text-gray-600">135 Cannifton Road, Unit 2 & 3, Belleville, ON K8N 2V6</p>
           </div>
         </div>
         <Button

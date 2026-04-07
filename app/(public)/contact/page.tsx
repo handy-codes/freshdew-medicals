@@ -63,7 +63,7 @@ export default function ContactPage() {
               <CardContent>
                 <address className="not-italic text-gray-700">
                   135 Cannifton Road, Unit 2 & 3<br />
-                  Belleville, Ontario, K8N 4V4<br />
+                  Belleville, Ontario, K8N 2V6<br />
                   Canada
                 </address>
               </CardContent>

@@ -38,7 +38,7 @@ export default function Footer() {
               <h4 className="text-lg font-semibold mb-4">Contact Us</h4>
               <address className="text-gray-400 not-italic">
                 135 Cannifton Road, Unit 2 & 3<br />
-                Belleville, Ontario, K8N 4V4<br />
+                Belleville, Ontario, K8N 2V6<br />
                 Canada<br />
                 <br />
                 Phone: (613) 243-0110<br />

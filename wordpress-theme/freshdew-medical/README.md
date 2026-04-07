@@ -23,7 +23,7 @@ A modern, responsive WordPress theme designed specifically for FreshDew Medical 
 ## Contact Information
 
 The contact information is configured in `functions.php`:
-- Address: 135 Cannifton Road, Unit 2 & 3, Belleville, Ontario, K8N 4V4
+- Address: 135 Cannifton Road, Unit 2 & 3, Belleville, Ontario, K8N 2V6
 - Phone: (613) 243-0110
 - Fax: (613) 243-0321
 - Email: info@freshdewmedicalclinic.com

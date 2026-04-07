@@ -146,7 +146,7 @@ $page_id = get_the_ID();
                         <p>Tuesday CLOSED</p>
                         <p>Wednesday 09:00 - 17:00 OPEN</p>
                         <p>Thursday 09:00 - 17:00 OPEN</p>
-                        <p>Friday 09:00 - 17:00 OPEN</p>
+                        <p>Friday 09:00 - 15:00 OPEN</p>
                         <p>Saturday CLOSED</p>
                         <p>SUNDAY CLOSED</p>
                     </div>

@@ -91,9 +91,15 @@
         "openingHoursSpecification": [
             {
                 "@type": "OpeningHoursSpecification",
-                "dayOfWeek": ["Monday","Wednesday","Thursday","Friday"],
+                "dayOfWeek": ["Monday","Wednesday","Thursday"],
                 "opens": "09:00",
                 "closes": "17:00"
+            },
+            {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": ["Friday"],
+                "opens": "09:00",
+                "closes": "15:00"
             }
         ],
         "medicalSpecialty": ["Family Practice","General Practice","Walk-in Clinic","Telehealth"],

@@ -12,7 +12,7 @@
 |---|---|
 | **Business name** | FreshDew Medical Clinic |
 | **Business category** | Medical clinic *(primary)*, Family practice physician, Walk-in clinic |
-| **Address** | 135 Cannifton Road, Unit 2 & 3, Belleville, Ontario K8N 4V4, Canada |
+| **Address** | 135 Cannifton Road, Unit 2 & 3, Belleville, Ontario K8N 2V6, Canada |
 | **Service area** | Belleville and surrounding areas (Bay of Quinte region) |
 | **Phone** | (613) 243-0110 |
 | **Website** | https://freshdewmedicalclinic.com |
@@ -71,7 +71,7 @@ If when you search **“freshdew medical clinic”** the **right-hand panel (Kno
 - **That panel is driven by Google Business Profile (GBP), not by your website alone.** Google picks one business to show there; if you don’t have a **verified** profile for “FreshDew Medical Clinic” at 135 Cannifton Road, Belleville, it may show another similarly named business.
 - **What to do:**
   1. **Create or claim the correct profile** (Steps 1–2 above): [business.google.com](https://business.google.com) → Add your business (or search for “FreshDew Medical Clinic” and claim it if it exists).
-  2. Use the **exact** name **“FreshDew Medical Clinic”**, address **135 Cannifton Road, Unit 2 & 3, Belleville, Ontario K8N 4V4, Canada**, and website **https://freshdewmedicalclinic.com**.
+  2. Use the **exact** name **“FreshDew Medical Clinic”**, address **135 Cannifton Road, Unit 2 & 3, Belleville, Ontario K8N 2V6, Canada**, and website **https://freshdewmedicalclinic.com**.
   3. **Verify** the business (postcard to that address, or another method Google offers).
   4. After verification, fill in hours, photos, services, and description (Step 3 above).
 - Once your **Belleville** profile is verified and complete, Google can start showing **your** map and details on the right for “freshdew medical clinic” (especially for users in or near Ontario). You cannot force this from the website; it depends on having the correct, verified GBP.

@@ -224,7 +224,7 @@ $page_id = get_the_ID();
                     </tr>
                     <tr style="border-bottom: 1px solid #e5e7eb;">
                         <td style="padding: 1rem 0; font-weight: 600; color: #1f2937;">Friday</td>
-                        <td style="padding: 1rem 0; text-align: right; color: #4b5563;">09:00 - 17:00 OPEN</td>
+                        <td style="padding: 1rem 0; text-align: right; color: #4b5563;">09:00 - 15:00 OPEN</td>
                     </tr>
                     <tr style="border-bottom: 1px solid #e5e7eb;">
                         <td style="padding: 1rem 0; font-weight: 600; color: #1f2937;">Saturday</td>
