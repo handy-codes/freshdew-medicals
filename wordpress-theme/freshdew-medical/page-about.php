@@ -8,6 +8,8 @@
 get_header();
 $contact_info = freshdew_get_contact_info();
 $page_id = get_the_ID();
+/** Set true to show Karen Howald's team card again on this template. */
+$freshdew_show_karen_team_card = false;
 ?>
 
 <section style="padding: 4rem 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
@@ -101,7 +103,8 @@ $page_id = get_the_ID();
                     </div>
                 </div>
                 
-                <!-- Karen Howald Card -->
+                <?php if ( $freshdew_show_karen_team_card ) : ?>
+                <!-- Karen Howald Card (hidden when $freshdew_show_karen_team_card is false) -->
                 <?php
                 $team3_img_id = freshdew_get_section_image_id( $page_id, 'team_3_image' );
                 $team3_img_url = $team3_img_id ? wp_get_attachment_image_url( $team3_img_id, 'large' ) : '';
@@ -129,6 +132,8 @@ $page_id = get_the_ID();
                         </a>
                     </div>
                 </div>
+                <?php endif; ?>
+
                 
                 <!-- Emeka Owo Card -->
                 <?php
