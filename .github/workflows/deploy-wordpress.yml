@@ -249,6 +249,30 @@ jobs:
           log-level: verbose
         timeout-minutes: 15
       
+      # When FTP home is already public_html, paths omit the public_html prefix
+      - name: Deploy Theme (Alternative Path 3)
+        id: theme-alt3
+        if: steps.theme-alt2.outcome == 'failure'
+        continue-on-error: true
+        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+        with:
+          server: ${{ secrets.HOSTINGER_FTP_SERVER }}
+          username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
+          password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+          server-dir: wp-content/themes/freshdew-medical/
+          local-dir: ./wordpress-theme/freshdew-medical/
+          protocol: ${{ steps.test-ftp.outputs.protocol == 'ftps' && 'ftps' || 'ftp' }}
+          dangerous-clean-slate: false
+          dry-run: false
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/README.md
+            **/*.md
+            **/.DS_Store
+          log-level: verbose
+        timeout-minutes: 15
+      
       # Plugins Deployment - Try SFTP first
       - name: Deploy Plugins (SFTP - Recommended)
         id: plugins-sftp
@@ -334,9 +358,32 @@ jobs:
           log-level: verbose
         timeout-minutes: 15
       
+      - name: Deploy Plugins (Alternative Path 3)
+        id: plugins-alt3
+        if: steps.plugins-alt2.outcome == 'failure'
+        continue-on-error: true
+        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+        with:
+          server: ${{ secrets.HOSTINGER_FTP_SERVER }}
+          username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
+          password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+          server-dir: wp-content/plugins/
+          local-dir: ./wordpress-plugins/
+          protocol: ${{ steps.test-ftp.outputs.protocol == 'ftps' && 'ftps' || 'ftp' }}
+          dangerous-clean-slate: false
+          dry-run: false
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/README.md
+            **/*.md
+            **/.DS_Store
+          log-level: verbose
+        timeout-minutes: 15
+      
       # When deployment failed, run a quick FTP diagnostic so the error is visible at end of log
       - name: FTP diagnostic (run when deploy failed)
-        if: steps.theme-ftp.outcome == 'failure' || steps.theme-sftp.outcome == 'failure'
+        if: steps.theme-ftp.outcome == 'failure' || steps.theme-sftp.outcome == 'failure' || steps.plugins-ftp.outcome == 'failure' || steps.plugins-sftp.outcome == 'failure'
         run: |
           echo ""
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
@@ -351,7 +398,7 @@ jobs:
           echo "Testing FTPS (if FTP failed)..."
           timeout 10 lftp -c "set ftp:ssl-force true; set ftp:ssl-protect-data true; open -u ${{ secrets.HOSTINGER_FTP_USERNAME }},${{ secrets.HOSTINGER_FTP_PASSWORD }} ${{ secrets.HOSTINGER_FTP_SERVER }}; pwd; quit" 2>&1 || true
           echo ""
-          echo "💡 Use the error lines above: connection refused = wrong host or blocked; login incorrect = wrong user/pass; No such file = set HOSTINGER_FTP_THEME_PATH in Secrets."
+          echo "💡 Read the error lines above: connection refused = wrong host/port or firewall; login failed = user/password; 550 / no such file = set HOSTINGER_FTP_THEME_PATH and HOSTINGER_FTP_PLUGINS_PATH to the exact folders FileZilla shows (often domains/yourdomain/public_html/wp-content/... on Hostinger)."
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
         continue-on-error: true
       
@@ -363,11 +410,11 @@ jobs:
           THEME_SUCCESS=false
           PLUGINS_SUCCESS=false
           
-          if [ "${{ steps.theme-sftp.outcome }}" = "success" ] || [ "${{ steps.theme-ftp.outcome }}" = "success" ] || [ "${{ steps.theme-alt1.outcome }}" = "success" ] || [ "${{ steps.theme-alt2.outcome }}" = "success" ]; then
+          if [ "${{ steps.theme-sftp.outcome }}" = "success" ] || [ "${{ steps.theme-ftp.outcome }}" = "success" ] || [ "${{ steps.theme-alt1.outcome }}" = "success" ] || [ "${{ steps.theme-alt2.outcome }}" = "success" ] || [ "${{ steps.theme-alt3.outcome }}" = "success" ]; then
             THEME_SUCCESS=true
           fi
           
-          if [ "${{ steps.plugins-sftp.outcome }}" = "success" ] || [ "${{ steps.plugins-ftp.outcome }}" = "success" ] || [ "${{ steps.plugins-alt1.outcome }}" = "success" ] || [ "${{ steps.plugins-alt2.outcome }}" = "success" ]; then
+          if [ "${{ steps.plugins-sftp.outcome }}" = "success" ] || [ "${{ steps.plugins-ftp.outcome }}" = "success" ] || [ "${{ steps.plugins-alt1.outcome }}" = "success" ] || [ "${{ steps.plugins-alt2.outcome }}" = "success" ] || [ "${{ steps.plugins-alt3.outcome }}" = "success" ]; then
             PLUGINS_SUCCESS=true
           fi
           
@@ -384,6 +431,7 @@ jobs:
             echo "   - FTP/FTPS: ${{ steps.theme-ftp.outcome || 'skipped' }}"
             echo "   - Alt Path 1: ${{ steps.theme-alt1.outcome || 'skipped' }}"
             echo "   - Alt Path 2: ${{ steps.theme-alt2.outcome || 'skipped' }}"
+            echo "   - Alt Path 3 (wp-content/...): ${{ steps.theme-alt3.outcome || 'skipped' }}"
             echo ""
             echo "   📋 (outcome = actual result; skipped = step did not run)"
             echo ""
@@ -404,6 +452,7 @@ jobs:
             echo "   - FTP/FTPS: ${{ steps.plugins-ftp.outcome }}"
             echo "   - Alt Path 1: ${{ steps.plugins-alt1.outcome }}"
             echo "   - Alt Path 2: ${{ steps.plugins-alt2.outcome }}"
+            echo "   - Alt Path 3 (wp-content/plugins/): ${{ steps.plugins-alt3.outcome }}"
             echo ""
             echo "   💡 Check the logs above for specific error messages from each deployment attempt."
           fi
@@ -430,6 +479,8 @@ jobs:
             echo "     • HOSTINGER_FTP_SERVER"
             echo "     • HOSTINGER_FTP_USERNAME"
             echo "     • HOSTINGER_FTP_PASSWORD"
+            echo "     • HOSTINGER_FTP_THEME_PATH (optional — full remote path from FileZilla)"
+            echo "     • HOSTINGER_FTP_PLUGINS_PATH (optional)"
             echo ""
             echo "2. **Set up SFTP (Recommended - More Reliable):**"
             echo "   → Generate SSH key: ssh-keygen -t rsa -b 4096"
@@ -462,6 +513,6 @@ jobs:
             echo "   → Request SFTP access if not available"
             echo "   → Ask about firewall restrictions"
             echo ""
-            echo "   📄 Full guide: docs/DEPLOY_TROUBLESHOOTING.md (optional path secrets, SFTP setup)"
+            echo "   📄 Tip: In FileZilla, open the theme folder, copy Remote site path, set it as HOSTINGER_FTP_THEME_PATH (trailing slash). Same for plugins → HOSTINGER_FTP_PLUGINS_PATH."
             exit 1
           fi
