@@ -12,7 +12,9 @@ $page_id = get_the_ID();
 
 <!-- Hero Section with Medical Team *** Image -->
 <section class="hero-section hero-section--marquee">
-    <?php get_template_part( 'inc/hero-news-marquee' ); ?>
+    <?php if ( false ) : // Set to true to show marquee again. ?>
+        <?php get_template_part( 'inc/hero-news-marquee' ); ?>
+    <?php endif; ?>
     <div class="hero-background-wrapper">
         <?php
         $hero_img_id = freshdew_get_section_image_id( $page_id, 'hero_image' );
@@ -56,21 +58,23 @@ $page_id = get_the_ID();
     </div>
 </section>
 
-<!-- Vacation notice -->
-<section class="fd-home-vacation-notice" style="padding: 3rem 0; background: #f9fafb;">
-    <div class="container">
-        <div style="max-width: 900px; margin: 0 auto;">
-            <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1.5rem; border-radius: 0.5rem;">
-                <p style="color: #92400e; margin: 0 0 1rem 0; font-weight: 600; font-size: 1rem; line-height: 1.55;">
-                    <?php echo esc_html( '⚠️ Vacation Notice: This is to notify all patients that Dr. Kinze will be away on vacation from April 15 to April 24, 2026. The clinic will resume fully on April 29, 2026.' ); ?>
-                </p>
-                <p style="color: #92400e; margin: 0; font-weight: 600; font-size: 1rem; line-height: 1.55;">
-                    <?php echo esc_html( 'Please find local walk-in clinics if needed and in emergency, please call 911.' ); ?>
-                </p>
+<?php if ( false ) : // Set to true to show Vacation Notice banner again. ?>
+    <!-- Vacation notice -->
+    <section class="fd-home-vacation-notice" style="padding: 3rem 0; background: #f9fafb;">
+        <div class="container">
+            <div style="max-width: 900px; margin: 0 auto;">
+                <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1.5rem; border-radius: 0.5rem;">
+                    <p style="color: #92400e; margin: 0 0 1rem 0; font-weight: 600; font-size: 1rem; line-height: 1.55;">
+                        <?php echo esc_html( '⚠️ Vacation Notice: This is to notify all patients that Dr. Kinze will be away on vacation from April 15 to April 24, 2026. The clinic will resume fully on April 29, 2026.' ); ?>
+                    </p>
+                    <p style="color: #92400e; margin: 0; font-weight: 600; font-size: 1rem; line-height: 1.55;">
+                        <?php echo esc_html( 'Please find local walk-in clinics if needed and in emergency, please call 911.' ); ?>
+                    </p>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+<?php endif; ?>
 
 <!-- Services Section -->
 <section style="padding: 4rem 0; background: #f9fafb;">
