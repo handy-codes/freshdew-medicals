@@ -84,6 +84,9 @@ function freshdew_get_page_sections_config() {
 		'walk-in-clinic' => array(
 			array( 'key' => 'hero_title', 'label' => 'Hero title', 'default' => 'Walk-in Clinic', 'type' => 'text' ),
 			array( 'key' => 'hero_subtitle', 'label' => 'Hero subtitle', 'default' => 'No appointment needed. Quality medical care when you need it.', 'type' => 'textarea' ),
+			array( 'key' => 'accepting_heading', 'label' => 'Intro / accepting heading (shown below hero when the page body is empty)', 'default' => 'Accepting New Patients', 'type' => 'text' ),
+			array( 'key' => 'accepting_text', 'label' => 'Intro / accepting text', 'default' => 'We welcome walk-in patients. No appointment necessary!', 'type' => 'textarea' ),
+			array( 'key' => 'hide_walkin_intro', 'label' => 'Hide intro block — hides the WordPress page body if present, otherwise hides the intro / accepting box above “What We Offer”.', 'type' => 'checkbox', 'default' => '' ),
 			array( 'key' => 'what_we_offer_heading', 'label' => 'What We Offer heading', 'default' => 'What We Offer', 'type' => 'text' ),
 			array( 'key' => 'service_1_title', 'label' => 'Service 1 title', 'default' => 'General Medical Care', 'type' => 'text' ),
 			array( 'key' => 'service_1_description', 'label' => 'Service 1 description', 'default' => 'Treatment for common illnesses and minor injuries.', 'type' => 'textarea' ),
@@ -94,6 +97,8 @@ function freshdew_get_page_sections_config() {
 			array( 'key' => 'service_1_image', 'label' => 'Service 1 image', 'default' => '', 'type' => 'image' ),
 			array( 'key' => 'service_2_image', 'label' => 'Service 2 image', 'default' => '', 'type' => 'image' ),
 			array( 'key' => 'service_3_image', 'label' => 'Service 3 image', 'default' => '', 'type' => 'image' ),
+			array( 'key' => 'hide_walkin_offer', 'label' => 'Hide “What We Offer” — heading and all three service cards.', 'type' => 'checkbox', 'default' => '' ),
+			array( 'key' => 'hide_walkin_book_banner', 'label' => 'Hide Book Appointment banner (image link at bottom).', 'type' => 'checkbox', 'default' => '' ),
 		),
 		'family-practice' => array(
 			array( 'key' => 'hero_title', 'label' => 'Hero title', 'default' => 'Family Practice', 'type' => 'text' ),
@@ -177,6 +182,16 @@ function freshdew_get_section_image_id( $post_id, $section_key ) {
 	return 0;
 }
 
+/**
+ * Whether a "hide section" checkbox is enabled for this page (stored as freshdew_section_{$key} = '1').
+ *
+ * @param int    $post_id Page post ID.
+ * @param string $section_key Config key for the checkbox (e.g. hide_walkin_intro).
+ */
+function freshdew_is_section_hidden( $post_id, $section_key ) {
+	return get_post_meta( $post_id, 'freshdew_section_' . $section_key, true ) === '1';
+}
+
 /** Meta box: Page Sections (only for the 6 editable pages) */
 function freshdew_add_page_sections_meta_box() {
 	$screen = get_current_screen();
@@ -208,15 +223,25 @@ function freshdew_render_page_sections_meta_box( $post ) {
 		return;
 	}
 	wp_nonce_field( 'freshdew_save_page_sections', 'freshdew_sections_nonce' );
-	echo '<p class="description">Only these pages are editable: Home, About, Walk-in Clinic, Family Practice, Telehealth, Contact. Edit text and images below, then Update the page. Use "Select/Update" to change an image, "Remove" to delete it.</p>';
+	echo '<p class="description">Only these pages are editable: Home, About, Walk-in Clinic, Family Practice, Telehealth, Contact. Edit text and images below, then Update the page. Use "Select/Update" to change an image, "Remove" to delete it. Check any "Hide ..." option to stop that block from appearing on the live site.</p>';
 	echo '<div style="display: grid; gap: 1rem;">';
 	foreach ( $config[ $page_key ] as $section ) {
 		$meta_key = 'freshdew_section_' . $section['key'];
 		$value = get_post_meta( $post->ID, $meta_key, true );
-		if ( $value === '' || $value === null ) {
+		if ( $section['type'] === 'checkbox' ) {
+			$checked = (string) $value === '1';
+		} elseif ( $value === '' || $value === null ) {
 			$value = $section['default'];
 		}
 		echo '<div class="freshdew-section-field" data-type="' . esc_attr( $section['type'] ) . '">';
+		if ( $section['type'] === 'checkbox' ) {
+			echo '<label for="' . esc_attr( $meta_key ) . '" style="display: flex; align-items: flex-start; gap: 8px; font-weight: 600; cursor: pointer;">';
+			echo '<input type="checkbox" id="' . esc_attr( $meta_key ) . '" name="' . esc_attr( $meta_key ) . '" value="1" ' . checked( $checked, true, false ) . ' style="margin-top: 3px;">';
+			echo '<span>' . esc_html( $section['label'] ) . '</span>';
+			echo '</label>';
+			echo '</div>';
+			continue;
+		}
 		echo '<label for="' . esc_attr( $meta_key ) . '" style="display:block; font-weight: 600; margin-bottom: 0.25rem;">' . esc_html( $section['label'] ) . '</label>';
 		if ( $section['type'] === 'image' ) {
 			$img_id = absint( $value );
@@ -299,6 +324,11 @@ function freshdew_save_page_sections( $post_id ) {
 	}
 	foreach ( $config[ $page_key ] as $section ) {
 		$meta_key = 'freshdew_section_' . $section['key'];
+		if ( $section['type'] === 'checkbox' ) {
+			$value = isset( $_POST[ $meta_key ] ) && $_POST[ $meta_key ] === '1' ? '1' : '';
+			update_post_meta( $post_id, $meta_key, $value );
+			continue;
+		}
 		if ( ! isset( $_POST[ $meta_key ] ) ) {
 			continue;
 		}

@@ -22,20 +22,26 @@ $page_id = get_the_ID();
 <section style="padding: 4rem 0;">
     <div class="container">
         <div style="max-width: 900px; margin: 0 auto;">
-            <?php
-            $page_content = get_post_field('post_content', $page_id);
-            if ( ! empty( trim( $page_content ) ) ) {
-                echo '<div class="freshdew-page-content entry-content" style="margin-bottom: 3rem;">';
-                the_content();
-                echo '</div>';
-            } else {
-                echo '<div style="background: #f0f9ff; border-left: 4px solid #2563eb; padding: 1.5rem; margin-bottom: 3rem; border-radius: 0.5rem;">';
-                echo '<h2 style="font-size: 1.5rem; margin-bottom: 1rem; color: #1e40af;">Accepting New Patients</h2>';
-                echo '<p style="color: #1e40af; margin: 0;">We welcome walk-in patients. No appointment necessary!</p>';
-                echo '</div>';
-            }
-            ?>
-            
+            <?php if ( ! freshdew_is_section_hidden( $page_id, 'hide_walkin_intro' ) ) : ?>
+                <?php
+                $page_content = get_post_field( 'post_content', $page_id );
+                $has_page_body = strlen( trim( wp_strip_all_tags( $page_content ) ) ) > 0;
+                if ( $has_page_body ) {
+                    echo '<div class="freshdew-page-content entry-content" style="margin-bottom: 3rem;">';
+                    the_content();
+                    echo '</div>';
+                } else {
+                    $accepting_heading = freshdew_get_section( $page_id, 'accepting_heading', 'Accepting New Patients' );
+                    $accepting_text = freshdew_get_section( $page_id, 'accepting_text', 'We welcome walk-in patients. No appointment necessary!' );
+                    echo '<div style="background: #f0f9ff; border-left: 4px solid #2563eb; padding: 1.5rem; margin-bottom: 3rem; border-radius: 0.5rem;">';
+                    echo '<h2 style="font-size: 1.5rem; margin-bottom: 1rem; color: #1e40af;">' . esc_html( $accepting_heading ) . '</h2>';
+                    echo '<p style="color: #1e40af; margin: 0;">' . esc_html( $accepting_text ) . '</p>';
+                    echo '</div>';
+                }
+                ?>
+            <?php endif; ?>
+
+            <?php if ( ! freshdew_is_section_hidden( $page_id, 'hide_walkin_offer' ) ) : ?>
             <h2 style="font-size: 2.5rem; margin-bottom: 2rem; color: #1f2937;"><?php echo esc_html( freshdew_get_section( $page_id, 'what_we_offer_heading', 'What We Offer' ) ); ?></h2>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem; margin-bottom: 3rem;">
                 <?php
@@ -67,12 +73,15 @@ $page_id = get_the_ID();
                 </div>
                 <?php endforeach; ?>
             </div>
-            
+            <?php endif; ?>
+
+            <?php if ( ! freshdew_is_section_hidden( $page_id, 'hide_walkin_book_banner' ) ) : ?>
             <div style="text-align: center; margin-top: 3rem;">
                 <a href="https://www.myhealthaccess.ca/branded/freshdew-medical-centre" target="_blank" rel="noopener noreferrer" style="display: inline-block;">
                     <img src="https://www.myhealthaccess.ca/build/branded_signup/book_appt_online_big.png" alt="Book Appointment Online" style="max-width: 100%; height: auto; display: block;">
                 </a>
             </div>
+            <?php endif; ?>
         </div>
     </div>
 </section>
