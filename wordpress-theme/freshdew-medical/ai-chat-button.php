@@ -527,54 +527,58 @@ console.log('Chat button script loading...');
             headers: {
                 'Content-Type': 'application/json',
             },
+            credentials: 'same-origin',
             body: JSON.stringify({ message: message })
         })
-        .then(response => response.json())
-        .then(data => {
+        .then(async function(response) {
+            let data = {};
+            try {
+                data = await response.json();
+            } catch (e) {
+                data = {};
+            }
             typingIndicator.style.display = 'none';
-            
+
+            var messageText;
+            if (!response.ok) {
+                var wpMsg = (data && typeof data.message === 'string') ? data.message : '';
+                messageText = wpMsg
+                    ? (wpMsg + ' Please try again or call us at <?php echo esc_js($contact_info['phone_formatted']); ?>.')
+                    : ('I apologize, but the assistant is unavailable (' + response.status + '). Please try again or call us at <?php echo esc_js($contact_info['phone_formatted']); ?>.');
+            } else {
+                messageText = data.response || 'I apologize, but I could not process your request. Please try again.';
+            }
+
             const assistantMsg = document.createElement('div');
             assistantMsg.className = 'message assistant';
-            const messageText = data.response || 'I apologize, but I could not process your request. Please try again.';
             const messageParagraph = document.createElement('p');
             messageParagraph.style.margin = '0';
             messageParagraph.style.color = '#1f2937';
             messageParagraph.style.lineHeight = '1.6';
             assistantMsg.appendChild(messageParagraph);
             chatMessages.appendChild(assistantMsg);
-            
-            // Check if message contains HTML (like links)
+
             const hasHtml = /<[a-z][\s\S]*>/i.test(messageText);
-            
+
             if (hasHtml) {
-                // If message contains HTML, set it directly (don't type it out)
                 messageParagraph.innerHTML = messageText;
                 chatMessages.scrollTop = chatMessages.scrollHeight;
-                
-                // Play reply sound
                 const replySound = document.getElementById('chat-reply-sound');
                 if (replySound) {
                     replySound.currentTime = 0;
                     replySound.play().catch(e => console.log('Could not play reply sound:', e));
                 }
-                
-                // Save messages to localStorage
                 saveMessagesToStorage();
             } else {
-                // Type out the message with natural reading pace (for plain text)
-            typeMessage(messageParagraph, messageText, function() {
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-                
-                // Play reply sound after message is typed
-                const replySound = document.getElementById('chat-reply-sound');
-                if (replySound) {
-                    replySound.currentTime = 0;
-                    replySound.play().catch(e => console.log('Could not play reply sound:', e));
-                }
-                
-                // Save messages to localStorage
-                saveMessagesToStorage();
-            });
+                typeMessage(messageParagraph, messageText, function() {
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                    const replySound = document.getElementById('chat-reply-sound');
+                    if (replySound) {
+                        replySound.currentTime = 0;
+                        replySound.play().catch(e => console.log('Could not play reply sound:', e));
+                    }
+                    saveMessagesToStorage();
+                });
             }
         })
         .catch(error => {

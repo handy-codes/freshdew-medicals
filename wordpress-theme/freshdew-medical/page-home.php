@@ -143,42 +143,6 @@ foreach ( $policy_cards as $pc ) {
     </div>
 </section>
 
-<?php
-$vacation_visible = freshdew_section_field_visible( $page_id, 'home_vacation_para1' )
-	|| freshdew_section_field_visible( $page_id, 'home_vacation_para2' );
-if ( $vacation_visible ) :
-	$vacation_p1 = freshdew_get_section(
-		$page_id,
-		'home_vacation_para1',
-		'⚠️ Vacation Notice: This is to notify all patients that Dr. Kinze will be away on vacation from April 15 to April 24, 2026. The clinic will resume fully on April 29, 2026.'
-	);
-	$vacation_p2 = freshdew_get_section(
-		$page_id,
-		'home_vacation_para2',
-		'Please find local walk-in clinics if needed and in emergency, please call 911.'
-	);
-	?>
-    <!-- Vacation notice -->
-    <section class="fd-home-vacation-notice" style="padding: 3rem 0; background: #f9fafb;">
-        <div class="container">
-            <div style="max-width: 900px; margin: 0 auto;">
-                <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1.5rem; border-radius: 0.5rem;">
-                    <?php if ( freshdew_section_field_visible( $page_id, 'home_vacation_para1' ) ) : ?>
-                    <p style="color: #92400e; margin: 0 0 1rem 0; font-weight: 600; font-size: 1rem; line-height: 1.55;">
-                        <?php echo esc_html( $vacation_p1 ); ?>
-                    </p>
-                    <?php endif; ?>
-                    <?php if ( freshdew_section_field_visible( $page_id, 'home_vacation_para2' ) ) : ?>
-                    <p style="color: #92400e; margin: 0; font-weight: 600; font-size: 1rem; line-height: 1.55;">
-                        <?php echo esc_html( $vacation_p2 ); ?>
-                    </p>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </div>
-    </section>
-<?php endif; ?>
-
 <!-- Services Section -->
 <section style="padding: 4rem 0; background: #f9fafb;">
     <div class="container">
@@ -300,6 +264,81 @@ if ( $vacation_visible ) :
         </div>
     </div>
 </section>
+
+<?php
+if ( freshdew_section_checkbox_show_on_enabled( $page_id, 'home_meet_greet_show' ) ) :
+	$meet_greet_defaults = array(
+		'home_meet_greet_para1' => 'All first appointments with Dr. Kinze will be a "Meet and Greet" to enrol patients into her family practice.',
+		'home_meet_greet_para2' => 'Please note that no medical complaints will be discussed during this visit.',
+		'home_meet_greet_para3' => 'You are welcome to book other appointments to discuss medical concerns.',
+		'home_meet_greet_para4' => 'Please take note of the clinic policies on the website.',
+	);
+	$meet_greet_any = false;
+	foreach ( array_keys( $meet_greet_defaults ) as $mg_key ) {
+		if ( ! freshdew_section_field_visible( $page_id, $mg_key ) ) {
+			continue;
+		}
+		$t = trim( (string) freshdew_get_section( $page_id, $mg_key, $meet_greet_defaults[ $mg_key ] ) );
+		if ( $t !== '' ) {
+			$meet_greet_any = true;
+			break;
+		}
+	}
+	if ( $meet_greet_any ) :
+		?>
+<!-- Meet and Greet Notice Section -->
+<section class="fd-home-meet-greet-notice" style="padding: 4rem 0; background: #f9fafb;">
+    <div class="container">
+        <div style="max-width: 900px; margin: 0 auto;">
+            <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1.5rem; border-radius: 0.5rem;">
+                <?php if ( freshdew_section_field_visible( $page_id, 'home_meet_greet_para1' ) ) : ?>
+                    <?php
+					$mg_p1 = trim( (string) freshdew_get_section( $page_id, 'home_meet_greet_para1', $meet_greet_defaults['home_meet_greet_para1'] ) );
+					if ( $mg_p1 !== '' ) :
+						?>
+                <p style="color: #92400e; margin: 0 0 1rem 0; font-weight: 600; font-size: 1rem;">
+                    ⚠️ <strong><?php esc_html_e( 'Important Notice:', 'freshdew-medical' ); ?></strong> <?php echo esc_html( $mg_p1 ); ?>
+                </p>
+					<?php endif; ?>
+                <?php endif; ?>
+                <?php if ( freshdew_section_field_visible( $page_id, 'home_meet_greet_para2' ) ) : ?>
+                    <?php
+					$mg_p2 = trim( (string) freshdew_get_section( $page_id, 'home_meet_greet_para2', $meet_greet_defaults['home_meet_greet_para2'] ) );
+					if ( $mg_p2 !== '' ) :
+						?>
+                <p style="color: #92400e; margin: 0 0 1rem 0; font-weight: 600; font-size: 1rem;">
+                    <?php echo esc_html( $mg_p2 ); ?>
+                </p>
+					<?php endif; ?>
+                <?php endif; ?>
+                <?php if ( freshdew_section_field_visible( $page_id, 'home_meet_greet_para3' ) ) : ?>
+                    <?php
+					$mg_p3 = trim( (string) freshdew_get_section( $page_id, 'home_meet_greet_para3', $meet_greet_defaults['home_meet_greet_para3'] ) );
+					if ( $mg_p3 !== '' ) :
+						?>
+                <p style="color: #92400e; margin: 0 0 1rem 0; font-weight: 600; font-size: 1rem;">
+                    <?php echo esc_html( $mg_p3 ); ?>
+                </p>
+					<?php endif; ?>
+                <?php endif; ?>
+                <?php if ( freshdew_section_field_visible( $page_id, 'home_meet_greet_para4' ) ) : ?>
+                    <?php
+					$mg_p4 = trim( (string) freshdew_get_section( $page_id, 'home_meet_greet_para4', $meet_greet_defaults['home_meet_greet_para4'] ) );
+					if ( $mg_p4 !== '' ) :
+						?>
+                <p style="color: #92400e; margin: 0; font-weight: 600; font-size: 1rem;">
+                    <?php echo esc_html( $mg_p4 ); ?>
+                </p>
+					<?php endif; ?>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</section>
+		<?php
+	endif;
+endif;
+?>
 
 <?php if ( $policies_block_visible ) : ?>
 <!-- Clinic Policies Section -->

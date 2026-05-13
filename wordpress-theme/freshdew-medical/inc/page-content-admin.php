@@ -61,8 +61,11 @@ function freshdew_get_page_sections_config() {
 			array( 'key' => 'hero_book_online_img_url', 'label' => 'Hero: Book online image URL (optional, leave empty for default)', 'default' => '', 'type' => 'text' ),
 			array( 'key' => 'hero_virtual_consult_url', 'label' => 'Hero: Virtual Consultation button URL', 'default' => '', 'type' => 'text' ),
 			array( 'key' => 'hero_virtual_consult_label', 'label' => 'Hero: Virtual Consultation button label', 'default' => 'Virtual Consultation', 'type' => 'text' ),
-			array( 'key' => 'home_vacation_para1', 'label' => 'Home vacation notice — paragraph 1', 'default' => '⚠️ Vacation Notice: This is to notify all patients that Dr. Kinze will be away on vacation from April 15 to April 24, 2026. The clinic will resume fully on April 29, 2026.', 'type' => 'textarea' ),
-			array( 'key' => 'home_vacation_para2', 'label' => 'Home vacation notice — paragraph 2', 'default' => 'Please find local walk-in clinics if needed and in emergency, please call 911.', 'type' => 'textarea' ),
+			array( 'key' => 'home_meet_greet_show', 'label' => 'Show Meet and Greet notice (yellow banner below About)', 'type' => 'checkbox_show_on', 'default' => '' ),
+			array( 'key' => 'home_meet_greet_para1', 'label' => 'Meet & Greet — paragraph 1 (after “Important Notice”)', 'default' => 'All first appointments with Dr. Kinze will be a "Meet and Greet" to enrol patients into her family practice.', 'type' => 'textarea' ),
+			array( 'key' => 'home_meet_greet_para2', 'label' => 'Meet & Greet — paragraph 2', 'default' => 'Please note that no medical complaints will be discussed during this visit.', 'type' => 'textarea' ),
+			array( 'key' => 'home_meet_greet_para3', 'label' => 'Meet & Greet — paragraph 3', 'default' => 'You are welcome to book other appointments to discuss medical concerns.', 'type' => 'textarea' ),
+			array( 'key' => 'home_meet_greet_para4', 'label' => 'Meet & Greet — paragraph 4', 'default' => 'Please take note of the clinic policies on the website.', 'type' => 'textarea' ),
 			array( 'key' => 'services_heading', 'label' => 'Our Services heading', 'default' => 'Our Services', 'type' => 'text' ),
 			array( 'key' => 'service_1_title', 'label' => 'Service 1 title', 'default' => 'Walk-in Clinic', 'type' => 'text' ),
 			array( 'key' => 'service_1_description', 'label' => 'Service 1 description', 'default' => 'No appointment needed. Walk in and receive quality medical care.', 'type' => 'textarea' ),
@@ -274,6 +277,16 @@ function freshdew_section_checkbox_show_enabled( $post_id, $section_key ) {
 }
 
 /**
+ * Show toggles that default to ON when meta is unset (stored '1' / '0').
+ *
+ * @param int    $post_id Page post ID.
+ * @param string $section_key Config key.
+ */
+function freshdew_section_checkbox_show_on_enabled( $post_id, $section_key ) {
+	return get_post_meta( $post_id, 'freshdew_section_' . $section_key, true ) !== '0';
+}
+
+/**
  * Parse textarea lines "Left|Right" into pairs for hours tables.
  *
  * @param string $raw Multiline string.
@@ -356,7 +369,7 @@ function freshdew_render_page_sections_meta_box( $post ) {
 		$key = $section['key'];
 		$meta_key = 'freshdew_section_' . $key;
 		$value = get_post_meta( $post->ID, $meta_key, true );
-		if ( $section['type'] !== 'visibility_only' && $section['type'] !== 'checkbox_show' && ( $value === '' || $value === null ) ) {
+		if ( $section['type'] !== 'visibility_only' && $section['type'] !== 'checkbox_show' && $section['type'] !== 'checkbox_show_on' && ( $value === '' || $value === null ) ) {
 			$value = $section['default'];
 		}
 		echo '<div class="freshdew-section-field" data-section-key="' . esc_attr( $key ) . '" data-type="' . esc_attr( $section['type'] ) . '" style="padding-bottom: 1rem; border-bottom: 1px solid #e5e7eb;">';
@@ -377,6 +390,26 @@ function freshdew_render_page_sections_meta_box( $post ) {
 			echo '</div>';
 			echo '<p class="description" style="margin: 0 0 0.25rem;">';
 			echo esc_html__( 'Unchecked means hidden on the live site (no separate Hide row).', 'freshdew-medical' );
+			echo '</p>';
+			echo '</div>';
+			continue;
+		}
+
+		if ( $section['type'] === 'checkbox_show_on' ) {
+			$show_checked = get_post_meta( $post->ID, $meta_key, true ) !== '0';
+			echo '<div class="freshdew-section-controls" style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 0.35rem 0 0.6rem;">';
+			echo '<label style="display: inline-flex; align-items: center; gap: 6px; font-weight: 600; cursor: pointer;"><input type="checkbox" name="' . esc_attr( $meta_key ) . '" value="1" ' . checked( $show_checked, true, false ) . '> ';
+			echo esc_html__( 'Show on site', 'freshdew-medical' );
+			echo '</label>';
+			echo '<button type="button" class="button button-small freshdew-clear-section" data-section-key="' . esc_attr( $key ) . '">';
+			echo esc_html__( 'Clear saved value', 'freshdew-medical' );
+			echo '</button>';
+			echo '<span class="description" style="margin: 0;">';
+			echo esc_html__( 'Clears on Save to restore default (shown). Uncheck and Update to hide.', 'freshdew-medical' );
+			echo '</span>';
+			echo '</div>';
+			echo '<p class="description" style="margin: 0 0 0.25rem;">';
+			echo esc_html__( 'On by default until you turn it off (no separate Hide row).', 'freshdew-medical' );
 			echo '</p>';
 			echo '</div>';
 			continue;
@@ -476,7 +509,10 @@ function freshdew_render_page_sections_meta_box( $post ) {
 				var hideCb = field.querySelector('input[name="freshdew_hide_' + key + '"]');
 				if (hideCb) hideCb.checked = false;
 				var showCb = field.querySelector('input[type="checkbox"][name="freshdew_section_' + key + '"]');
-				if (showCb) showCb.checked = false;
+				if (showCb) {
+					var dtype = field.getAttribute('data-type') || '';
+					showCb.checked = (dtype === 'checkbox_show_on');
+				}
 				ensureClearInput(form, key);
 			});
 		});
@@ -532,6 +568,16 @@ function freshdew_save_page_sections( $post_id ) {
 				update_post_meta( $post_id, $meta_key, '1' );
 			} else {
 				delete_post_meta( $post_id, $meta_key );
+			}
+			continue;
+		}
+
+		if ( $section['type'] === 'checkbox_show_on' ) {
+			delete_post_meta( $post_id, 'freshdew_hide_' . $key );
+			if ( isset( $_POST[ $meta_key ] ) && (string) wp_unslash( $_POST[ $meta_key ] ) === '1' ) {
+				update_post_meta( $post_id, $meta_key, '1' );
+			} else {
+				update_post_meta( $post_id, $meta_key, '0' );
 			}
 			continue;
 		}

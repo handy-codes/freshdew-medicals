@@ -858,17 +858,50 @@ function freshdew_get_meet_our_team_chat_reply_html() {
     return 'For information about our doctors and team members, please visit our About page and scroll to the Meet Our Team section. That page has the full, up-to-date details.';
 }
 
+/**
+ * Groq API key: WP admin option first, then FRESHDEW_GROQ_API_KEY in wp-config.php, then GROQ_API_KEY from the server environment.
+ *
+ * @return string
+ */
+function freshdew_get_groq_api_key() {
+	$key = trim( (string) get_option( 'freshdew_groq_api_key', '' ) );
+	if ( $key !== '' ) {
+		return $key;
+	}
+	if ( defined( 'FRESHDEW_GROQ_API_KEY' ) && is_string( FRESHDEW_GROQ_API_KEY ) ) {
+		$key = trim( FRESHDEW_GROQ_API_KEY );
+		if ( $key !== '' ) {
+			return $key;
+		}
+	}
+	$env = getenv( 'GROQ_API_KEY' );
+	if ( false !== $env ) {
+		$key = trim( (string) $env );
+		if ( $key !== '' ) {
+			return $key;
+		}
+	}
+	return '';
+}
+
 function freshdew_ai_chat_handler($request) {
     $message = $request->get_param('message');
-    
-    if (empty($message)) {
+	if ( ( $message === null || $message === '' ) && method_exists( $request, 'get_json_params' ) ) {
+		$jp = $request->get_json_params();
+		if ( is_array( $jp ) && isset( $jp['message'] ) ) {
+			$message = $jp['message'];
+		}
+	}
+	$message = is_string( $message ) ? sanitize_text_field( wp_unslash( $message ) ) : '';
+
+    if ($message === '') {
         return new WP_Error('missing_message', 'Message is required', array('status' => 400));
     }
     
     $contact_info = freshdew_get_contact_info();
     
     // Check if Groq API key is configured
-    $groq_api_key = get_option('freshdew_groq_api_key', '');
+    $groq_api_key = freshdew_get_groq_api_key();
     
     // Rule-based responses for common queries
     $emr_link = 'https://www.myhealthaccess.ca/branded/freshdew-medical-centre';
@@ -1175,7 +1208,8 @@ function freshdew_ai_settings_page() {
                         <td>
                             <input type="password" id="groq_api_key" name="groq_api_key" value="<?php echo esc_attr($api_key); ?>" class="regular-text" />
                             <p class="description">
-                                Get your API key from <a href="https://console.groq.com/keys" target="_blank">Groq Console</a>
+                                Get your API key from <a href="https://console.groq.com/keys" target="_blank">Groq Console</a>.
+                                If this field is empty, the theme will use the <code>GROQ_API_KEY</code> server environment variable or the <code>FRESHDEW_GROQ_API_KEY</code> constant in <code>wp-config.php</code> (useful when the key is set outside WordPress).
                             </p>
                         </td>
                     </tr>
