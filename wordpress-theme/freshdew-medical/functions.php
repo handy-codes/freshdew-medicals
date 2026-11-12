@@ -626,8 +626,11 @@ function freshdew_handle_contact_form() {
     }
     
     $contact_info = freshdew_get_contact_info();
-    $to = $contact_info['email'];
     $subject = 'New Contact Form Message from ' . get_bloginfo('name');
+
+    // Always store in wp-admin so messages are not lost if SMTP fails.
+    $stored = freshdew_store_contact_message( $name, $email, $message );
+    $stored_ok = $stored && ! is_wp_error( $stored );
     
     // Create HTML email
     $message_html = '<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; background: #f4f4f4; padding: 20px;">';
@@ -644,40 +647,14 @@ function freshdew_handle_contact_form() {
     $message_html .= 'IP Address: ' . (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : 'Unknown');
     $message_html .= '</p>';
     $message_html .= '</div></body></html>';
+
+    $mail = freshdew_build_contact_mail_headers( $contact_info['email'], $email, $name );
+    $email_sent = wp_mail( $mail['to'], $subject, $message_html, $mail['headers'] );
     
-    // Plain text version
-    $message_text = "New contact form message received:\n\n";
-    $message_text .= "Name: $name\n";
-    $message_text .= "Email: $email\n";
-    $message_text .= "Message:\n$message\n\n";
-    $message_text .= "---\n";
-    $message_text .= "Submitted: " . current_time('mysql') . "\n";
-    $message_text .= "IP Address: " . (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : 'Unknown') . "\n";
+    error_log( 'Contact Form: ' . $name . ' (' . $email . ') - Stored: ' . ( $stored_ok ? 'Yes' : 'No' ) . ' - Email sent: ' . ( $email_sent ? 'Yes' : 'No' ) );
     
-    // Check if SMTP is enabled
-    $smtp_enabled = get_option('freshdew_smtp_enabled', 0);
-    
-    $headers = array(
-        'Content-Type: text/html; charset=UTF-8',
-        'From: FreshDew Medical Clinic <' . $contact_info['email'] . '>',
-        'Reply-To: ' . $email,
-        'X-Mailer: WordPress',
-        'MIME-Version: 1.0',
-    );
-    
-    if (!$smtp_enabled) {
-        $headers[] = 'X-Priority: 1';
-        $headers[] = 'Importance: High';
-    }
-    
-    // Send email
-    $email_sent = wp_mail($to, $subject, $message_html, $headers);
-    
-    // Log for debugging
-    error_log('Contact Form: ' . $name . ' (' . $email . ') - Email sent: ' . ($email_sent ? 'Yes' : 'No'));
-    
-    // Redirect with success message
-    if ($email_sent) {
+    // Success if stored and/or emailed — do not fail the visitor when Hostinger mail is misconfigured.
+    if ( $stored_ok || $email_sent ) {
         wp_redirect(add_query_arg('contact', 'success', home_url('/contact')));
     } else {
         wp_redirect(add_query_arg('contact', 'error_send', home_url('/contact')));
@@ -1132,11 +1109,11 @@ function freshdew_configure_smtp($phpmailer) {
     $phpmailer->isSMTP();
     $phpmailer->Host = get_option('freshdew_smtp_host', 'smtp.hostinger.com');
     $phpmailer->SMTPAuth = true;
-    $phpmailer->Port = get_option('freshdew_smtp_port', '587');
+    $phpmailer->Port = get_option('freshdew_smtp_port', '465');
     $phpmailer->Username = get_option('freshdew_smtp_username', '');
     $phpmailer->Password = get_option('freshdew_smtp_password', '');
     
-    $encryption = get_option('freshdew_smtp_encryption', 'tls');
+    $encryption = get_option('freshdew_smtp_encryption', 'ssl');
     if ($encryption === 'ssl') {
         $phpmailer->SMTPSecure = 'ssl';
     } elseif ($encryption === 'tls') {
@@ -1145,16 +1122,126 @@ function freshdew_configure_smtp($phpmailer) {
     
     $from_email = get_option('freshdew_smtp_from_email', '');
     $from_name = get_option('freshdew_smtp_from_name', 'FreshDew Medical Clinic');
-    
-    if ($from_email) {
-        $phpmailer->setFrom($from_email, $from_name);
+
+    // Hostinger rejects mail when From === To. If the only recipient is the SMTP
+    // mailbox, keep the From already set by wp_mail headers (often the visitor).
+    $to_emails = array();
+    foreach ( (array) $phpmailer->getToAddresses() as $addr ) {
+        if ( ! empty( $addr[0] ) ) {
+            $to_emails[] = strtolower( $addr[0] );
+        }
     }
-    
-    // Enable debugging (optional - can be disabled in production)
-    // $phpmailer->SMTPDebug = 2;
-    // $phpmailer->Debugoutput = 'error_log';
+    $from_collides = $from_email && in_array( strtolower( $from_email ), $to_emails, true );
+
+    if ( $from_email && ! $from_collides ) {
+        $phpmailer->setFrom( $from_email, $from_name, false );
+    }
 }
 add_action('phpmailer_init', 'freshdew_configure_smtp');
+
+/**
+ * Capture wp_mail failures for debugging (appears in Hostinger / PHP error log).
+ *
+ * @param WP_Error $error Mail error.
+ */
+function freshdew_log_wp_mail_failed( $error ) {
+	if ( is_wp_error( $error ) ) {
+		error_log( 'FreshDew wp_mail failed: ' . $error->get_error_message() );
+	}
+}
+add_action( 'wp_mail_failed', 'freshdew_log_wp_mail_failed' );
+
+/**
+ * Register CPT so contact messages are kept even when SMTP fails.
+ */
+function freshdew_register_contact_message_cpt() {
+	register_post_type(
+		'fd_contact_message',
+		array(
+			'labels'              => array(
+				'name'          => 'Contact Messages',
+				'singular_name' => 'Contact Message',
+				'menu_name'     => 'Contact Messages',
+			),
+			'public'              => false,
+			'show_ui'             => true,
+			'show_in_menu'        => true,
+			'menu_icon'           => 'dashicons-email-alt',
+			'capability_type'     => 'post',
+			'map_meta_cap'        => true,
+			'supports'            => array( 'title', 'editor' ),
+			'exclude_from_search' => true,
+		)
+	);
+}
+add_action( 'init', 'freshdew_register_contact_message_cpt' );
+
+/**
+ * Persist a contact form submission in wp-admin.
+ *
+ * @param string $name    Sender name.
+ * @param string $email   Sender email.
+ * @param string $message Message body.
+ * @return int|WP_Error Post ID or error.
+ */
+function freshdew_store_contact_message( $name, $email, $message ) {
+	$post_id = wp_insert_post(
+		array(
+			'post_type'    => 'fd_contact_message',
+			'post_status'  => 'private',
+			'post_title'   => sprintf( 'Contact from %s <%s>', $name, $email ),
+			'post_content' => $message,
+			'meta_input'   => array(
+				'_fd_contact_name'  => $name,
+				'_fd_contact_email' => $email,
+				'_fd_contact_ip'    => isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '',
+			),
+		),
+		true
+	);
+	return $post_id;
+}
+
+/**
+ * Build From/To headers that Hostinger will accept.
+ * Hostinger rejects mail when From and To are the same address.
+ *
+ * @param string $to        Destination inbox.
+ * @param string $reply_to  Visitor reply address.
+ * @param string $reply_name Visitor name.
+ * @return array{to:string,headers:string[]}
+ */
+function freshdew_build_contact_mail_headers( $to, $reply_to, $reply_name ) {
+	$smtp_from = get_option( 'freshdew_smtp_from_email', '' );
+	$smtp_name = get_option( 'freshdew_smtp_from_name', 'FreshDew Medical Clinic' );
+	$contact   = freshdew_get_contact_info();
+
+	$from_email = $smtp_from ? $smtp_from : $contact['email'];
+	$from_name  = $smtp_name ? $smtp_name : 'FreshDew Medical Clinic';
+
+	// Prefer an explicit recipient override (must differ from SMTP From on Hostinger).
+	$configured_to = get_option( 'freshdew_contact_to_email', '' );
+	if ( is_email( $configured_to ) ) {
+		$to = $configured_to;
+	}
+
+	if ( strtolower( $to ) === strtolower( $from_email ) ) {
+		// Same mailbox: send as the visitor so From != To (Hostinger requirement).
+		$from_email = $reply_to;
+		$from_name  = $reply_name;
+	}
+
+	$headers = array(
+		'Content-Type: text/html; charset=UTF-8',
+		'From: ' . sprintf( '%s <%s>', $from_name, $from_email ),
+		'Reply-To: ' . sprintf( '%s <%s>', $reply_name, $reply_to ),
+	);
+
+	return array(
+		'to'      => $to,
+		'headers' => $headers,
+	);
+}
 
 function freshdew_ai_settings_page() {
     if (isset($_POST['submit'])) {
@@ -1188,6 +1275,7 @@ function freshdew_ai_settings_page() {
             
             update_option('freshdew_smtp_from_email', sanitize_email($_POST['smtp_from_email'] ?? ''));
             update_option('freshdew_smtp_from_name', sanitize_text_field($_POST['smtp_from_name'] ?? 'FreshDew Medical Clinic'));
+            update_option('freshdew_contact_to_email', sanitize_email($_POST['contact_to_email'] ?? ''));
         }
         
         echo '<div class="notice notice-success"><p>Settings saved!</p></div>';
@@ -1196,12 +1284,13 @@ function freshdew_ai_settings_page() {
     $api_key = get_option('freshdew_groq_api_key', '');
     $smtp_enabled = get_option('freshdew_smtp_enabled', 0);
     $smtp_host = get_option('freshdew_smtp_host', 'smtp.hostinger.com');
-    $smtp_port = get_option('freshdew_smtp_port', '587');
-    $smtp_encryption = get_option('freshdew_smtp_encryption', 'tls');
+    $smtp_port = get_option('freshdew_smtp_port', '465');
+    $smtp_encryption = get_option('freshdew_smtp_encryption', 'ssl');
     $smtp_username = get_option('freshdew_smtp_username', '');
     $smtp_password = get_option('freshdew_smtp_password', '');
     $smtp_from_email = get_option('freshdew_smtp_from_email', '');
     $smtp_from_name = get_option('freshdew_smtp_from_name', 'FreshDew Medical Clinic');
+    $contact_to_email = get_option('freshdew_contact_to_email', '');
     ?>
     <div class="wrap">
         <h1>FreshDew Settings</h1>
@@ -1237,7 +1326,10 @@ function freshdew_ai_settings_page() {
             <form method="post" action="">
                 <?php wp_nonce_field('freshdew_ai_settings'); ?>
                 <h2>Email SMTP Settings</h2>
-                <p class="description">Configure SMTP to ensure appointment booking emails are delivered properly and avoid spam folders.</p>
+                <p class="description">Required on Hostinger — PHP <code>mail()</code> is unreliable. Use your Hostinger mailbox over SMTP.</p>
+                <div class="notice notice-warning inline" style="margin: 1rem 0; padding: 0.75rem 1rem;">
+                    <p style="margin:0;"><strong>Hostinger rule:</strong> From and To cannot be the same address. Create a second mailbox (e.g. <code>forms@freshdewmedicalclinic.com</code>) for SMTP From, and keep contact To as <code>info@...</code> — or set Contact Recipient below to a different inbox.</p>
+                </div>
                 
                 <table class="form-table">
                     <tr>
@@ -1255,7 +1347,7 @@ function freshdew_ai_settings_page() {
                         </th>
                         <td>
                             <input type="text" id="smtp_host" name="smtp_host" value="<?php echo esc_attr($smtp_host); ?>" class="regular-text" />
-                            <p class="description">Hostinger: smtp.hostinger.com | Gmail: smtp.gmail.com | Outlook: smtp-mail.outlook.com</p>
+                            <p class="description">Hostinger: smtp.hostinger.com</p>
                         </td>
                     </tr>
                     <tr>
@@ -1264,7 +1356,7 @@ function freshdew_ai_settings_page() {
                         </th>
                         <td>
                             <input type="number" id="smtp_port" name="smtp_port" value="<?php echo esc_attr($smtp_port); ?>" class="small-text" />
-                            <p class="description">Common ports: 587 (TLS), 465 (SSL), 25 (unencrypted)</p>
+                            <p class="description">Hostinger recommended: 465 (SSL). Fallback: 587 (TLS)</p>
                         </td>
                     </tr>
                     <tr>
@@ -1273,8 +1365,8 @@ function freshdew_ai_settings_page() {
                         </th>
                         <td>
                             <select id="smtp_encryption" name="smtp_encryption">
-                                <option value="tls" <?php selected($smtp_encryption, 'tls'); ?>>TLS (Recommended)</option>
-                                <option value="ssl" <?php selected($smtp_encryption, 'ssl'); ?>>SSL</option>
+                                <option value="ssl" <?php selected($smtp_encryption, 'ssl'); ?>>SSL (Hostinger port 465)</option>
+                                <option value="tls" <?php selected($smtp_encryption, 'tls'); ?>>TLS (Hostinger port 587)</option>
                                 <option value="none" <?php selected($smtp_encryption, 'none'); ?>>None</option>
                             </select>
                         </td>
@@ -1310,7 +1402,7 @@ function freshdew_ai_settings_page() {
                         </th>
                         <td>
                             <input type="email" id="smtp_from_email" name="smtp_from_email" value="<?php echo esc_attr($smtp_from_email); ?>" class="regular-text" />
-                            <p class="description">Email address to send from (usually same as SMTP username)</p>
+                            <p class="description">Must match SMTP username. Prefer a dedicated mailbox like forms@… (not the same as Contact Recipient).</p>
                         </td>
                     </tr>
                     <tr>
@@ -1320,6 +1412,15 @@ function freshdew_ai_settings_page() {
                         <td>
                             <input type="text" id="smtp_from_name" name="smtp_from_name" value="<?php echo esc_attr($smtp_from_name); ?>" class="regular-text" />
                             <p class="description">Name shown as sender (e.g., FreshDew Medical Clinic)</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <label for="contact_to_email">Contact Recipient</label>
+                        </th>
+                        <td>
+                            <input type="email" id="contact_to_email" name="contact_to_email" value="<?php echo esc_attr($contact_to_email); ?>" class="regular-text" placeholder="info@freshdewmedicalclinic.com" />
+                            <p class="description">Where contact-form messages are delivered. Must differ from From Email on Hostinger. Leave blank to use info@freshdewmedicalclinic.com.</p>
                         </td>
                     </tr>
                 </table>
