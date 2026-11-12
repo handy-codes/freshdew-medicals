@@ -66,7 +66,7 @@ $page_id = get_the_ID();
                     echo do_shortcode('[contact-form-7 id="1" title="Contact form 1"]');
                 } else {
                     ?>
-                    <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" style="display: flex; flex-direction: column; gap: 1rem;">
+                    <form id="freshdew-contact-form" method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" style="display: flex; flex-direction: column; gap: 1rem;">
                         <input type="hidden" name="action" value="freshdew_contact_form">
                         <?php wp_nonce_field('freshdew_contact_form', 'freshdew_contact_nonce'); ?>
                         

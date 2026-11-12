@@ -115,26 +115,37 @@
             }
         });
         
-        // Contact form submission
-        $('form[action*="freshdew_contact_form"]').on('submit', function(e) {
+        // Contact form: refresh nonce before POST so LiteSpeed-cached HTML cannot expire it.
+        $(document).on('submit', '#freshdew-contact-form', function(e) {
+            var form = this;
+            if (form.dataset.nonceReady === '1') {
+                return;
+            }
             e.preventDefault();
-            var form = $(this);
-            var formData = form.serialize();
-            
+
+            var $btn = $(form).find('[type="submit"]');
+            $btn.prop('disabled', true);
+
             $.ajax({
-                url: freshdewAjax.ajaxurl,
+                url: (typeof freshdewAjax !== 'undefined' && freshdewAjax.ajaxurl) ? freshdewAjax.ajaxurl : '/wp-admin/admin-ajax.php',
                 type: 'POST',
-                data: formData + '&action=freshdew_contact_form',
-                success: function(response) {
-                    if (response.success) {
-                        form.html('<div style="padding: 1rem; background: #10b981; color: white; border-radius: 0.25rem;">Thank you! Your message has been sent.</div>');
-                    } else {
-                        alert('Error sending message. Please try again.');
+                dataType: 'json',
+                data: { action: 'freshdew_contact_nonce' }
+            }).done(function(response) {
+                if (response && response.success && response.data && response.data.nonce) {
+                    var nonceInput = form.querySelector('[name="freshdew_contact_nonce"]');
+                    if (nonceInput) {
+                        nonceInput.value = response.data.nonce;
                     }
-                },
-                error: function() {
-                    alert('Error sending message. Please try again.');
+                    form.dataset.nonceReady = '1';
+                    form.submit();
+                    return;
                 }
+                $btn.prop('disabled', false);
+                alert('Security check could not be refreshed. Please reload the page and try again.');
+            }).fail(function() {
+                $btn.prop('disabled', false);
+                alert('Could not reach the server. Please check your connection and try again.');
             });
         });
     });

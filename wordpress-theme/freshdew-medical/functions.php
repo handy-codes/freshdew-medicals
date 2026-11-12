@@ -586,9 +586,24 @@ function freshdew_book_appointment_handler($request) {
 /**
  * Handle Contact Form Submission
  */
+/**
+ * AJAX: issue a fresh contact-form nonce (admin-ajax is not full-page cached).
+ * Lets the form work even if HTML was briefly served from cache.
+ */
+function freshdew_ajax_contact_nonce() {
+    wp_send_json_success(
+        array(
+            'nonce' => wp_create_nonce( 'freshdew_contact_form' ),
+        )
+    );
+}
+add_action( 'wp_ajax_freshdew_contact_nonce', 'freshdew_ajax_contact_nonce' );
+add_action( 'wp_ajax_nopriv_freshdew_contact_nonce', 'freshdew_ajax_contact_nonce' );
+
 function freshdew_handle_contact_form() {
-    // Verify nonce
-    if (!isset($_POST['freshdew_contact_nonce']) || !wp_verify_nonce($_POST['freshdew_contact_nonce'], 'freshdew_contact_form')) {
+    // Verify nonce (unslash for WordPress magic quotes / form encoding)
+    $nonce = isset( $_POST['freshdew_contact_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['freshdew_contact_nonce'] ) ) : '';
+    if ( $nonce === '' || ! wp_verify_nonce( $nonce, 'freshdew_contact_form' ) ) {
         wp_redirect(add_query_arg('contact', 'error', home_url('/contact')));
         exit;
     }
@@ -676,8 +691,8 @@ add_action('admin_post_nopriv_freshdew_contact_form', 'freshdew_handle_contact_f
  * Handle Register Form Submission
  */
 function freshdew_handle_register_form() {
-    // Verify nonce
-    if (!isset($_POST['freshdew_register_nonce']) || !wp_verify_nonce($_POST['freshdew_register_nonce'], 'freshdew_register_form')) {
+    $nonce = isset( $_POST['freshdew_register_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['freshdew_register_nonce'] ) ) : '';
+    if ( $nonce === '' || ! wp_verify_nonce( $nonce, 'freshdew_register_form' ) ) {
         wp_redirect(add_query_arg('register', 'error', home_url('/register')));
         exit;
     }

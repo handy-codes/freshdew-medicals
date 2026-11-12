@@ -226,3 +226,37 @@ function freshdew_maybe_purge_on_theme_file_mtime() {
 	freshdew_purge_all_page_caches();
 }
 add_action( 'admin_init', 'freshdew_maybe_purge_on_theme_file_mtime', 5 );
+
+/**
+ * Pages that embed WordPress nonces in HTML must not be full-page cached.
+ * LiteSpeed (and similar) otherwise serve expired nonces and contact/register
+ * submissions fail with "Security verification failed".
+ *
+ * @return void
+ */
+function freshdew_nocache_nonce_form_pages() {
+	if ( is_admin() || wp_doing_ajax() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
+		return;
+	}
+
+	$is_form_page = is_page( 'contact' ) || is_page( 'register' ) || is_page_template( 'page-contact.php' ) || is_page_template( 'page-register.php' );
+	if ( ! $is_form_page ) {
+		return;
+	}
+
+	if ( ! defined( 'DONOTCACHEPAGE' ) ) {
+		define( 'DONOTCACHEPAGE', true );
+	}
+	if ( ! defined( 'DONOTCACHEOBJECT' ) ) {
+		define( 'DONOTCACHEOBJECT', true );
+	}
+	if ( ! defined( 'DONOTCACHEDB' ) ) {
+		define( 'DONOTCACHEDB', true );
+	}
+
+	// LiteSpeed Cache explicit no-cache.
+	do_action( 'litespeed_control_set_nocache', 'freshdew nonce form page' );
+
+	nocache_headers();
+}
+add_action( 'template_redirect', 'freshdew_nocache_nonce_form_pages', 0 );
