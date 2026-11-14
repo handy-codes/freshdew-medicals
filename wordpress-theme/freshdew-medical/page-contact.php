@@ -40,6 +40,10 @@ $page_id = get_the_ID();
                         echo '<div style="background: #d1fae5; border: 1px solid #10b981; color: #065f46; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem;">';
                         echo '<strong>✓ Success!</strong> Your message has been sent. We will get back to you soon.';
                         echo '</div>';
+                    } elseif ($status === 'received') {
+                        echo '<div style="background: #dbeafe; border: 1px solid #3b82f6; color: #1e40af; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem;">';
+                        echo '<strong>✓ Message received.</strong> We have your details and will get back to you soon.';
+                        echo '</div>';
                     } elseif ($status === 'error') {
                         echo '<div style="background: #fee2e2; border: 1px solid #ef4444; color: #991b1b; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem;">';
                         echo '<strong>Error:</strong> Security verification failed. Please try again.';

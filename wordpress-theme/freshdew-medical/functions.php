@@ -653,11 +653,13 @@ function freshdew_handle_contact_form() {
     
     error_log( 'Contact Form: ' . $name . ' (' . $email . ') - Stored: ' . ( $stored_ok ? 'Yes' : 'No' ) . ' - Email sent: ' . ( $email_sent ? 'Yes' : 'No' ) );
     
-    // Success if stored and/or emailed — do not fail the visitor when Hostinger mail is misconfigured.
-    if ( $stored_ok || $email_sent ) {
-        wp_redirect(add_query_arg('contact', 'success', home_url('/contact')));
+    // Distinguish real mailbox delivery from "saved in wp-admin only".
+    if ( $email_sent ) {
+        wp_redirect( add_query_arg( 'contact', 'success', home_url( '/contact' ) ) );
+    } elseif ( $stored_ok ) {
+        wp_redirect( add_query_arg( 'contact', 'received', home_url( '/contact' ) ) );
     } else {
-        wp_redirect(add_query_arg('contact', 'error_send', home_url('/contact')));
+        wp_redirect( add_query_arg( 'contact', 'error_send', home_url( '/contact' ) ) );
     }
     exit;
 }
@@ -1123,17 +1125,8 @@ function freshdew_configure_smtp($phpmailer) {
     $from_email = get_option('freshdew_smtp_from_email', '');
     $from_name = get_option('freshdew_smtp_from_name', 'FreshDew Medical Clinic');
 
-    // Hostinger rejects mail when From === To. If the only recipient is the SMTP
-    // mailbox, keep the From already set by wp_mail headers (often the visitor).
-    $to_emails = array();
-    foreach ( (array) $phpmailer->getToAddresses() as $addr ) {
-        if ( ! empty( $addr[0] ) ) {
-            $to_emails[] = strtolower( $addr[0] );
-        }
-    }
-    $from_collides = $from_email && in_array( strtolower( $from_email ), $to_emails, true );
-
-    if ( $from_email && ! $from_collides ) {
+    // Single-mailbox setup (info@ → info@) is supported when SMTP is authenticated as that mailbox.
+    if ( $from_email ) {
         $phpmailer->setFrom( $from_email, $from_name, false );
     }
 }
@@ -1203,11 +1196,11 @@ function freshdew_store_contact_message( $name, $email, $message ) {
 }
 
 /**
- * Build From/To headers that Hostinger will accept.
- * Hostinger rejects mail when From and To are the same address.
+ * Build contact-form mail headers for a single clinic mailbox (info@).
+ * From = SMTP/clinic mailbox; Reply-To = visitor (so replies go to the sender).
  *
- * @param string $to        Destination inbox.
- * @param string $reply_to  Visitor reply address.
+ * @param string $to         Destination inbox.
+ * @param string $reply_to   Visitor reply address.
  * @param string $reply_name Visitor name.
  * @return array{to:string,headers:string[]}
  */
@@ -1216,19 +1209,14 @@ function freshdew_build_contact_mail_headers( $to, $reply_to, $reply_name ) {
 	$smtp_name = get_option( 'freshdew_smtp_from_name', 'FreshDew Medical Clinic' );
 	$contact   = freshdew_get_contact_info();
 
-	$from_email = $smtp_from ? $smtp_from : $contact['email'];
+	$from_email = is_email( $smtp_from ) ? $smtp_from : $contact['email'];
 	$from_name  = $smtp_name ? $smtp_name : 'FreshDew Medical Clinic';
 
-	// Prefer an explicit recipient override (must differ from SMTP From on Hostinger).
 	$configured_to = get_option( 'freshdew_contact_to_email', '' );
 	if ( is_email( $configured_to ) ) {
 		$to = $configured_to;
-	}
-
-	if ( strtolower( $to ) === strtolower( $from_email ) ) {
-		// Same mailbox: send as the visitor so From != To (Hostinger requirement).
-		$from_email = $reply_to;
-		$from_name  = $reply_name;
+	} else {
+		$to = $contact['email'];
 	}
 
 	$headers = array(
@@ -1326,10 +1314,7 @@ function freshdew_ai_settings_page() {
             <form method="post" action="">
                 <?php wp_nonce_field('freshdew_ai_settings'); ?>
                 <h2>Email SMTP Settings</h2>
-                <p class="description">Required on Hostinger — PHP <code>mail()</code> is unreliable. Use your Hostinger mailbox over SMTP.</p>
-                <div class="notice notice-warning inline" style="margin: 1rem 0; padding: 0.75rem 1rem;">
-                    <p style="margin:0;"><strong>Hostinger rule:</strong> From and To cannot be the same address. Create a second mailbox (e.g. <code>forms@freshdewmedicalclinic.com</code>) for SMTP From, and keep contact To as <code>info@...</code> — or set Contact Recipient below to a different inbox.</p>
-                </div>
+                <p class="description">Use your Hostinger mailbox over SMTP (recommended: <code>info@freshdewmedicalclinic.com</code> for Username, From, and Contact Recipient).</p>
                 
                 <table class="form-table">
                     <tr>
@@ -1402,7 +1387,7 @@ function freshdew_ai_settings_page() {
                         </th>
                         <td>
                             <input type="email" id="smtp_from_email" name="smtp_from_email" value="<?php echo esc_attr($smtp_from_email); ?>" class="regular-text" />
-                            <p class="description">Must match SMTP username. Prefer a dedicated mailbox like forms@… (not the same as Contact Recipient).</p>
+                            <p class="description">Usually the same as SMTP username (e.g. info@freshdewmedicalclinic.com).</p>
                         </td>
                     </tr>
                     <tr>
@@ -1420,7 +1405,7 @@ function freshdew_ai_settings_page() {
                         </th>
                         <td>
                             <input type="email" id="contact_to_email" name="contact_to_email" value="<?php echo esc_attr($contact_to_email); ?>" class="regular-text" placeholder="info@freshdewmedicalclinic.com" />
-                            <p class="description">Where contact-form messages are delivered. Must differ from From Email on Hostinger. Leave blank to use info@freshdewmedicalclinic.com.</p>
+                            <p class="description">Where contact-form messages are delivered. Leave blank to use info@freshdewmedicalclinic.com.</p>
                         </td>
                     </tr>
                 </table>
