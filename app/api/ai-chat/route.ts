@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ response });
     }
 
-    // Use Llama 3.1 8B Instant via Groq
+    // Groq free tier (still api.groq.com). llama-3.1-8b-instant was shut down for free use 2026-08-16.
     const groq = getGroqClient();
     if (!groq) {
       // Fallback to rule-based responses if API key is not set
@@ -83,24 +83,44 @@ export async function POST(request: NextRequest) {
 - Hospital hours and contact information
 - Emergency guidance (always direct to 911 for emergencies)
 
-Be concise, friendly, and professional. Always remind users that for medical emergencies, they should call 911.`;
+Be concise, friendly, and professional. Always remind users that for medical emergencies, they should call 911. Do not prescribe specific medicines or dosages.`;
 
-      const completion = await groq.chat.completions.create({
-        messages: [
-          {
-            role: "system",
-            content: systemPrompt,
-          },
-          {
-            role: "user",
-            content: message,
-          },
-        ],
-        model: "llama-3.1-8b-instant",
-        temperature: 0.7,
-        max_tokens: 200,
-        top_p: 0.9,
-      });
+      // Prefer GROQ_MODEL env; otherwise Groq free replacement for Llama Instant.
+      const groqModels = [
+        process.env.GROQ_MODEL || 'openai/gpt-oss-20b',
+        'openai/gpt-oss-120b',
+        'qwen/qwen3.8-27b',
+      ].filter((m, i, arr) => m && arr.indexOf(m) === i);
+
+      let completion = null as Awaited<ReturnType<typeof groq.chat.completions.create>> | null;
+      let lastError: unknown = null;
+      for (const model of groqModels) {
+        try {
+          completion = await groq.chat.completions.create({
+            messages: [
+              {
+                role: "system",
+                content: systemPrompt,
+              },
+              {
+                role: "user",
+                content: message,
+              },
+            ],
+            model,
+            temperature: 0.7,
+            max_tokens: 200,
+            top_p: 0.9,
+          });
+          break;
+        } catch (modelError) {
+          lastError = modelError;
+          console.error(`Groq model failed (${model}):`, modelError);
+        }
+      }
+      if (!completion) {
+        throw lastError || new Error('All Groq free models failed');
+      }
 
       let aiResponse = completion.choices[0]?.message?.content?.trim() || 'I apologize, but I could not process your request. Please try again.';
       

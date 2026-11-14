@@ -950,17 +950,36 @@ function freshdew_ai_chat_handler($request) {
 }
 
 /**
- * Call Groq API
+ * Groq free-tier chat models (still called via api.groq.com — not OpenAI billing).
+ * llama-3.1-8b-instant was shut down for free/developer use on 2026-08-16.
+ * @see https://console.groq.com/docs/deprecations
+ *
+ * @return string[]
+ */
+function freshdew_get_groq_chat_models() {
+	$configured = trim( (string) get_option( 'freshdew_groq_model', '' ) );
+	$defaults   = array(
+		'openai/gpt-oss-20b', // Groq free replacement for llama-3.1-8b-instant
+		'openai/gpt-oss-120b',
+		'qwen/qwen3.8-27b',
+	);
+	if ( $configured !== '' ) {
+		array_unshift( $defaults, $configured );
+	}
+	return array_values( array_unique( $defaults ) );
+}
+
+/**
+ * Call Groq free-tier chat API (OpenAI-compatible endpoint hosted by Groq).
  */
 function freshdew_call_groq_api($message, $api_key, $contact_info) {
-    $emr_link = 'https://www.myhealthaccess.ca/branded/freshdew-medical-centre';
     $system_prompt = "You are a helpful AI assistant for FreshDew Medical Clinic in Belleville, Ontario, Canada.
 
 STRICT RULES:
 - Keep every reply SHORT: 2–4 sentences maximum. Never write long paragraphs.
 - Stay under 80 words per response. Do not repeat information. This is a chat widget with limited space.
 - Always finish your response with a complete sentence. NEVER end mid-sentence or with '...' or '…'.
-- For medical emergencies, say to call 911.
+- Do NOT prescribe or recommend specific medicines or dosages. For symptoms, advise booking a visit or calling the clinic; for emergencies, say to call 911.
 - For appointments, say 'Book Appointment Online' and do NOT paste the raw URL. The system will auto-link it.
 - NEVER output raw URLs like https://www.myhealthaccess.ca/... — instead say 'Book Appointment Online' or 'visit our booking page'.
 
@@ -971,58 +990,76 @@ Contact: {$contact_info['address']}, {$contact_info['city']}. Phone: {$contact_i
 Be friendly and professional. Give only the essential information asked. End every reply with a complete sentence.";
 
     $url = 'https://api.groq.com/openai/v1/chat/completions';
-    
-    $body = array(
-        'model' => 'llama-3.1-8b-instant',
-        'messages' => array(
-            array('role' => 'system', 'content' => $system_prompt),
-            array('role' => 'user', 'content' => $message)
-        ),
-        'temperature' => 0.5,
-        'max_tokens' => 180,
-        'top_p' => 0.9,
-    );
-    
-    $args = array(
-        'method' => 'POST',
-        'headers' => array(
-            'Authorization' => 'Bearer ' . $api_key,
-            'Content-Type' => 'application/json',
-        ),
-        'body' => json_encode($body),
-        'timeout' => 30,
-    );
-    
-    $response = wp_remote_post($url, $args);
-    
-    if (is_wp_error($response)) {
-        error_log('Groq API Error: ' . $response->get_error_message());
-        return false;
-    }
-    
-    $response_code = wp_remote_retrieve_response_code($response);
-    $body = wp_remote_retrieve_body($response);
-    $data = json_decode($body, true);
-    
-    // Log API errors for debugging
-    if ($response_code !== 200) {
-        error_log('Groq API Response Code: ' . $response_code);
-        error_log('Groq API Response Body: ' . $body);
-        if (isset($data['error'])) {
-            error_log('Groq API Error: ' . print_r($data['error'], true));
-        }
-        return false;
-    }
-    
-    if (isset($data['choices'][0]['message']['content'])) {
-        $text = trim($data['choices'][0]['message']['content']);
-        $text = freshdew_linkify_booking_url($text);
-        return freshdew_trim_chat_response($text, 420);
-    }
-    
-    // Log if response structure is unexpected
-    error_log('Groq API Unexpected Response: ' . print_r($data, true));
-    return false;
+	$models = freshdew_get_groq_chat_models();
+
+	foreach ( $models as $model ) {
+		$body = array(
+			'model'       => $model,
+			'messages'    => array(
+				array( 'role' => 'system', 'content' => $system_prompt ),
+				array( 'role' => 'user', 'content' => $message ),
+			),
+			'temperature' => 0.5,
+			'max_tokens'  => 180,
+			'top_p'       => 0.9,
+		);
+
+		$args = array(
+			'method'  => 'POST',
+			'headers' => array(
+				'Authorization' => 'Bearer ' . $api_key,
+				'Content-Type'  => 'application/json',
+			),
+			'body'    => wp_json_encode( $body ),
+			'timeout' => 30,
+		);
+
+		$response = wp_remote_post( $url, $args );
+
+		if ( is_wp_error( $response ) ) {
+			error_log( 'Groq API Error (' . $model . '): ' . $response->get_error_message() );
+			continue;
+		}
+
+		$response_code = wp_remote_retrieve_response_code( $response );
+		$raw_body      = wp_remote_retrieve_body( $response );
+		$data          = json_decode( $raw_body, true );
+
+		if ( $response_code !== 200 ) {
+			error_log( 'Groq API Response Code (' . $model . '): ' . $response_code );
+			error_log( 'Groq API Response Body (' . $model . '): ' . $raw_body );
+			if ( isset( $data['error'] ) ) {
+				error_log( 'Groq API Error (' . $model . '): ' . print_r( $data['error'], true ) );
+			}
+			continue;
+		}
+
+		$content = '';
+		if ( isset( $data['choices'][0]['message']['content'] ) && is_string( $data['choices'][0]['message']['content'] ) ) {
+			$content = trim( $data['choices'][0]['message']['content'] );
+		}
+		// Some Groq models return an array of content parts.
+		if ( $content === '' && isset( $data['choices'][0]['message']['content'] ) && is_array( $data['choices'][0]['message']['content'] ) ) {
+			$parts = array();
+			foreach ( $data['choices'][0]['message']['content'] as $part ) {
+				if ( is_string( $part ) ) {
+					$parts[] = $part;
+				} elseif ( is_array( $part ) && isset( $part['text'] ) ) {
+					$parts[] = (string) $part['text'];
+				}
+			}
+			$content = trim( implode( '', $parts ) );
+		}
+
+		if ( $content !== '' ) {
+			$text = freshdew_linkify_booking_url( $content );
+			return freshdew_trim_chat_response( $text, 420 );
+		}
+
+		error_log( 'Groq API Unexpected Response (' . $model . '): ' . print_r( $data, true ) );
+	}
+
+	return false;
 }
 
 /**
@@ -1243,6 +1280,16 @@ function freshdew_ai_settings_page() {
         if ($is_ai_form) {
             // Update Groq API key from POST data (will be in POST if AI form was submitted)
             update_option('freshdew_groq_api_key', sanitize_text_field($_POST['groq_api_key'] ?? ''));
+            $model = sanitize_text_field( $_POST['groq_model'] ?? 'openai/gpt-oss-20b' );
+            $allowed_models = array(
+                'openai/gpt-oss-20b',
+                'openai/gpt-oss-120b',
+                'qwen/qwen3.8-27b',
+            );
+            if ( ! in_array( $model, $allowed_models, true ) ) {
+                $model = 'openai/gpt-oss-20b';
+            }
+            update_option( 'freshdew_groq_model', $model );
         }
         
         // Only save SMTP settings if SMTP form was submitted
@@ -1270,6 +1317,10 @@ function freshdew_ai_settings_page() {
     }
     
     $api_key = get_option('freshdew_groq_api_key', '');
+    $groq_model = get_option( 'freshdew_groq_model', 'openai/gpt-oss-20b' );
+    if ( $groq_model === '' || $groq_model === 'llama-3.1-8b-instant' || $groq_model === 'llama-3.3-70b-versatile' ) {
+        $groq_model = 'openai/gpt-oss-20b';
+    }
     $smtp_enabled = get_option('freshdew_smtp_enabled', 0);
     $smtp_host = get_option('freshdew_smtp_host', 'smtp.hostinger.com');
     $smtp_port = get_option('freshdew_smtp_port', '465');
@@ -1300,8 +1351,23 @@ function freshdew_ai_settings_page() {
                         <td>
                             <input type="password" id="groq_api_key" name="groq_api_key" value="<?php echo esc_attr($api_key); ?>" class="regular-text" />
                             <p class="description">
-                                Get your API key from <a href="https://console.groq.com/keys" target="_blank">Groq Console</a>.
-                                If this field is empty, the theme will use the <code>GROQ_API_KEY</code> server environment variable or the <code>FRESHDEW_GROQ_API_KEY</code> constant in <code>wp-config.php</code> (useful when the key is set outside WordPress).
+                                Free-tier key from <a href="https://console.groq.com/keys" target="_blank">Groq Console</a> (this stays on Groq — not an OpenAI account).
+                                If empty, the theme uses <code>GROQ_API_KEY</code> or <code>FRESHDEW_GROQ_API_KEY</code> in <code>wp-config.php</code>.
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <label for="groq_model">Groq free model</label>
+                        </th>
+                        <td>
+                            <select id="groq_model" name="groq_model">
+                                <option value="openai/gpt-oss-20b" <?php selected( $groq_model, 'openai/gpt-oss-20b' ); ?>>openai/gpt-oss-20b (recommended free)</option>
+                                <option value="openai/gpt-oss-120b" <?php selected( $groq_model, 'openai/gpt-oss-120b' ); ?>>openai/gpt-oss-120b (free)</option>
+                                <option value="qwen/qwen3.8-27b" <?php selected( $groq_model, 'qwen/qwen3.8-27b' ); ?>>qwen/qwen3.8-27b (free)</option>
+                            </select>
+                            <p class="description">
+                                Groq shut down free Llama (<code>llama-3.1-8b-instant</code>) on Aug 16, 2026. Those IDs still say “openai/…” but they are Groq-hosted free models — see <a href="https://console.groq.com/docs/deprecations" target="_blank">Groq deprecations</a>.
                             </p>
                         </td>
                     </tr>
