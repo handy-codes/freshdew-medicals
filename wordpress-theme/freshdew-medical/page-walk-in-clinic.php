@@ -44,7 +44,7 @@ $show_walkin_hero = freshdew_section_field_visible( $page_id, 'hero_title' )
                 the_content();
                 echo '</div>';
             } elseif ( $show_accept_box ) {
-                echo '<div style="background: #f0f9ff; border-left: 4px solid #2563eb; padding: 1.5rem; margin-bottom: 3rem; border-radius: 0.5rem;">';
+                echo '<div style="display: none; background: #f0f9ff; border-left: 4px solid #2563eb; padding: 1.5rem; margin-bottom: 3rem; border-radius: 0.5rem;" hidden>';
                 if ( freshdew_section_field_visible( $page_id, 'accepting_heading' ) ) {
                     echo '<h2 style="font-size: 1.5rem; margin-bottom: 1rem; color: #1e40af;">' . esc_html( freshdew_get_section( $page_id, 'accepting_heading', 'Accepting New Patients' ) ) . '</h2>';
                 }
