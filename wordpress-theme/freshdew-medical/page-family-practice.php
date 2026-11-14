@@ -117,7 +117,7 @@ $show_fp_hero = freshdew_section_field_visible( $page_id, 'hero_title' )
                 || freshdew_section_field_visible( $page_id, 'accepting_text' );
             if ( $accept_box_vis ) :
                 ?>
-            <div style="background: #f0f9ff; border-left: 4px solid #2563eb; padding: 1.5rem; margin: 3rem 0; border-radius: 0.5rem;">
+            <div style="display: none; background: #f0f9ff; border-left: 4px solid #2563eb; padding: 1.5rem; margin: 3rem 0; border-radius: 0.5rem;" hidden>
                 <?php if ( freshdew_section_field_visible( $page_id, 'accepting_heading' ) ) : ?>
                 <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #1e40af;"><?php echo esc_html( freshdew_get_section( $page_id, 'accepting_heading', 'Accepting New Patients' ) ); ?></h3>
                 <?php endif; ?>
