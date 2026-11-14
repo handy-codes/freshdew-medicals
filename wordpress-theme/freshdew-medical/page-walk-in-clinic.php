@@ -39,12 +39,13 @@ $show_walkin_hero = freshdew_section_field_visible( $page_id, 'hero_title' )
                 || freshdew_section_field_visible( $page_id, 'accepting_text' );
             $show_accept_box = ! $has_page_body && $accept_vis;
 
+            // Hidden for now (display:none) — keep markup so it can be shown again later.
             if ( $show_editor ) {
-                echo '<div class="freshdew-page-content entry-content" style="margin-bottom: 3rem;">';
+                echo '<div class="freshdew-page-content entry-content freshdew-walkin-accepting" style="display: none !important; margin-bottom: 3rem;" hidden aria-hidden="true">';
                 the_content();
                 echo '</div>';
             } elseif ( $show_accept_box ) {
-                echo '<div style="display: none; background: #f0f9ff; border-left: 4px solid #2563eb; padding: 1.5rem; margin-bottom: 3rem; border-radius: 0.5rem;" hidden>';
+                echo '<div class="freshdew-walkin-accepting" style="display: none !important; background: #f0f9ff; border-left: 4px solid #2563eb; padding: 1.5rem; margin-bottom: 3rem; border-radius: 0.5rem;" hidden aria-hidden="true">';
                 if ( freshdew_section_field_visible( $page_id, 'accepting_heading' ) ) {
                     echo '<h2 style="font-size: 1.5rem; margin-bottom: 1rem; color: #1e40af;">' . esc_html( freshdew_get_section( $page_id, 'accepting_heading', 'Accepting New Patients' ) ) . '</h2>';
                 }
