@@ -101,7 +101,7 @@ foreach ( $policy_cards as $pc ) {
     <div class="container">
         <div class="hero-content">
             <?php if ( freshdew_section_field_visible( $page_id, 'hero_badge' ) ) : ?>
-            <div class="hero-badge">
+            <div class="hero-badge" style="display: none;" hidden>
                 <span class="badge-dot"></span>
                 <span class="badge-text"><?php echo esc_html( freshdew_get_section( $page_id, 'hero_badge', 'Accepting New Patients' ) ); ?></span>
             </div>
